@@ -1,4 +1,4 @@
-#include <RcppClock.h>
+#include <rcppclock.h>
 
 // a simple timing example
 int fib(int n)
