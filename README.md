@@ -1,26 +1,26 @@
-# RcppClock
+# rcppclock
 
-[![](https://cranlogs.r-pkg.org/badges/grand-total/RcppClock)](https://cran.r-project.org/package=RcppML)
-[![](https://www.r-pkg.org/badges/version-last-release/RcppClock)](https://cran.r-project.org/package=RcppML)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/rcppclock)](https://cran.r-project.org/package=RcppML)
+[![](https://www.r-pkg.org/badges/version-last-release/rcppclock)](https://cran.r-project.org/package=RcppML)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
-RcppClock is a simple wrapper for `std::chrono::high_resolution_clock` that makes benchmarking Rcpp code easy.
+rcppclock is a simple wrapper for `std::chrono::high_resolution_clock` that makes benchmarking Rcpp code easy.
 
-Install RcppClock from CRAN.
+Install rcppclock from CRAN.
 
 ```
-install.packages("RcppClock")
-library(RcppClock)
-?RcppClock
+install.packages("rcppclock")
+library(rcppclock)
+?rcppclock
 ```
 
 ## The Rcpp side of things
 
-Load the RcppClock header into your R session using `library(RcppClock)`, link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(RcppClock)]]`, and load the header library into individual `.cpp` files with `#include <RcppClock.h>`:
+Load the rcppclock header into your R session using `library(rcppclock)`, link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(rcppclock)]]`, and load the header library into individual `.cpp` files with `#include <rcppclock.h>`:
 
 ```
-//[[Rcpp::depends(RcppClock)]]
-#include <RcppClock.h>
+//[[Rcpp::depends(rcppclock)]]
+#include <rcppclock.h>
 #include <thread>
 
 //[[Rcpp::export]]
@@ -70,9 +70,9 @@ plot(naptimes)
 
 ## Timing multiple replicates
 
-If a `.tick()` with the same name is called multiple times, RcppClock automatically groups the results.
+If a `.tick()` with the same name is called multiple times, rcppclock automatically groups the results.
 
-The following code reproduces the `?fibonacci` function example included in the RcppClock package:
+The following code reproduces the `?fibonacci` function example included in the rcppclock package:
 
 ```
 int fib(int n) {
