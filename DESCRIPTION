@@ -1,15 +1,21 @@
-Package: RcppClock
+Package: rcppclock
 Type: Package
-Title: Seamless 'Rcpp' Benchmarking
-Version: 1.2
-Date: 2021-11-24
-Author: Zach DeBruine
-Maintainer: Zach DeBruine <zacharydebruine@gmail.com>
-Description: Time the execution of overlapping (or not) 'Rcpp' code chunks using convenient methods, seamlessly write timing results to an 'RcppClock' object in the R global environment, and summarize and/or plot the results in R using 'RcppClock' methods.
-License: GPL (>= 2)
-Imports: Rcpp (>= 1.0.7), ggplot2
+Title: Seamless Refined 'Rcpp' Benchmarking
+Version: 2.0
+Date: 2024-01-01
+Authors@R: c(
+    person(given = "Jonathan",
+             family = "Berrisch",
+             role = c("aut", "cre"),
+             email = "Jonathan@Berrisch.biz",
+             comment = c(ORCID = "0000-0002-4944-9074")))
+Description: Time the execution of overlapping (or not) 'Rcpp' code chunks using convenient methods, seamlessly write timing results to an 'rcppclock' object in the R global environment, and summarize and/or plot the results in R using 'rcppclock' methods.
+License: GPL (>= 3)
+Encoding: UTF-8
+Imports: Rcpp, lifecycle
 LinkingTo: Rcpp
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)

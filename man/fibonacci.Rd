@@ -26,6 +26,4 @@ fibonacci(n = c(25:35), reps = 10)
 # this function creates a global environment variable "clock"
 #   that is an S3 RcppClock object
 clock
-plot(clock)
-summary(clock, units = "ms")
 }
