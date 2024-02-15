@@ -1,3 +1,6 @@
+#ifndef clock_h
+#define clock_h
+
 #include <Rcpp.h>
 #include <chrono>
 #include <string>
@@ -70,3 +73,5 @@ namespace Rcpp
     }
   };
 }
+
+#endif
