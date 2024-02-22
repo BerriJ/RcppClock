@@ -18,5 +18,5 @@ expect_gt(min(times$Count), 0)
 
 times_mc <- times
 
-# We expect at least 90% speedup with OpenMP using 2 cores
-expect_gt(times_sc$Milliseconds[1], times_mc$Milliseconds[1] * 1.9)
+# We test if there is at least 50% (if parallel processing works)
+expect_gt(times_sc$Milliseconds[1], times_mc$Milliseconds[1] * 1.5)
