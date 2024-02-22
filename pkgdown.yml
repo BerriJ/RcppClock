@@ -2,7 +2,7 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles: {}
-last_built: 2024-02-22T16:40Z
+last_built: 2024-02-22T16:52Z
 urls:
   reference: https://rcppclock.berrisch.biz/reference
   article: https://rcppclock.berrisch.biz/articles
