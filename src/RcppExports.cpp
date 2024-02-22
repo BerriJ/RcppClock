@@ -22,9 +22,21 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// fibonacci_omp
+void fibonacci_omp(std::vector<int> n, int reps);
+RcppExport SEXP _rcppclock_fibonacci_omp(SEXP nSEXP, SEXP repsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<int> >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type reps(repsSEXP);
+    fibonacci_omp(n, reps);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rcppclock_fibonacci", (DL_FUNC) &_rcppclock_fibonacci, 2},
+    {"_rcppclock_fibonacci_omp", (DL_FUNC) &_rcppclock_fibonacci_omp, 2},
     {NULL, NULL, 0}
 };
 

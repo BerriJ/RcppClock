@@ -1,6 +1,10 @@
 #ifndef clock_h
 #define clock_h
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include <Rcpp.h>
 #include <chrono>
 #include <string>

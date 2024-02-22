@@ -16,11 +16,34 @@
 #' @param reps number of replicates for timing
 #' @export
 #' @examples
-#' fibonacci(n = 10*(1:3), reps = 10)
+#' fibonacci(n = 10*(1:4), reps = 10)
 #' # this function creates a global environment variable "times"
 #' #   that is an S3 RcppClock object
 #' times
 fibonacci <- function(n, reps = 10L) {
     invisible(.Call(`_rcppclock_fibonacci`, n, reps))
+}
+
+#' Simple RcppClock example using OpenMP
+#'
+#' Time the multithreaded computation of fibonacci numbers
+#'
+#' @details
+#' The function being timed is the following:
+#'
+#' \code{int fib(int n) { return ((n <= 1) ? n : fib(n - 1) + fib(n - 2)); }}
+#'
+#' Runtime for computations less than \code{n = 25} is nearly unmeasurable.
+#'
+#' @param n vector giving integers for which to compute the fibonacci sum
+#' @param reps number of replicates for timing
+#' @export
+#' @examples
+#' fibonacci_omp(n = 10*(1:4), reps = 10)
+#' # this function creates a global environment variable "times"
+#' #   that is an S3 RcppClock object
+#' times
+fibonacci_omp <- function(n, reps = 10L) {
+    invisible(.Call(`_rcppclock_fibonacci_omp`, n, reps))
 }
 
