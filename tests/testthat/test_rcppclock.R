@@ -18,5 +18,8 @@ expect_gt(min(times$Count), 0)
 
 times_mc <- times
 
-# We test if there is at least 50% (if parallel processing works)
-expect_gt(times_sc$Milliseconds[1], times_mc$Milliseconds[1] * 1.5)
+# We test if there is at least 50% speedup (to test if OMP works)
+test_that("Skip on MacOS", {
+    skip_on_os("mac")
+    expect_gt(times_sc$Milliseconds[1], times_mc$Milliseconds[1] * 1.5)
+})
