@@ -35,12 +35,15 @@ namespace Rcpp
   private:
     std::string name;                      // Name of R object to return
     timesmap tickmap;                      // Map of start times
-    std::vector<std::string> names,        // Vector of identifiers
-        unique_names;                      // Vector of unique identifiers
+    std::vector<std::string> tags,         // Vector of identifiers
+        unique_tags;                       // Vector of unique identifiers
     std::vector<unsigned long int> counts; // Count occurence of identifiers
-    std::vector<double> means, sds;        // Output vecs of mean and sd
+    std::vector<double> means, vars;       // Output vecs of mean and sd
     std::vector<unsigned long long int>    // Observed durations
         timers;
+
+    // Summary object: Tag,
+    std::map<std::string, std::tuple<double, double, unsigned long int>> timers_new;
 
   public:
     // Init - Set name of R object
@@ -48,9 +51,9 @@ namespace Rcpp
     Clock(std::string name) : name(name) {}
 
     // start a timer - save time
-    void tick(std::string &&name)
+    void tick(std::string &&tag)
     {
-      keypair key(std::move(name), omp_get_thread_num());
+      keypair key(std::move(tag), omp_get_thread_num());
 
 #pragma omp critical
       tickmap[key] = sc::high_resolution_clock::now();
@@ -58,9 +61,9 @@ namespace Rcpp
 
     // stop a timer - calculate time difference and save key
     void
-    tock(std::string &&name)
+    tock(std::string &&tag)
     {
-      keypair key(std::move(name), omp_get_thread_num());
+      keypair key(std::move(tag), omp_get_thread_num());
 
 #pragma omp critical
       {
@@ -69,31 +72,31 @@ namespace Rcpp
                 sc::high_resolution_clock::now() -
                 tickmap[key])
                 .count());
-        names.push_back(std::move(key.first));
+        tags.push_back(std::move(key.first));
       }
     }
 
     // Pass data to R / Python
     void aggregate()
     {
-      // Create copy of names called unique_names
-      unique_names = names;
-      remove_duplicates(unique_names);
+      // Create copy of tags called unique_names
+      unique_tags = tags;
+      remove_duplicates(unique_tags);
 
-      for (unsigned int i = 0; i < unique_names.size(); i++)
+      for (unsigned int i = 0; i < unique_tags.size(); i++)
       {
         unsigned long int count = 0;
-        double mean = 0, M2 = 0, variance = 0;
+        double mean = 0, M2 = 0;
 
-        for (unsigned long int j = 0; j < names.size(); j++)
+        for (unsigned long int j = 0; j < tags.size(); j++)
         {
-          if (names[j] == unique_names[i])
+          if (tags[j] == unique_tags[i])
           {
             // Welford's online algorithm for mean and variance
-            double delta = timers[j] - mean;
             count++;
+            double delta = timers[j] - mean;
             mean += delta / count;
-            M2 += delta * (timers[j] - mean) * 1e-3;
+            M2 += delta * (timers[j] - mean);
           }
         }
 
@@ -101,13 +104,12 @@ namespace Rcpp
         counts.push_back(count);
 
         // Save average, round to 3 decimal places
-        means.push_back(std::round(mean) * 1e-3);
+        means.push_back(mean);
 
         // Calculate sample variance
-        variance = M2 / (count);
+        double variance = M2 / (count);
         // Save standard deviation, round to 3 decimal places
-        sds.push_back(
-            std::round(std::sqrt(variance * 1e-3) * 1e+3) * 1e-3);
+        vars.push_back(variance);
       }
     }
 
@@ -116,11 +118,22 @@ namespace Rcpp
     {
       aggregate();
 
+      std::vector<unsigned long int> out_counts;
+      std::vector<double> out_means, out_sds; // Output vecs of mean and sd
+
+      for (unsigned int i = 0; i < counts.size(); i++)
+      {
+        out_counts.push_back(counts[i]);
+        out_means.push_back(std::round(means[i]) * 1e-3);
+        out_sds.push_back(std::round(std::sqrt(vars[i] * 1e-6) * 1e+3) * 1e-3);
+      }
+
       DataFrame df = DataFrame::create(
-          Named("Name") = unique_names,
-          Named("Milliseconds") = means,
-          Named("SD") = sds,
+          Named("Name") = unique_tags,
+          Named("Milliseconds") = out_means,
+          Named("SD") = out_sds,
           Named("Count") = counts);
+
       Environment env = Environment::global_env();
       env[name] = df;
     }
