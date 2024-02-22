@@ -16,10 +16,10 @@
 #' @param reps number of replicates for timing
 #' @export
 #' @examples
-#' fibonacci(n = c(25:35), reps = 10)
-#' # this function creates a global environment variable "clock"
+#' fibonacci(n = 10*(1:3), reps = 10)
+#' # this function creates a global environment variable "times"
 #' #   that is an S3 RcppClock object
-#' clock
+#' times
 fibonacci <- function(n, reps = 10L) {
     invisible(.Call(`_rcppclock_fibonacci`, n, reps))
 }

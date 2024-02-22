@@ -21,14 +21,16 @@ int fib(int n)
 //' @param reps number of replicates for timing
 //' @export
 //' @examples
-//' fibonacci(n = c(25:35), reps = 10)
-//' # this function creates a global environment variable "clock"
+//' fibonacci(n = 10*(1:3), reps = 10)
+//' # this function creates a global environment variable "times"
 //' #   that is an S3 RcppClock object
-//' clock
+//' times
 //[[Rcpp::export]]
 void fibonacci(std::vector<int> n, int reps = 10)
 {
   Rcpp::Clock clock;
+
+  clock.tick("fib");
 
   for (int i = 0; i < reps; ++i)
   {
@@ -39,5 +41,5 @@ void fibonacci(std::vector<int> n, int reps = 10)
       clock.tock("fib" + std::to_string(number));
     }
   }
-  clock.stop("clock");
+  clock.tock("fib");
 }

@@ -22,8 +22,8 @@ The function being timed is the following:
 Runtime for computations less than \code{n = 25} is nearly unmeasurable.
 }
 \examples{
-fibonacci(n = c(25:35), reps = 10)
-# this function creates a global environment variable "clock"
+fibonacci(n = 10*(1:3), reps = 10)
+# this function creates a global environment variable "times"
 #   that is an S3 RcppClock object
-clock
+times
 }
