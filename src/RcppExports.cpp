@@ -34,9 +34,12 @@ BEGIN_RCPP
 END_RCPP
 }
 
+RcppExport SEXP _rcpp_module_boot_Test();
+
 static const R_CallMethodDef CallEntries[] = {
     {"_rcppclock_fibonacci", (DL_FUNC) &_rcppclock_fibonacci, 2},
     {"_rcppclock_fibonacci_omp", (DL_FUNC) &_rcppclock_fibonacci_omp, 2},
+    {"_rcpp_module_boot_Test", (DL_FUNC) &_rcpp_module_boot_Test, 0},
     {NULL, NULL, 0}
 };
 

@@ -1,4 +1,5 @@
 #include <rcppclock.h>
+#include "test.h"
 
 // a simple timing example
 int fib(int n)
@@ -81,4 +82,15 @@ void fibonacci_omp(std::vector<int> n, int reps = 10)
     }
   }
   clock.tock("fib");
+}
+
+RCPP_MODULE(Test)
+{
+  using namespace Rcpp;
+  class_<Test>("Test")
+      .constructor()
+      .method("wait", &Test::wait)
+      .method("wait_omp", &Test::wait_omp)
+      .method("get_times", &Test::get_times)
+      .method("reset", &Test::reset);
 }
