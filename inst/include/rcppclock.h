@@ -33,15 +33,15 @@ namespace Rcpp
     using keypair = std::pair<std::string, unsigned int>;
 
   private:
-    std::string name; // Name of R object to return
     // Data to be returned: Tag, Mean, SD, Count
     std::map<std::string, std::tuple<double, double, unsigned long int>> data;
-
     std::map<keypair, hr_clock::time_point> ticks; // Map of start times
     std::vector<std::string> tags;                 // Vector of identifiers
     std::vector<unsigned long long int> durations; // Vector of durations
 
   public:
+    std::string name; // Name of R object to return
+
     // Init - Set name of R object
     Clock() : name("times") {}
     Clock(std::string name) : name(name) {}

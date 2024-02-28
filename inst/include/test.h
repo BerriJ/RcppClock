@@ -20,20 +20,20 @@ public:
         Rcpp::Rcout << "Constructor called" << std::endl;
     };
 
-    int wait(int reps = 10, int ms = 10)
+    int wait(int reps = 10, int ms = 1)
     {
         clock.tick("wait body");
         for (int i = 0; i < reps; ++i)
         {
-            clock.tick("wait_loop");
+            clock.tick("wait loop");
             std::this_thread::sleep_for(std::chrono::milliseconds(ms));
-            clock.tock("wait_loop");
+            clock.tock("wait loop");
         }
         clock.tock("wait body");
         return (0);
     }
 
-    int wait_omp(int reps = 10, int ms = 10)
+    int wait_omp(int reps = 10, int ms = 1)
     {
         clock.tick("waitomp body");
 #pragma omp parallel for

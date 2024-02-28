@@ -23,3 +23,35 @@ test_that("Skip on MacOS", {
     skip_on_os("mac")
     expect_gt(times_sc$Milliseconds[1], times_mc$Milliseconds[1] * 1.5)
 })
+
+rm(list = ls())
+
+test <- new(Test)
+
+test$wait(reps = 10, ms = 1)
+
+test$get_times()
+
+times
+
+testthat::expect_equal(times$Milliseconds[2], 1, tolerance = 0.1)
+
+test$wait(reps = 10, ms = 1)
+
+test$get_times()
+
+testthat::expect_identical(times$Count[2], 20)
+
+test$wait_omp(reps = 10, ms = 1)
+
+test$get_times()
+
+times
+
+testthat::expect_identical(nrow(times), 4L)
+
+test$reset()
+
+test$get_times()
+
+testthat::expect_identical(nrow(times), 0L)
