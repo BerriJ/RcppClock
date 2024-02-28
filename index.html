@@ -97,11 +97,9 @@ void sleepy(){
 <h2 id="the-r-side-of-things">The R side of things<a class="anchor" aria-label="anchor" href="#the-r-side-of-things"></a>
 </h2>
 <p>On the R end, we can now do stuff with the “naptimes” variable that was created in the above Rcpp function:</p>
-<pre class="{r}"><code><span><span class="fu">sleepy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co"># global variable "naptimes" is now created in the environment</span></span>
-<span><span class="va">naptimes</span></span></code></pre>
-<pre class="{r}"><code><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">naptimes</span>, units <span class="op">=</span> <span class="st">"us"</span><span class="op">)</span></span></code></pre>
-<pre class="{r}"><code><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">naptimes</span><span class="op">)</span></span></code></pre>
+<p><code>{R} sleepy() # global variable "naptimes" is now created in the environment naptimes</code></p>
+<p><code>{R} summary(naptimes, units = "us")</code></p>
+<p><code>{R} plot(naptimes)</code></p>
 </div>
 <div class="section level2">
 <h2 id="timing-multiple-replicates">Timing multiple replicates<a class="anchor" aria-label="anchor" href="#timing-multiple-replicates"></a>
@@ -126,10 +124,8 @@ void fibonacci(std::vector&lt;int&gt; n, int reps = 10) {
   clock.stop("clock");
 }</code></pre>
 <p>On the R end, we’ll get an object named “clock”:</p>
-<pre class="{r}"><code><span><span class="fu"><a href="reference/fibonacci.html">fibonacci</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">25</span><span class="op">:</span><span class="fl">35</span>, reps <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co"># global variable "clock" is created in the R global environment</span></span>
-<span><span class="va">clock</span></span></code></pre>
-<pre class="{r}"><code><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">clock</span><span class="op">)</span></span></code></pre>
+<p><code>{R} fibonacci(n = 25:35, reps = 10) # global variable "clock" is created in the R global environment clock</code></p>
+<p><code>{R} plot(clock)</code></p>
 </div>
 <div class="section level2">
 <h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
