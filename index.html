@@ -56,7 +56,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="rcpptimer---tic-toc-benchmarking-with-openmp-support-for-rcpp">RcppTimeR - Tic-Toc Benchmarking with OpenMP Support for Rcpp<a class="anchor" aria-label="anchor" href="#rcpptimer---tic-toc-benchmarking-with-openmp-support-for-rcpp"></a>
 </h1></div>
-<p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cppclock" class="external-link">cppclock</a>, a simple tic-toc timer class for benchmarking C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.</p>
+<p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a>, a simple tic-toc timer class for benchmarking C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.</p>
 <div class="section level2">
 <h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
 </h2>
@@ -73,21 +73,21 @@
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> fibonacci<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  Rcpp<span class="op">::</span>Clock clock<span class="op">;</span> <span class="co">// Or Rcpp::Clock clock("my_name"); to assign a custom name</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  Rcpp<span class="op">::</span>Timer timer<span class="op">;</span> <span class="co">// Or Rcpp::Timer timer("my_name"); to assign a custom name</span></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="co">// to the returned dataframe (default is 'times')</span></span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  clock<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span> <span class="co">// Start timer measuring the whole function</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  timer<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span> <span class="co">// Start timer measuring the whole function</span></span>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> results <span class="op">=</span> n<span class="op">;</span></span>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="op">{</span></span>
 <span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="co">// Start a timer for each fibonacci number</span></span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    clock<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    timer<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
 <span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    results<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">(</span>n<span class="op">[</span>i<span class="op">]);</span></span>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>    <span class="co">// Stop the timer for each fibonacci number</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    clock<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
 <span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="co">// Stop the timer measuring the whole function</span></span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  clock<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
 <span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Multiple timers with the same name (i.e. in a loop) will be grouped and we report the Mean and Standard Deviation for them. The results will be automatically passed to R as the <code>clock</code> instance goes out of scope. You don’t need to worry about return statements.</p>
@@ -108,22 +108,22 @@
 <div class="section level2">
 <h2 id="openmp-support">OpenMP Support<a class="anchor" aria-label="anchor" href="#openmp-support"></a>
 </h2>
-<p>Since we added OpenMP support, we also have an OpenMP version of the fibonacci function:</p>
+<p>Since we added OpenMP support, we also have an OpenMP version of the <code>fibonacci</code> function:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> fibonacci_omp<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  Rcpp<span class="op">::</span>Clock clock<span class="op">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  clock<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  Rcpp<span class="op">::</span>Timer timer<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  timer<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> results <span class="op">=</span> n<span class="op">;</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="pp">#pragma omp parallel for</span></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="op">{</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    clock<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    timer<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    results<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">(</span>n<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    clock<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
 <span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  clock<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Nothing has to be changed with respect to your <code>clock</code> object. The timings show that the OpenMP version is significantly faster (fib_body):</p>
@@ -140,9 +140,9 @@
 <p>Processes taking less than a microsecond cannot be timed.</p>
 </div>
 <div class="section level2">
-<h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+<h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>This package (and the underlying <a href="https://github.com/BerriJ/cppclock" class="external-link">cppclock</a> class) was inspired by <a href="https://github.com/zdebruine" class="external-link">zdebruine</a>’s <a href="https://github.com/zdebruine/RcppClock" class="external-link">RcppClock</a>. I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other small adjustments. I hope you find it useful!</p>
+<p>This package (and the underlying <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a> class) was inspired by <a href="https://github.com/zdebruine" class="external-link">zdebruine</a>’s <a href="https://github.com/zdebruine/RcppClock" class="external-link">RcppClock</a>. I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other small adjustments. I hope you find it useful.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
