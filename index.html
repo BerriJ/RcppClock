@@ -54,22 +54,22 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="rcpptimer---tic-toc-benchmarking-with-openmp-support-for-rcpp">RcppTimeR - Tic-Toc Benchmarking with OpenMP Support for Rcpp<a class="anchor" aria-label="anchor" href="#rcpptimer---tic-toc-benchmarking-with-openmp-support-for-rcpp"></a>
+<div class="page-header"><h1 id="rcpptimer---rcpp-tic-toc-timer-with-openmp-support">RcppTimeR - Rcpp Tic-Toc Timer with OpenMP Support<a class="anchor" aria-label="anchor" href="#rcpptimer---rcpp-tic-toc-timer-with-openmp-support"></a>
 </h1></div>
 <p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a>, a simple tic-toc timer class for benchmarking C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.</p>
 <div class="section level2">
 <h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
 </h2>
-<p>Install cpptimer from CRAN.</p>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cpptimer"</span><span class="op">)</span></span></code></pre>
+<p>Install rcpptimer from CRAN.</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rcpptimer"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="the-rcpp-side-of-things">The Rcpp side of things<a class="anchor" aria-label="anchor" href="#the-rcpp-side-of-things"></a>
 </h2>
-<p>Link it in your <code>DESCRIPTION</code> file or with <code>//[[Rcpp::depends(cpptimer)]]</code>, and load the header library into individual <code>.cpp</code> files with <code>#include &lt;cpptimer.h&gt;</code>. Then create an instance of the Rcpp::Clock class and use:</p>
+<p>Link it in your <code>DESCRIPTION</code> file or with <code>//[[Rcpp::depends(rcpptimer)]]</code>, and load the header library into individual <code>.cpp</code> files with <code>#include &lt;rcpptimer.h&gt;</code>. Then create an instance of the Rcpp::Clock class and use:</p>
 <p><code>.tic(std::string)</code> to start a new timer. <code>.toc(std::string)</code> to stop the timer.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">//[[Rcpp::depends(cpptimer)]]</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;cpptimer.h&gt;</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">//[[Rcpp::depends(rcpptimer)]]</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;rcpptimer.h&gt;</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> fibonacci<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="op">{</span></span>
@@ -90,7 +90,7 @@
 <span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
 <span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>Multiple timers with the same name (i.e. in a loop) will be grouped and we report the Mean and Standard Deviation for them. The results will be automatically passed to R as the <code>clock</code> instance goes out of scope. You don’t need to worry about return statements.</p>
+<p>Multiple timers with the same name (i.e. in a loop) will be grouped and we report the Mean and Standard Deviation for them. The results will be automatically passed to R as the <code>timer</code> instance goes out of scope. You don’t need to worry about return statements.</p>
 </div>
 <div class="section level2">
 <h2 id="the-r-side-of-things">The R side of things<a class="anchor" aria-label="anchor" href="#the-r-side-of-things"></a>
@@ -126,7 +126,7 @@
 <span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>Nothing has to be changed with respect to your <code>clock</code> object. The timings show that the OpenMP version is significantly faster (fib_body):</p>
+<p>Nothing has to be changed with respect to your <code>timer</code> instance. The timings show that the OpenMP version is significantly faster (fib_body):</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>      Name Milliseconds     SD Count</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="dv">1</span>   fib_10        <span class="fl">0.022</span>  <span class="fl">0.031</span>    <span class="dv">10</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="dv">2</span>   fib_20        <span class="fl">0.132</span>  <span class="fl">0.057</span>    <span class="dv">10</span></span>
