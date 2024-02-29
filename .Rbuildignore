@@ -12,3 +12,4 @@ cran-comments.md
 ^LICENSE\.md$
 ^CRAN-SUBMISSION$
 inst/include/cpptimer/.git
+^cran-comments\.md$
