@@ -6,9 +6,9 @@ int fib(int n)
   return ((n <= 1) ? n : fib(n - 1) + fib(n - 2));
 }
 
-//' Simple RcppClock example
+//' Simple rcpptimer example
 //'
-//' Time the computation of fibonacci numbers
+//' Time the computation of Fibonacci numbers
 //'
 //' @details
 //' The function being timed is the following:
@@ -17,7 +17,7 @@ int fib(int n)
 //'
 //' Runtime for computations less than \code{n = 25} is nearly unmeasurable.
 //'
-//' @param n vector giving integers for which to compute the fibonacci sum
+//' @param n vector giving integers for which to compute the Fibonacci sum
 //' @export
 //' @examples
 //' fibonacci(n = rep(10*(1:4), 10))
@@ -41,9 +41,9 @@ std::vector<int> fibonacci(std::vector<int> n)
   return (results);
 }
 
-//' Simple RcppClock example using OpenMP
+//' Simple rcpptimer example using OpenMP
 //'
-//' Time the multithreaded computation of fibonacci numbers
+//' Time the multithreaded computation of Fibonacci numbers
 //'
 //' @details
 //' The function being timed is the following:
@@ -52,7 +52,7 @@ std::vector<int> fibonacci(std::vector<int> n)
 //'
 //' Runtime for computations less than \code{n = 25} is nearly unmeasurable.
 //'
-//' @param n vector giving integers for which to compute the fibonacci sum
+//' @param n vector giving integers for which to compute the Fibonacci sum
 //' @export
 //' @examples
 //' fibonacci_omp(n = rep(10*(1:4), 10))

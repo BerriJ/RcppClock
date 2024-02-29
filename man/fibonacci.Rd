@@ -2,15 +2,15 @@
 % Please edit documentation in R/RcppExports.R
 \name{fibonacci}
 \alias{fibonacci}
-\title{Simple RcppClock example}
+\title{Simple rcpptimer example}
 \usage{
 fibonacci(n)
 }
 \arguments{
-\item{n}{vector giving integers for which to compute the fibonacci sum}
+\item{n}{vector giving integers for which to compute the Fibonacci sum}
 }
 \description{
-Time the computation of fibonacci numbers
+Time the computation of Fibonacci numbers
 }
 \details{
 The function being timed is the following:

@@ -2,15 +2,15 @@
 % Please edit documentation in R/RcppExports.R
 \name{fibonacci_omp}
 \alias{fibonacci_omp}
-\title{Simple RcppClock example using OpenMP}
+\title{Simple rcpptimer example using OpenMP}
 \usage{
 fibonacci_omp(n)
 }
 \arguments{
-\item{n}{vector giving integers for which to compute the fibonacci sum}
+\item{n}{vector giving integers for which to compute the Fibonacci sum}
 }
 \description{
-Time the multithreaded computation of fibonacci numbers
+Time the multithreaded computation of Fibonacci numbers
 }
 \details{
 The function being timed is the following:
