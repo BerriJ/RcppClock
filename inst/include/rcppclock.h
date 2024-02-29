@@ -6,7 +6,7 @@
 #endif
 
 #include <Rcpp.h>
-#include <cppclock.h>
+#include <cppclock/cppclock.h>
 #include <string>
 #include <vector>
 

@@ -1,0 +1,3 @@
+[submodule "inst/include/cppclock"]
+	path = inst/include/cppclock
+	url = git@github.com:BerriJ/cppclock.git
