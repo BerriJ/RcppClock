@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Time the execution of overlapping (or not) Rcpp code chunks using convenient methods, seamlessly write timing results to an rcppclock object in the R global environment, and summarize and/or plot the results in R using rcppclock methods.">
-<title>Seamless Refined Rcpp Benchmarking • rcppclock</title>
+<meta name="description" content="Provides Rcpp bindings for cppclock, a simple tic-toc timer class for benchmarking C++ code. Its not just simple, its blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.">
+<title>TicToc Benchmarking with OpenMP Support for Rcpp • rcppclock</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Seamless Refined Rcpp Benchmarking">
-<meta property="og:description" content="Time the execution of overlapping (or not) Rcpp code chunks using convenient methods, seamlessly write timing results to an rcppclock object in the R global environment, and summarize and/or plot the results in R using rcppclock methods.">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="TicToc Benchmarking with OpenMP Support for Rcpp">
+<meta property="og:description" content="Provides Rcpp bindings for cppclock, a simple tic-toc timer class for benchmarking C++ code. Its not just simple, its blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -54,86 +54,95 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="rcppclock">rcppclock<a class="anchor" aria-label="anchor" href="#rcppclock"></a>
+<div class="page-header"><h1 id="rcppclock---tictoc-benchmarking-with-openmp-support-for-rcpp">rcppclock - TicToc Benchmarking with OpenMP Support for Rcpp<a class="anchor" aria-label="anchor" href="#rcppclock---tictoc-benchmarking-with-openmp-support-for-rcpp"></a>
 </h1></div>
-<p><a href="https://cran.r-project.org/package=RcppML" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rcppclock"></a> <a href="https://cran.r-project.org/package=RcppML" class="external-link"><img src="https://www.r-pkg.org/badges/version-last-release/rcppclock"></a> <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html" class="external-link"><img src="https://img.shields.io/badge/License-GPL%20v2-blue.svg" alt="License: GPL v2"></a></p>
-<p>rcppclock is a simple wrapper for <code>std::chrono::high_resolution_clock</code> that makes benchmarking Rcpp code easy.</p>
+<p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cppclock" class="external-link">cppclock</a>, a simple tic-toc timer class for benchmarking C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.</p>
+<div class="section level2">
+<h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
+</h2>
 <p>Install rcppclock from CRAN.</p>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rcppclock"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rcppclock</span><span class="op">)</span></span>
-<span><span class="op">?</span><span class="va">rcppclock</span></span></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rcppclock"</span><span class="op">)</span></span></code></pre>
+</div>
 <div class="section level2">
 <h2 id="the-rcpp-side-of-things">The Rcpp side of things<a class="anchor" aria-label="anchor" href="#the-rcpp-side-of-things"></a>
 </h2>
-<p>Load the rcppclock header into your R session using <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(rcppclock)</a></code>, link it in your <code>DESCRIPTION</code> file or with <code>//[[Rcpp::depends(rcppclock)]]</code>, and load the header library into individual <code>.cpp</code> files with <code>#include &lt;rcppclock.h&gt;</code>:</p>
-<pre><code>//[[Rcpp::depends(rcppclock)]]
-#include &lt;rcppclock.h&gt;
-#include &lt;thread&gt;
-
-//[[Rcpp::export]]
-void sleepy(){
-  Rcpp::Clock clock;
-  
-  clock.tick("both_naps");
-  
-  clock.tick("short_nap");
-  std::this_thread::sleep_for(std::chrono::milliseconds(10));  
-  clock.tock("short_nap");
-  
-  clock.tick("long_nap");
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));  
-  clock.tock("long_nap");
-
-  clock.tock("both_naps");
-  
-  // send the times to the R global environment variable, named "naptimes"
-  clock.stop("naptimes");
-}</code></pre>
-<p><code>.tick(std::string)</code> starts a new timer. Provide a name to record what is being timed.</p>
-<p><code>.tock(std::string)</code> stops a timer. It is important to use the same name as declared in <code>.tick()</code>.</p>
-<p><code>.stop(std::string)</code> calculates the duration between all <code>.tick()</code> and <code>.tock()</code> timing results, and creates an object in the R environment with the name provided.</p>
+<p>Link it in your <code>DESCRIPTION</code> file or with <code>//[[Rcpp::depends(rcppclock)]]</code>, and load the header library into individual <code>.cpp</code> files with <code>#include &lt;rcppclock.h&gt;</code>. Then create an instance of the Rcpp::Clock class and use:</p>
+<p><code>.tic(std::string)</code> to start a new timer. <code>.toc(std::string)</code> to stop the timer.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">//[[Rcpp::depends(rcppclock)]]</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;rcppclock.h&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> fibonacci<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  Rcpp<span class="op">::</span>Clock clock<span class="op">;</span> <span class="co">// Or Rcpp::Clock clock("my_name"); to assign a custom name</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="co">// to the returned dataframe (default is 'times')</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  clock<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span> <span class="co">// Start timer measuring the whole function</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> results <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="op">{</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="co">// Start a timer for each fibonacci number</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    clock<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    results<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">(</span>n<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>    <span class="co">// Stop the timer for each fibonacci number</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    clock<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="co">// Stop the timer measuring the whole function</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  clock<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Multiple timers with the same name (i.e. in a loop) will be grouped and we report the Mean and Standard Deviation for them. The results will be automatically passed to R as the <code>clock</code> instance goes out of scope. You don’t need to worry about return statements.</p>
 </div>
 <div class="section level2">
 <h2 id="the-r-side-of-things">The R side of things<a class="anchor" aria-label="anchor" href="#the-r-side-of-things"></a>
 </h2>
-<p>On the R end, we can now do stuff with the “naptimes” variable that was created in the above Rcpp function:</p>
-<p><code>{R} sleepy() # global variable "naptimes" is now created in the environment naptimes</code></p>
-<p><code>{R} summary(naptimes, units = "us")</code></p>
-<p><code>{R} plot(naptimes)</code></p>
+<p>On the R end, we can now observe the <code>times</code> object that was silently passed to the global environment:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>[R] <span class="fu">fibonacci</span>(<span class="at">n =</span> <span class="fu">rep</span>(<span class="dv">10</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="dv">10</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>[R] times</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>      Name Milliseconds    SD Count</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="dv">1</span>   fib_10        <span class="fl">0.002</span> <span class="fl">0.001</span>    <span class="dv">10</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="dv">2</span>   fib_20        <span class="fl">0.048</span> <span class="fl">0.011</span>    <span class="dv">10</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="dv">3</span>   fib_30        <span class="fl">5.382</span> <span class="fl">0.070</span>    <span class="dv">10</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="dv">4</span>   fib_40      <span class="fl">658.280</span> <span class="fl">1.520</span>    <span class="dv">10</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="dv">5</span> fib_body     <span class="fl">6637.259</span> <span class="fl">0.000</span>     <span class="dv">1</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="timing-multiple-replicates">Timing multiple replicates<a class="anchor" aria-label="anchor" href="#timing-multiple-replicates"></a>
+<h2 id="openmp-support">OpenMP Support<a class="anchor" aria-label="anchor" href="#openmp-support"></a>
 </h2>
-<p>If a <code>.tick()</code> with the same name is called multiple times, rcppclock automatically groups the results.</p>
-<p>The following code reproduces the <code><a href="reference/fibonacci.html">?fibonacci</a></code> function example included in the rcppclock package:</p>
-<pre><code>int fib(int n) {
-  return ((n &lt;= 1) ? n : fib(n - 1) + fib(n - 2));
-}
-
-//[[Rcpp::export]]
-void fibonacci(std::vector&lt;int&gt; n, int reps = 10) {
-  Rcpp::Clock clock;
-  
-  while(reps-- &gt; 0){
-    for(auto number : n){
-      clock.tick("fib" + std::to_string(number));
-      fib(number);
-      clock.tock("fib" + std::to_string(number));
-    }
-  }
-  clock.stop("clock");
-}</code></pre>
-<p>On the R end, we’ll get an object named “clock”:</p>
-<p><code>{R} fibonacci(n = 25:35, reps = 10) # global variable "clock" is created in the R global environment clock</code></p>
-<p><code>{R} plot(clock)</code></p>
+<p>Since we added OpenMP support, we also have an OpenMP version of the fibonacci function:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> fibonacci_omp<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  Rcpp<span class="op">::</span>Clock clock<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  clock<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> results <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="pp">#pragma omp parallel for</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="op">{</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    clock<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    results<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">(</span>n<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    clock<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  clock<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_body"</span><span class="op">);</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Nothing has to be changed with respect to your <code>clock</code> object. The timings show that the OpenMP version is significantly faster (fib_body):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>      Name Milliseconds     SD Count</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="dv">1</span>   fib_10        <span class="fl">0.022</span>  <span class="fl">0.031</span>    <span class="dv">10</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="dv">2</span>   fib_20        <span class="fl">0.132</span>  <span class="fl">0.057</span>    <span class="dv">10</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="dv">3</span>   fib_30        <span class="fl">8.728</span>  <span class="fl">2.583</span>    <span class="dv">10</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="dv">4</span>   fib_40      <span class="fl">779.942</span> <span class="fl">91.569</span>    <span class="dv">10</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="dv">5</span> fib_body      <span class="fl">908.919</span>  <span class="fl">0.000</span>     <span class="dv">1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
 </h2>
-<ul>
-<li>Not compatible with OpenMP parallelization.</li>
-<li>Processes taking less than a microsecond cannot be reliably timed on some platforms.</li>
-</ul>
+<p>Processes taking less than a microsecond cannot be timed.</p>
+</div>
+<div class="section level2">
+<h2 id="acknowlegenments">Acknowlegenments<a class="anchor" aria-label="anchor" href="#acknowlegenments"></a>
+</h2>
+<p>This package (and the underlying <a href="https://github.com/BerriJ/cppclock" class="external-link">cppclock</a> class) was inspired by <a href="https://github.com/zdebruine" class="external-link">zdebruine</a>’s <a href="https://github.com/zdebruine/RcppClock" class="external-link">RcppClock</a>. I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other small adjustments. I hope you find it useful!</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
