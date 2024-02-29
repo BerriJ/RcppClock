@@ -12,34 +12,31 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // fibonacci
-void fibonacci(std::vector<int> n, int reps);
-RcppExport SEXP _rcppclock_fibonacci(SEXP nSEXP, SEXP repsSEXP) {
+std::vector<int> fibonacci(std::vector<int> n);
+RcppExport SEXP _rcppclock_fibonacci(SEXP nSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector<int> >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type reps(repsSEXP);
-    fibonacci(n, reps);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(fibonacci(n));
+    return rcpp_result_gen;
 END_RCPP
 }
 // fibonacci_omp
-void fibonacci_omp(std::vector<int> n, int reps);
-RcppExport SEXP _rcppclock_fibonacci_omp(SEXP nSEXP, SEXP repsSEXP) {
+std::vector<int> fibonacci_omp(std::vector<int> n);
+RcppExport SEXP _rcppclock_fibonacci_omp(SEXP nSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector<int> >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type reps(repsSEXP);
-    fibonacci_omp(n, reps);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(fibonacci_omp(n));
+    return rcpp_result_gen;
 END_RCPP
 }
 
-RcppExport SEXP _rcpp_module_boot_Test();
-
 static const R_CallMethodDef CallEntries[] = {
-    {"_rcppclock_fibonacci", (DL_FUNC) &_rcppclock_fibonacci, 2},
-    {"_rcppclock_fibonacci_omp", (DL_FUNC) &_rcppclock_fibonacci_omp, 2},
-    {"_rcpp_module_boot_Test", (DL_FUNC) &_rcpp_module_boot_Test, 0},
+    {"_rcppclock_fibonacci", (DL_FUNC) &_rcppclock_fibonacci, 1},
+    {"_rcppclock_fibonacci_omp", (DL_FUNC) &_rcppclock_fibonacci_omp, 1},
     {NULL, NULL, 0}
 };
 

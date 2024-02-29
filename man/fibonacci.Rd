@@ -4,12 +4,10 @@
 \alias{fibonacci}
 \title{Simple RcppClock example}
 \usage{
-fibonacci(n, reps = 10L)
+fibonacci(n)
 }
 \arguments{
 \item{n}{vector giving integers for which to compute the fibonacci sum}
-
-\item{reps}{number of replicates for timing}
 }
 \description{
 Time the computation of fibonacci numbers
@@ -22,7 +20,7 @@ The function being timed is the following:
 Runtime for computations less than \code{n = 25} is nearly unmeasurable.
 }
 \examples{
-fibonacci(n = 10*(1:4), reps = 10)
+fibonacci(n = rep(10*(1:4), 10))
 # this function creates a global environment variable "times"
 #   that is an S3 RcppClock object
 times

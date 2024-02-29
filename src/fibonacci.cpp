@@ -1,5 +1,4 @@
 #include <rcppclock.h>
-#include "test.h"
 
 // a simple timing example
 int fib(int n)
@@ -19,30 +18,28 @@ int fib(int n)
 //' Runtime for computations less than \code{n = 25} is nearly unmeasurable.
 //'
 //' @param n vector giving integers for which to compute the fibonacci sum
-//' @param reps number of replicates for timing
 //' @export
 //' @examples
-//' fibonacci(n = 10*(1:4), reps = 10)
+//' fibonacci(n = rep(10*(1:4), 10))
 //' # this function creates a global environment variable "times"
 //' #   that is an S3 RcppClock object
 //' times
 //[[Rcpp::export]]
-void fibonacci(std::vector<int> n, int reps = 10)
+std::vector<int> fibonacci(std::vector<int> n)
 {
+
   Rcpp::Clock clock;
+  clock.tick("fib_body");
+  std::vector<int> results = n;
 
-  clock.tick("fib");
-
-  for (int i = 0; i < reps; ++i)
+  for (int i = 0; i < n.size(); ++i)
   {
-    for (auto number : n)
-    {
-      clock.tick("fib" + std::to_string(number));
-      fib(number);
-      clock.tock("fib" + std::to_string(number));
-    }
+    clock.tick("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    clock.tock("fib_" + std::to_string(n[i]));
   }
-  clock.tock("fib");
+  clock.tock("fib_body");
+  return (results);
 }
 
 //' Simple RcppClock example using OpenMP
@@ -57,40 +54,27 @@ void fibonacci(std::vector<int> n, int reps = 10)
 //' Runtime for computations less than \code{n = 25} is nearly unmeasurable.
 //'
 //' @param n vector giving integers for which to compute the fibonacci sum
-//' @param reps number of replicates for timing
 //' @export
 //' @examples
-//' fibonacci_omp(n = 10*(1:4), reps = 10)
+//' fibonacci_omp(n = rep(10*(1:4), 10))
 //' # this function creates a global environment variable "times"
 //' #   that is an S3 RcppClock object
 //' times
 //[[Rcpp::export]]
-void fibonacci_omp(std::vector<int> n, int reps = 10)
+std::vector<int> fibonacci_omp(std::vector<int> n)
 {
+
   Rcpp::Clock clock;
+  clock.tick("fib_body");
+  std::vector<int> results = n;
 
-  clock.tick("fib");
-
-#pragma omp parallel for collapse(2)
-  for (int i = 0; i < reps; ++i)
+#pragma omp parallel for
+  for (int i = 0; i < n.size(); ++i)
   {
-    for (auto number : n)
-    {
-      clock.tick("fib" + std::to_string(number));
-      fib(number);
-      clock.tock("fib" + std::to_string(number));
-    }
+    clock.tick("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    clock.tock("fib_" + std::to_string(n[i]));
   }
-  clock.tock("fib");
-}
-
-RCPP_MODULE(Test)
-{
-  using namespace Rcpp;
-  class_<Test>("Test")
-      .constructor()
-      .method("wait", &Test::wait)
-      .method("wait_omp", &Test::wait_omp)
-      .method("get_times", &Test::get_times)
-      .method("reset", &Test::reset);
+  clock.tock("fib_body");
+  return (results);
 }

@@ -4,12 +4,10 @@
 \alias{fibonacci_omp}
 \title{Simple RcppClock example using OpenMP}
 \usage{
-fibonacci_omp(n, reps = 10L)
+fibonacci_omp(n)
 }
 \arguments{
 \item{n}{vector giving integers for which to compute the fibonacci sum}
-
-\item{reps}{number of replicates for timing}
 }
 \description{
 Time the multithreaded computation of fibonacci numbers
@@ -22,7 +20,7 @@ The function being timed is the following:
 Runtime for computations less than \code{n = 25} is nearly unmeasurable.
 }
 \examples{
-fibonacci_omp(n = 10*(1:4), reps = 10)
+fibonacci_omp(n = rep(10*(1:4), 10))
 # this function creates a global environment variable "times"
 #   that is an S3 RcppClock object
 times
