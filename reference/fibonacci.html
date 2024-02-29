@@ -45,17 +45,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fibonacci</span><span class="op">(</span><span class="va">n</span>, reps <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fibonacci</span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>n</dt>
 <dd><p>vector giving integers for which to compute the fibonacci sum</p></dd>
-
-
-<dt>reps</dt>
-<dd><p>number of replicates for timing</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -67,16 +63,22 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">fibonacci</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, reps <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">fibonacci</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]        55      6765    832040 102334155        55      6765    832040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 102334155        55      6765    832040 102334155        55      6765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15]    832040 102334155        55      6765    832040 102334155        55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22]      6765    832040 102334155        55      6765    832040 102334155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29]        55      6765    832040 102334155        55      6765    832040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 102334155        55      6765    832040 102334155</span>
 <span class="r-in"><span><span class="co"># this function creates a global environment variable "times"</span></span></span>
 <span class="r-in"><span><span class="co">#   that is an S3 RcppClock object</span></span></span>
 <span class="r-in"><span><span class="va">times</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Name Milliseconds    SD Count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   fib     1691.938 0.000     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 fib10        0.000 0.000    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 fib20        0.014 0.001    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 fib30        1.364 0.012    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 fib40      167.814 3.701    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Name Milliseconds    SD Count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   fib_10        0.000 0.000    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   fib_20        0.013 0.001    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   fib_30        1.363 0.008    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   fib_40      166.323 0.866    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 fib_body     1677.035 0.000     1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
