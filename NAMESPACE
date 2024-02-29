@@ -3,4 +3,4 @@
 export(fibonacci)
 export(fibonacci_omp)
 import(Rcpp)
-useDynLib(cpptimer, .registration = TRUE)
+useDynLib(rcpptimer, .registration = TRUE)
