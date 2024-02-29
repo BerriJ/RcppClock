@@ -1,6 +1,6 @@
 Package: rcpptimer
 Type: Package
-Title: Tic-Toc Benchmarking with OpenMP Support for Rcpp
+Title: Rcpp Tic-Toc Timer with OpenMP Support
 Version: 2.0
 Date: 2024-02-29
 Authors@R: c(
