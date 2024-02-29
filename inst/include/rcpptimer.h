@@ -6,7 +6,7 @@
 #endif
 
 #include <Rcpp.h>
-#include <cppclock/cppclock.h>
+#include <cpptimer/cpptimer.h>
 #include <string>
 #include <vector>
 
@@ -15,7 +15,7 @@ namespace Rcpp
   // This class inherits its main functionality from CppClock
   // It justs extends it with a stop method that passes the data to R and
   // a destructor that calls stop for convenience.
-  class Clock : public CppClock
+  class Timer : public CppTimer
   {
 
   public:

@@ -1,4 +1,4 @@
-#include <cpptimer.h>
+#include <rcpptimer.h>
 
 // a simple timing example
 int fib(int n)
@@ -27,17 +27,17 @@ int fib(int n)
 std::vector<int> fibonacci(std::vector<int> n)
 {
 
-  Rcpp::Clock clock;
-  clock.tic("fib_body");
+  Rcpp::Timer timer;
+  timer.tic("fib_body");
   std::vector<int> results = n;
 
   for (int i = 0; i < n.size(); ++i)
   {
-    clock.tic("fib_" + std::to_string(n[i]));
+    timer.tic("fib_" + std::to_string(n[i]));
     results[i] = fib(n[i]);
-    clock.toc("fib_" + std::to_string(n[i]));
+    timer.toc("fib_" + std::to_string(n[i]));
   }
-  clock.toc("fib_body");
+  timer.toc("fib_body");
   return (results);
 }
 
@@ -62,17 +62,17 @@ std::vector<int> fibonacci(std::vector<int> n)
 std::vector<int> fibonacci_omp(std::vector<int> n)
 {
 
-  Rcpp::Clock clock;
-  clock.tic("fib_body");
+  Rcpp::Timer timer;
+  timer.tic("fib_body");
   std::vector<int> results = n;
 
 #pragma omp parallel for
   for (int i = 0; i < n.size(); ++i)
   {
-    clock.tic("fib_" + std::to_string(n[i]));
+    timer.tic("fib_" + std::to_string(n[i]));
     results[i] = fib(n[i]);
-    clock.toc("fib_" + std::to_string(n[i]));
+    timer.toc("fib_" + std::to_string(n[i]));
   }
-  clock.toc("fib_body");
+  timer.toc("fib_body");
   return (results);
 }

@@ -23,21 +23,21 @@ Link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(cpptimer)]]`, and 
 
 std::vector<int> fibonacci(std::vector<int> n)
 {
-  Rcpp::Clock clock; // Or Rcpp::Clock clock("my_name"); to assign a custom name
+  Rcpp::Timer timer; // Or Rcpp::Timer timer("my_name"); to assign a custom name
   // to the returned dataframe (default is 'times')
-  clock.tic("fib_body"); // Start timer measuring the whole function
+  timer.tic("fib_body"); // Start timer measuring the whole function
   std::vector<int> results = n;
 
   for (int i = 0; i < n.size(); ++i)
   {
     // Start a timer for each fibonacci number
-    clock.tic("fib_" + std::to_string(n[i]));
+    timer.tic("fib_" + std::to_string(n[i]));
     results[i] = fib(n[i]);
     // Stop the timer for each fibonacci number
-    clock.toc("fib_" + std::to_string(n[i]));
+    timer.toc("fib_" + std::to_string(n[i]));
   }
   // Stop the timer measuring the whole function
-  clock.toc("fib_body");
+  timer.toc("fib_body");
   return (results);
 }
 ```
@@ -66,18 +66,18 @@ Since we added OpenMP support, we also have an OpenMP version of the `fibonacci`
 std::vector<int> fibonacci_omp(std::vector<int> n)
 {
 
-  Rcpp::Clock clock;
-  clock.tic("fib_body");
+  Rcpp::Timer timer;
+  timer.tic("fib_body");
   std::vector<int> results = n;
 
 #pragma omp parallel for
   for (int i = 0; i < n.size(); ++i)
   {
-    clock.tic("fib_" + std::to_string(n[i]));
+    timer.tic("fib_" + std::to_string(n[i]));
     results[i] = fib(n[i]);
-    clock.toc("fib_" + std::to_string(n[i]));
+    timer.toc("fib_" + std::to_string(n[i]));
   }
-  clock.toc("fib_body");
+  timer.toc("fib_body");
   return (results);
 }
 ```
