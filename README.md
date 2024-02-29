@@ -1,25 +1,25 @@
-# RcppTimeR - Tic-Toc Benchmarking with OpenMP Support for Rcpp
+# RcppTimeR - Rcpp Tic-Toc Timer with OpenMP Support
 
 This R Package provides Rcpp bindings for [cpptimer](https://github.com/BerriJ/cpptimer), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
 
 
 ## Install
 
-Install cpptimer from CRAN.
+Install rcpptimer from CRAN.
 
 ```
-install.packages("cpptimer")
+install.packages("rcpptimer")
 ```
 
 ## The Rcpp side of things
 
-Link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(cpptimer)]]`, and load the header library into individual `.cpp` files with `#include <cpptimer.h>`. Then create an instance of the Rcpp::Clock class and use:
+Link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(rcpptimer)]]`, and load the header library into individual `.cpp` files with `#include <rcpptimer.h>`. Then create an instance of the Rcpp::Clock class and use:
 
 `.tic(std::string)` to start a new timer. `.toc(std::string)` to stop the timer.
 
 ```c++
-//[[Rcpp::depends(cpptimer)]]
-#include <cpptimer.h>
+//[[Rcpp::depends(rcpptimer)]]
+#include <rcpptimer.h>
 
 std::vector<int> fibonacci(std::vector<int> n)
 {
@@ -41,7 +41,7 @@ std::vector<int> fibonacci(std::vector<int> n)
   return (results);
 }
 ```
-Multiple timers with the same name (i.e. in a loop) will be grouped and we report the Mean and Standard Deviation for them. The results will be automatically passed to R as the `clock` instance goes out of scope. You don't need to worry about return statements.
+Multiple timers with the same name (i.e. in a loop) will be grouped and we report the Mean and Standard Deviation for them. The results will be automatically passed to R as the `timer` instance goes out of scope. You don't need to worry about return statements.
 
 ## The R side of things
 
@@ -82,7 +82,7 @@ std::vector<int> fibonacci_omp(std::vector<int> n)
 }
 ```
 
-Nothing has to be changed with respect to your `clock` object. The timings show that the OpenMP version is significantly faster (fib_body):
+Nothing has to be changed with respect to your `timer` instance. The timings show that the OpenMP version is significantly faster (fib_body):
 
 ```r
       Name Milliseconds     SD Count

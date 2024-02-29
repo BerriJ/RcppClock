@@ -5,5 +5,6 @@ This is the initial release of `rcpptimer`. It is based on `RcppClock` but conta
 - OpenMP support
 - Auomatically returns results to R as soon as the Cpp Object goes out of scope
 - Fast computation of Mean and Standard Deviation of the results in C++
+- Uses `tic` and `toc` instead of `tick` and `tock` to be consistent with R's `tictoc` package
 - Allways reports microseconds resolution
 - Many more performance improvements
