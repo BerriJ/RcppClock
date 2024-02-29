@@ -1,25 +1,25 @@
-# rcppclock - TicToc Benchmarking with OpenMP Support for Rcpp
+# RcppTimeR - Tic-Toc Benchmarking with OpenMP Support for Rcpp
 
 This R Package provides Rcpp bindings for [cppclock](https://github.com/BerriJ/cppclock), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
 
 
 ## Install
 
-Install rcppclock from CRAN.
+Install cpptimer from CRAN.
 
 ```
-install.packages("rcppclock")
+install.packages("cpptimer")
 ```
 
 ## The Rcpp side of things
 
-Link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(rcppclock)]]`, and load the header library into individual `.cpp` files with `#include <rcppclock.h>`. Then create an instance of the Rcpp::Clock class and use:
+Link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(cpptimer)]]`, and load the header library into individual `.cpp` files with `#include <cpptimer.h>`. Then create an instance of the Rcpp::Clock class and use:
 
 `.tic(std::string)` to start a new timer. `.toc(std::string)` to stop the timer.
 
 ```c++
-//[[Rcpp::depends(rcppclock)]]
-#include <rcppclock.h>
+//[[Rcpp::depends(cpptimer)]]
+#include <cpptimer.h>
 
 std::vector<int> fibonacci(std::vector<int> n)
 {
@@ -95,6 +95,6 @@ Nothing has to be changed with respect to your `clock` object. The timings show 
 
 Processes taking less than a microsecond cannot be timed.
 
-## Acknowlegenments
+## Acknowledgements
 
 This package (and the underlying [cppclock](https://github.com/BerriJ/cppclock) class) was inspired by [zdebruine](https://github.com/zdebruine)'s [RcppClock](https://github.com/zdebruine/RcppClock). I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other small adjustments. I hope you find it useful!

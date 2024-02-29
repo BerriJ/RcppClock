@@ -1,6 +1,6 @@
-Package: rcppclock
+Package: rcpptimer
 Type: Package
-Title: TicToc Benchmarking with OpenMP Support for Rcpp
+Title: Tic-Toc Benchmarking with OpenMP Support for Rcpp
 Version: 2.0
 Date: 2024-02-29
 Authors@R: c(
@@ -9,7 +9,8 @@ Authors@R: c(
              role = c("aut", "cre"),
              email = "Jonathan@Berrisch.biz",
              comment = c(ORCID = "0000-0002-4944-9074")))
-Description: Provides Rcpp bindings for cppclock, a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
+Description: Provides Rcpp bindings for cpptimer, a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
+URL: https://rcpptimer.berrisch.biz
 License: GPL (>= 3)
 Encoding: UTF-8
 Imports: Rcpp

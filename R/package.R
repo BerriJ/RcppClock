@@ -1,5 +1,5 @@
 ## usethis namespace: start
-#' @useDynLib rcppclock, .registration = TRUE
+#' @useDynLib cpptimer, .registration = TRUE
 #' @import Rcpp
 ## usethis namespace: end
 NULL

@@ -1,6 +1,6 @@
 Sys.setenv("OMP_THREAD_LIMIT" = 2)
 
 library(testthat)
-library(rcppclock)
+library(rcpptimer)
 
-test_check("rcppclock")
+test_check("rcpptimer")

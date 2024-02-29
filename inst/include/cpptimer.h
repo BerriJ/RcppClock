@@ -1,5 +1,5 @@
-#ifndef rcppclock_h
-#define rcppclock_h
+#ifndef rcpptimer
+#define rcpptimer
 
 #ifdef _OPENMP
 #include <omp.h>

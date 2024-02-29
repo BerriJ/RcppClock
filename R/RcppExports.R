@@ -19,7 +19,7 @@
 #' # this function creates a global environment variable "times"
 #' times
 fibonacci <- function(n) {
-    .Call(`_rcppclock_fibonacci`, n)
+    .Call(`_rcpptimer_fibonacci`, n)
 }
 
 #' Simple RcppClock example using OpenMP
@@ -40,6 +40,6 @@ fibonacci <- function(n) {
 #' # this function creates a global environment variable "times"
 #' times
 fibonacci_omp <- function(n) {
-    .Call(`_rcppclock_fibonacci_omp`, n)
+    .Call(`_rcpptimer_fibonacci_omp`, n)
 }
 
