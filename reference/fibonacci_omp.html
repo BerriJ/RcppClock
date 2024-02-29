@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rcpptimer</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,21 +63,11 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">fibonacci_omp</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]        55      6765    832040 102334155        55      6765    832040</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 102334155        55      6765    832040 102334155        55      6765</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15]    832040 102334155        55      6765    832040 102334155        55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22]      6765    832040 102334155        55      6765    832040 102334155</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29]        55      6765    832040 102334155        55      6765    832040</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 102334155        55      6765    832040 102334155</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">fibonacci_omp</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># this function creates a global environment variable "times"</span></span></span>
 <span class="r-in"><span><span class="va">times</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Name Milliseconds     SD Count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   fib_10        0.017  0.033    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   fib_20        0.026  0.001    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   fib_30        2.682  0.055    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   fib_40      293.684 58.590    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 fib_body      843.181  0.000     1</span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
