@@ -3,5 +3,4 @@
 export(fibonacci)
 export(fibonacci_omp)
 import(Rcpp)
-importFrom(lifecycle,deprecated)
 useDynLib(rcppclock, .registration = TRUE)
