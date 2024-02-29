@@ -15,9 +15,11 @@
 #' @param n vector giving integers for which to compute the Fibonacci sum
 #' @export
 #' @examples
+#' \dontrun{
 #' fibonacci(n = rep(10*(1:4), 10))
 #' # this function creates a global environment variable "times"
 #' times
+#' }
 fibonacci <- function(n) {
     .Call(`_rcpptimer_fibonacci`, n)
 }
@@ -36,9 +38,11 @@ fibonacci <- function(n) {
 #' @param n vector giving integers for which to compute the Fibonacci sum
 #' @export
 #' @examples
+#' \dontrun{
 #' fibonacci_omp(n = rep(10*(1:4), 10))
 #' # this function creates a global environment variable "times"
 #' times
+#' }
 fibonacci_omp <- function(n) {
     .Call(`_rcpptimer_fibonacci_omp`, n)
 }

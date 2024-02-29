@@ -20,7 +20,9 @@ The function being timed is the following:
 Runtime for computations less than \code{n = 25} is nearly unmeasurable.
 }
 \examples{
+\dontrun{
 fibonacci(n = rep(10*(1:4), 10))
 # this function creates a global environment variable "times"
 times
+}
 }

@@ -20,9 +20,11 @@ int fib(int n)
 //' @param n vector giving integers for which to compute the Fibonacci sum
 //' @export
 //' @examples
+//' \dontrun{
 //' fibonacci(n = rep(10*(1:4), 10))
 //' # this function creates a global environment variable "times"
 //' times
+//' }
 //[[Rcpp::export]]
 std::vector<int> fibonacci(std::vector<int> n)
 {
@@ -55,9 +57,11 @@ std::vector<int> fibonacci(std::vector<int> n)
 //' @param n vector giving integers for which to compute the Fibonacci sum
 //' @export
 //' @examples
+//' \dontrun{
 //' fibonacci_omp(n = rep(10*(1:4), 10))
 //' # this function creates a global environment variable "times"
 //' times
+//' }
 //[[Rcpp::export]]
 std::vector<int> fibonacci_omp(std::vector<int> n)
 {
