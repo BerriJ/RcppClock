@@ -11,4 +11,4 @@ cran-comments.md
 ^CRAN-RELEASE$
 ^LICENSE\.md$
 ^CRAN-SUBMISSION$
-inst/include/cppclock/.git
+inst/include/cpptimer/.git

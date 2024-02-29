@@ -57,7 +57,7 @@ namespace Rcpp
     }
 
     // Destructor
-    ~Clock()
+    ~Timer()
     {
       if (autoreturn)
         stop();
