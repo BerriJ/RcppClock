@@ -1,6 +1,6 @@
 # RcppTimeR - Tic-Toc Benchmarking with OpenMP Support for Rcpp
 
-This R Package provides Rcpp bindings for [cppclock](https://github.com/BerriJ/cppclock), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
+This R Package provides Rcpp bindings for [cpptimer](https://github.com/BerriJ/cpptimer), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
 
 
 ## Install
@@ -57,9 +57,10 @@ On the R end, we can now observe the `times` object that was silently passed to 
 4   fib_40      658.280 1.520    10
 5 fib_body     6637.259 0.000     1
 ```
+
 ## OpenMP Support
 
-Since we added OpenMP support, we also have an OpenMP version of the fibonacci function:
+Since we added OpenMP support, we also have an OpenMP version of the `fibonacci` function:
 
 ```c++
 std::vector<int> fibonacci_omp(std::vector<int> n)
@@ -80,6 +81,7 @@ std::vector<int> fibonacci_omp(std::vector<int> n)
   return (results);
 }
 ```
+
 Nothing has to be changed with respect to your `clock` object. The timings show that the OpenMP version is significantly faster (fib_body):
 
 ```r
@@ -95,6 +97,6 @@ Nothing has to be changed with respect to your `clock` object. The timings show 
 
 Processes taking less than a microsecond cannot be timed.
 
-## Acknowledgements
+## Acknowledgments
 
-This package (and the underlying [cppclock](https://github.com/BerriJ/cppclock) class) was inspired by [zdebruine](https://github.com/zdebruine)'s [RcppClock](https://github.com/zdebruine/RcppClock). I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other small adjustments. I hope you find it useful!
+This package (and the underlying [cpptimer](https://github.com/BerriJ/cpptimer) class) was inspired by [zdebruine](https://github.com/zdebruine)'s [RcppClock](https://github.com/zdebruine/RcppClock). I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other small adjustments. I hope you find it useful.
