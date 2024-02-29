@@ -22,23 +22,22 @@ int fib(int n)
 //' @examples
 //' fibonacci(n = rep(10*(1:4), 10))
 //' # this function creates a global environment variable "times"
-//' #   that is an S3 RcppClock object
 //' times
 //[[Rcpp::export]]
 std::vector<int> fibonacci(std::vector<int> n)
 {
 
   Rcpp::Clock clock;
-  clock.tick("fib_body");
+  clock.tic("fib_body");
   std::vector<int> results = n;
 
   for (int i = 0; i < n.size(); ++i)
   {
-    clock.tick("fib_" + std::to_string(n[i]));
+    clock.tic("fib_" + std::to_string(n[i]));
     results[i] = fib(n[i]);
-    clock.tock("fib_" + std::to_string(n[i]));
+    clock.toc("fib_" + std::to_string(n[i]));
   }
-  clock.tock("fib_body");
+  clock.toc("fib_body");
   return (results);
 }
 
@@ -58,23 +57,22 @@ std::vector<int> fibonacci(std::vector<int> n)
 //' @examples
 //' fibonacci_omp(n = rep(10*(1:4), 10))
 //' # this function creates a global environment variable "times"
-//' #   that is an S3 RcppClock object
 //' times
 //[[Rcpp::export]]
 std::vector<int> fibonacci_omp(std::vector<int> n)
 {
 
   Rcpp::Clock clock;
-  clock.tick("fib_body");
+  clock.tic("fib_body");
   std::vector<int> results = n;
 
 #pragma omp parallel for
   for (int i = 0; i < n.size(); ++i)
   {
-    clock.tick("fib_" + std::to_string(n[i]));
+    clock.tic("fib_" + std::to_string(n[i]));
     results[i] = fib(n[i]);
-    clock.tock("fib_" + std::to_string(n[i]));
+    clock.toc("fib_" + std::to_string(n[i]));
   }
-  clock.tock("fib_body");
+  clock.toc("fib_body");
   return (results);
 }

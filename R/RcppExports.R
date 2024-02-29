@@ -17,7 +17,6 @@
 #' @examples
 #' fibonacci(n = rep(10*(1:4), 10))
 #' # this function creates a global environment variable "times"
-#' #   that is an S3 RcppClock object
 #' times
 fibonacci <- function(n) {
     .Call(`_rcppclock_fibonacci`, n)
@@ -39,7 +38,6 @@ fibonacci <- function(n) {
 #' @examples
 #' fibonacci_omp(n = rep(10*(1:4), 10))
 #' # this function creates a global environment variable "times"
-#' #   that is an S3 RcppClock object
 #' times
 fibonacci_omp <- function(n) {
     .Call(`_rcppclock_fibonacci_omp`, n)
