@@ -9,6 +9,10 @@ fibonacci(n)
 \arguments{
 \item{n}{vector giving integers for which to compute the Fibonacci sum}
 }
+\value{
+vector of integers giving the Fibonacci sum for each element in
+\code{n}
+}
 \description{
 Time the computation of Fibonacci numbers
 }
@@ -17,10 +21,10 @@ The function being timed is the following:
 
 \code{int fib(int n) { return ((n <= 1) ? n : fib(n - 1) + fib(n - 2)); }}
 
-Runtime for computations less than \code{n = 25} is nearly unmeasurable.
+Runtime for computations less than \code{n = 15} is nearly unmeasurable.
 }
 \examples{
-\dontrun{
+\donttest{
 fibonacci(n = rep(10*(1:4), 10))
 # this function creates a global environment variable "times"
 times
