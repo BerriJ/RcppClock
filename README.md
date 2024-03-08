@@ -1,112 +1,102 @@
-# RcppClock
+# RcppTimeR - Rcpp Tic-Toc Timer with OpenMP Support
 
-[![](https://cranlogs.r-pkg.org/badges/grand-total/RcppClock)](https://cran.r-project.org/package=RcppML)
-[![](https://www.r-pkg.org/badges/version-last-release/RcppClock)](https://cran.r-project.org/package=RcppML)
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+This R Package provides Rcpp bindings for [cpptimer](https://github.com/BerriJ/cpptimer), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
 
-RcppClock is a simple wrapper for `std::chrono::high_resolution_clock` that makes benchmarking Rcpp code easy.
 
-Install RcppClock from CRAN.
+## Install
+
+Install rcpptimer from CRAN.
 
 ```
-install.packages("RcppClock")
-library(RcppClock)
-?RcppClock
+install.packages("rcpptimer")
 ```
 
 ## The Rcpp side of things
 
-Load the RcppClock header into your R session using `library(RcppClock)`, link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(RcppClock)]]`, and load the header library into individual `.cpp` files with `#include <RcppClock.h>`:
+Link it in your `DESCRIPTION` file or with `//[[Rcpp::depends(rcpptimer)]]`, and load the header library into individual `.cpp` files with `#include <rcpptimer.h>`. Then create an instance of the Rcpp::Clock class and use:
 
-```
-//[[Rcpp::depends(RcppClock)]]
-#include <RcppClock.h>
-#include <thread>
+`.tic(std::string)` to start a new timer. `.toc(std::string)` to stop the timer.
 
-//[[Rcpp::export]]
-void sleepy(){
-  Rcpp::Clock clock;
-  
-  clock.tick("both_naps");
-  
-  clock.tick("short_nap");
-  std::this_thread::sleep_for(std::chrono::milliseconds(10));  
-  clock.tock("short_nap");
-  
-  clock.tick("long_nap");
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));  
-  clock.tock("long_nap");
+```c++
+//[[Rcpp::depends(rcpptimer)]]
+#include <rcpptimer.h>
 
-  clock.tock("both_naps");
-  
-  // send the times to the R global environment variable, named "naptimes"
-  clock.stop("naptimes");
+std::vector<int> fibonacci(std::vector<int> n)
+{
+  Rcpp::Timer timer; // Or Rcpp::Timer timer("my_name"); to assign a custom name
+  // to the returned dataframe (default is 'times')
+  timer.tic("fib_body"); // Start timer measuring the whole function
+  std::vector<int> results = n;
+
+  for (int i = 0; i < n.size(); ++i)
+  {
+    // Start a timer for each fibonacci number
+    timer.tic("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    // Stop the timer for each fibonacci number
+    timer.toc("fib_" + std::to_string(n[i]));
+  }
+  // Stop the timer measuring the whole function
+  timer.toc("fib_body");
+  return (results);
 }
 ```
-
-`.tick(std::string)` starts a new timer. Provide a name to record what is being timed.
-
-`.tock(std::string)` stops a timer. It is important to use the same name as declared in `.tick()`.
-
-`.stop(std::string)` calculates the duration between all `.tick()` and `.tock()` timing results, and creates an object in the R environment with the name provided.
+Multiple timers with the same name (i.e. in a loop) will be grouped and we report the Mean and Standard Deviation for them. The results will be automatically passed to R as the `timer` instance goes out of scope. You don't need to worry about return statements.
 
 ## The R side of things
 
-On the R end, we can now do stuff with the "naptimes" variable that was created in the above Rcpp function:
+On the R end, we can now observe the `times` object that was silently passed to the global environment:
 
-```{R}
-sleepy()
-# global variable "naptimes" is now created in the environment
-naptimes
+```r
+[R] fibonacci(n = rep(10 * (1:4), 10))
+[R] times
+      Name Milliseconds    SD Count
+1   fib_10        0.002 0.001    10
+2   fib_20        0.048 0.011    10
+3   fib_30        5.382 0.070    10
+4   fib_40      658.280 1.520    10
+5 fib_body     6637.259 0.000     1
 ```
 
-```{R}
-summary(naptimes, units = "us")
-```
+## OpenMP Support
 
-```{R}
-plot(naptimes)
-```
+Since we added OpenMP support, we also have an OpenMP version of the `fibonacci` function:
 
-## Timing multiple replicates
+```c++
+std::vector<int> fibonacci_omp(std::vector<int> n)
+{
 
-If a `.tick()` with the same name is called multiple times, RcppClock automatically groups the results.
+  Rcpp::Timer timer;
+  timer.tic("fib_body");
+  std::vector<int> results = n;
 
-The following code reproduces the `?fibonacci` function example included in the RcppClock package:
-
-```
-int fib(int n) {
-  return ((n <= 1) ? n : fib(n - 1) + fib(n - 2));
-}
-
-//[[Rcpp::export]]
-void fibonacci(std::vector<int> n, int reps = 10) {
-  Rcpp::Clock clock;
-  
-  while(reps-- > 0){
-    for(auto number : n){
-      clock.tick("fib" + std::to_string(number));
-      fib(number);
-      clock.tock("fib" + std::to_string(number));
-    }
+#pragma omp parallel for
+  for (int i = 0; i < n.size(); ++i)
+  {
+    timer.tic("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    timer.toc("fib_" + std::to_string(n[i]));
   }
-  clock.stop("clock");
+  timer.toc("fib_body");
+  return (results);
 }
 ```
 
-On the R end, we'll get an object named "clock":
+Nothing has to be changed with respect to your `timer` instance. The timings show that the OpenMP version is significantly faster (fib_body):
 
-```{R}
-fibonacci(n = 25:35, reps = 10)
-# global variable "clock" is created in the R global environment
-clock
-```
-
-```{R}
-plot(clock)
+```r
+      Name Milliseconds     SD Count
+1   fib_10        0.022  0.031    10
+2   fib_20        0.132  0.057    10
+3   fib_30        8.728  2.583    10
+4   fib_40      779.942 91.569    10
+5 fib_body      908.919  0.000     1
 ```
 
 ## Limitations
 
-* Not compatible with OpenMP parallelization.
-* Processes taking less than a microsecond cannot be reliably timed on some platforms.
+Processes taking less than a microsecond cannot be timed.
+
+## Acknowledgments
+
+This package (and the underlying [cpptimer](https://github.com/BerriJ/cpptimer) class) was inspired by [zdebruine](https://github.com/zdebruine)'s [RcppClock](https://github.com/zdebruine/RcppClock). I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other small adjustments. I hope you find it useful.

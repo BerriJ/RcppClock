@@ -1,0 +1,6 @@
+url: https://rcpptimer.berrisch.biz
+template:
+  bootstrap: 5
+
+development:
+  mode: auto

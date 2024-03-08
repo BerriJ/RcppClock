@@ -1,2 +1,15 @@
-^.*\.Rproj$
-^\.Rproj\.user$
+.vscode
+.devcontainer
+.dev
+^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^man-roxygen
+src/test.cpp
+cran-comments.md
+^CRAN-RELEASE$
+^LICENSE\.md$
+^CRAN-SUBMISSION$
+inst/include/cpptimer/.git
+^cran-comments\.md$
