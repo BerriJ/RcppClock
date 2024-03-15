@@ -1,7 +1,7 @@
 #include <rcpptimer.h>
 
 // a simple timing example
-long int fib(long int n)
+int fib(int n)
 {
   return ((n <= 1) ? n : fib(n - 1) + fib(n - 2));
 }
@@ -28,12 +28,12 @@ long int fib(long int n)
 //' times
 //' }
 //[[Rcpp::export]]
-std::vector<long int> fibonacci(std::vector<long int> n)
+std::vector<int> fibonacci(std::vector<int> n)
 {
 
   Rcpp::Timer timer;
   timer.tic("fib_body");
-  std::vector<long int> results = n;
+  std::vector<int> results = n;
 
   for (unsigned int i = 0; i < n.size(); ++i)
   {
@@ -67,12 +67,12 @@ std::vector<long int> fibonacci(std::vector<long int> n)
 //' times
 //' }
 //[[Rcpp::export]]
-std::vector<long int> fibonacci_omp(std::vector<long int> n)
+std::vector<int> fibonacci_omp(std::vector<int> n)
 {
 
   Rcpp::Timer timer;
   timer.tic("fib_body");
-  std::vector<long int> results = n;
+  std::vector<int> results = n;
 
 #pragma omp parallel for
   for (unsigned int i = 0; i < n.size(); ++i)
