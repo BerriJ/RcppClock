@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://rcpptimer.berrisch.biz/dev/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://rcpptimer.berrisch.biz/dev/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://rcpptimer.berrisch.biz/dev/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rcpptimer.berrisch.biz/dev/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rcpptimer.berrisch.biz/dev/reference/fibonacci.html</loc>
+  </url>
+  <url>
+    <loc>https://rcpptimer.berrisch.biz/dev/reference/fibonacci_omp.html</loc>
+  </url>
+  <url>
+    <loc>https://rcpptimer.berrisch.biz/dev/reference/index.html</loc>
+  </url>
+</urlset>
