@@ -2,6 +2,7 @@ rcpptimer 1.1.0
 ==============
 
 ## Improvements
+* Add new `Rcpp::CppTimer::ScopedTimer` class. This can be used to time the lifespan of an object until it goes out of scope. This is useful for timing the duration of a function or a loop. The `fibonacci` example was updated to use this new class.
 * Warn about timers that are not stopped when aggregate is called (no matching `toc()` statement).
 * Warn about timers for which no matching `tic()` statement was found.
 * Add `verbose` parameter to the `Timer` class to control whether above warnings should be printed or not (defaults to `true`).
