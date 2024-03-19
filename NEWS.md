@@ -6,11 +6,13 @@ rcpptimer 1.1.0
 * Warn about timers that are not stopped when aggregate is called (no matching `toc()` statement).
 * Warn about timers for which no matching `tic()` statement was found.
 * Add `verbose` parameter to the `Timer` class to control whether above warnings should be printed or not (defaults to `true`).
+* Add introductory vignette to the package.
 
 ## Fixes
 * Fixed cases where only `toc()` was called without matching `tic()`.
   * This led to a segfault in the previous version. 
 * Fix `reset()` method wich was not working properly in some cases where timers spread out over multiple methods.
+* Fix non-default constructors of the `Timer` class. They were not working properly in the previous version.
 
 rcpptimer 1.0.0
 ==============
