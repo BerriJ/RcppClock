@@ -19,6 +19,9 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="../articles/rcpptimer.html">Get started</a>
+</li>
+<li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="active nav-item">
@@ -46,6 +49,7 @@
 <li>Warn about timers that are not stopped when aggregate is called (no matching <code>toc()</code> statement).</li>
 <li>Warn about timers for which no matching <code>tic()</code> statement was found.</li>
 <li>Add <code>verbose</code> parameter to the <code>Timer</code> class to control whether above warnings should be printed or not (defaults to <code>true</code>).</li>
+<li>Add introductory vignette to the package.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="fixes-1-1-0">Fixes<a class="anchor" aria-label="anchor" href="#fixes-1-1-0"></a></h3>
@@ -53,6 +57,7 @@
 <ul><li>This led to a segfault in the previous version.</li>
 </ul></li>
 <li>Fix <code>reset()</code> method wich was not working properly in some cases where timers spread out over multiple methods.</li>
+<li>Fix non-default constructors of the <code>Timer</code> class. They were not working properly in the previous version.</li>
 </ul></div>
 </div>
     <div class="section level2">
