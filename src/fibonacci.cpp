@@ -30,18 +30,20 @@ int fib(int n)
 //[[Rcpp::export]]
 std::vector<int> fibonacci(std::vector<int> n)
 {
-
   Rcpp::Timer timer;
-  timer.tic("fib_body");
+
+  // This scoped timer measures the total execution time of 'fibonacci'
+  Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
+
   std::vector<int> results = n;
 
-  for (int i = 0; i < n.size(); ++i)
+  for (unsigned int i = 0; i < n.size(); ++i)
   {
     timer.tic("fib_" + std::to_string(n[i]));
     results[i] = fib(n[i]);
     timer.toc("fib_" + std::to_string(n[i]));
   }
-  timer.toc("fib_body");
+
   return (results);
 }
 
@@ -71,16 +73,19 @@ std::vector<int> fibonacci_omp(std::vector<int> n)
 {
 
   Rcpp::Timer timer;
-  timer.tic("fib_body");
+
+  // This scoped timer measures the total execution time of 'fibonacci'
+  Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
+
   std::vector<int> results = n;
 
 #pragma omp parallel for
-  for (int i = 0; i < n.size(); ++i)
+  for (unsigned int i = 0; i < n.size(); ++i)
   {
     timer.tic("fib_" + std::to_string(n[i]));
     results[i] = fib(n[i]);
     timer.toc("fib_" + std::to_string(n[i]));
   }
-  timer.toc("fib_body");
+
   return (results);
 }

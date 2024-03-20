@@ -1,0 +1,148 @@
+---
+title: "Introduction"
+author: Jonathan Berrisch
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: no
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  # dev = "svg",
+  warning = TRUE,
+  message = FALSE,
+  comment = "#>"
+)
+Sys.setenv("OMP_THREAD_LIMIT" = 2)
+```
+
+# A Short Introduction to rcpptimer
+
+This package provides a simple timer for Rcpp code. It is similar to the [tictoc](https://CRAN.R-project.org/package=tictoc) R package. 
+
+The Package wraps [cpptimer](https://github.com/BerriJ/cpptimer) which is a header only library that contains a class called `CppTimer`. 'rcpptimer' adds this class as `Timer` to the `Rcpp` namespace. 
+
+## Basic usage of the Timer with Rcpp::cppFunction
+
+With `Rcpp::cppFunction` we have to add the `depends` argument to the function. To tell the compiler that we want to link the 'rcpptimer' library to the 'Rcpp' code. That is, we can construct an instance if the `Timer` class and use the `tic` and `toc` methods to measure the time it takes to execute a function. Here, we just allocate some memory to have something to measure:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+int mem()
+{
+  Rcpp::Timer timer;
+  timer.tic("mem");
+  std::string s;
+  s.reserve(1048576);
+  timer.toc("mem");
+  return(0);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+
+print(times)
+```
+
+The results will be passed to the R environment as a dataframe named `times`. If you want to give the dataframe a different name you can pass that name to the constructor:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+int mem()
+{
+  Rcpp::Timer timer("mytimes");
+  timer.tic("mem");
+  std::string s;
+  s.reserve(1048576);
+  timer.toc("mem");
+  return(0);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+
+print(mytimes)
+```
+
+## Warnings and how to disable them
+
+The default setting will warn about timers that have not been stopped and `toc` calls for timers that have not yet been started using a matching call to `tic`:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+int mem()
+{
+  Rcpp::Timer timer;
+  timer.tic("start");
+  std::string s;
+  timer.tic("reserve");
+  s.reserve(1048576);
+  timer.toc("reserve");
+  timer.toc("finish");
+  return(0);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+
+print(times)
+```
+
+Note that this does not affect correctly terminated timers such as `reserve`. These warnings occur at runtime. Unfortunately, we can't check for this at compile time since the `tic` and `toc` calls might spread over various functions so that (in some cases) we do not know the execution flow upfront.
+
+However, if you are sure that you are using the timer correctly you can disable these warnings by passing `false` to the constructor:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+int mem()
+{
+  Rcpp::Timer timer(false); // Disable warnings
+  timer.tic("start");
+  std::string s;
+  timer.tic("reserve");
+  s.reserve(1048576);
+  timer.toc("reserve");
+  timer.toc("finish");
+  return(0);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+```
+
+## Rcpp::Timer::ScopedTimer
+
+We offer an alternative to the tic-toc interface. The `ScopedTimer` lets you measure the time it takes for the object to go out of scope. We can adjust the above example to use the `ScopedTimer` instead:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+int mem()
+{
+  Rcpp::Timer timer;
+  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");
+  std::string s;
+  s.reserve(1048576);
+  return(0);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+
+print(times)
+```
+
+Note that you only need to initialize the ScopedTimer. Once it goes out of scope it will call `timer.toc("mem")` automatically.
+
+We will add vignettes on how to use the package with Rcpp::sourceCpp and how to add it to your package soon.

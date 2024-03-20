@@ -93,6 +93,34 @@ Nothing has to be changed with respect to your `timer` instance. The timings sho
 5 fib_body      908.919  0.000     1
 ```
 
+## Scoped Timer
+
+We also added a new `Rcpp::CppTimer::ScopedTimer`. This can be used to time the lifespan of an object until it goes out of scope. This is useful for timing the duration of a function or a loop. Below is the `fibonacci` example from above. However, we replace the "fib_body" tic-toc timer with the scoped version.
+
+```c++
+std::vector<int> fibonacci(std::vector<int> n)
+{
+  Rcpp::Timer timer;
+
+  // This scoped timer measures the total execution time of 'fibonacci'
+  Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
+
+  std::vector<int> results = n;
+
+  for (unsigned int i = 0; i < n.size(); ++i)
+  {
+    timer.tic("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    timer.toc("fib_" + std::to_string(n[i]));
+  }
+
+  return (results);
+}
+```
+Note that you can name your object (in this example `scpdtmr`) however you like. `Rcpp::CppTimer::ScopedTimer` acts as a wrapper, so it will call `.tic` upon construction and `.toc` will be called automatically upon destruction. 
+
+`Rcpp::CppTimer::ScopedTimer` is useful to time the duration of a function or a loop.
+
 ## Limitations
 
 Processes taking less than a microsecond cannot be timed.
