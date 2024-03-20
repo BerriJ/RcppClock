@@ -13,7 +13,7 @@ rcpptimer 1.1.0
 
 * Fixed cases where only `toc()` was called without matching `tic()`.
   * This led to a segfault in the previous version. 
-* Fix `reset()` method wich was not working properly in some cases where timers spread out over multiple methods.
+* Fix `reset()` method which was not working properly in some cases where timers spread out over multiple methods.
 * Fix non-default constructors of the `Timer` class. They were not working properly in the previous version.
 
 rcpptimer 1.0.0
