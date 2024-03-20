@@ -25,7 +25,7 @@ Sys.setenv("OMP_THREAD_LIMIT" = 2)
 
 # A Short Introduction to rcpptimer
 
-This package provides a simple timer for Rcpp code. It is similar to the [tictoc](https://cran.r-project.org/web/packages/tictoc/index.html) R package. 
+This package provides a simple timer for Rcpp code. It is similar to the [tictoc](https://CRAN.R-project.org/package=tictoc) R package. 
 
 The Package wraps [cpptimer](https://github.com/BerriJ/cpptimer) which is a header only library that contains a class called `CppTimer`. 'rcpptimer' adds this class as `Timer` to the `Rcpp` namespace. 
 
