@@ -21,11 +21,6 @@ namespace Rcpp
   public:
     bool autoreturn = true;
 
-    // This ensures that there are no implicit conversions in the constructors
-    // That means, the types must exactly match the constructor signature
-    // template <typename T>
-    // Timer(T &&) = delete;
-
     Timer() : CppTimer() {} // Will use "times", true
     Timer(const char *name) : CppTimer(name) {}
     Timer(bool verbose) : CppTimer(verbose) {}
