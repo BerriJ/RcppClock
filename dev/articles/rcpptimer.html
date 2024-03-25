@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rcpptimer</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Jonathan
 Berrisch</h4>
             
-            <h4 data-toc-skip class="date">2024-03-19</h4>
+            <h4 data-toc-skip class="date">2024-03-25</h4>
       
       
       <div class="d-none name"><code>rcpptimer.Rmd</code></div>
@@ -78,8 +78,8 @@ Berrisch</h4>
 <h2 id="a-short-introduction-to-rcpptimer">A Short Introduction to rcpptimer<a class="anchor" aria-label="anchor" href="#a-short-introduction-to-rcpptimer"></a>
 </h2>
 <p>This package provides a simple timer for Rcpp code. It is similar to
-the <a href="https://cran.r-project.org/web/packages/tictoc/index.html" class="external-link">tictoc</a>
-R package.</p>
+the <a href="https://CRAN.R-project.org/package=tictoc" class="external-link">tictoc</a> R
+package.</p>
 <p>The Package wraps <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a> which is a header
 only library that contains a class called <code>CppTimer</code>.
 ‘rcpptimer’ adds this class as <code>Timer</code> to the
@@ -89,7 +89,7 @@ only library that contains a class called <code>CppTimer</code>.
 </h3>
 <p>With <code><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">Rcpp::cppFunction</a></code> we have to add the
 <code>depends</code> argument to the function. To tell the compiler that
-we want to link the ‘rcpptimer’ library to the ‘rcpp’ code. That is, we
+we want to link the ‘rcpptimer’ library to the ‘Rcpp’ code. That is, we
 can construct an instance if the <code>Timer</code> class and use the
 <code>tic</code> and <code>toc</code> methods to measure the time it
 takes to execute a function. Here, we just allocate some memory to have
@@ -113,7 +113,7 @@ something to measure:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.008  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  mem        0.009  0     1</span></span></code></pre></div>
 <p>The results will be passed to the R environment as a dataframe named
 <code>times</code>. If you want to give the dataframe a different name
 you can pass that name to the constructor:</p>
@@ -136,7 +136,7 @@ you can pass that name to the constructor:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mytimes</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.002  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  mem        0.001  0     1</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="warnings-and-how-to-disable-them">Warnings and how to disable them<a class="anchor" aria-label="anchor" href="#warnings-and-how-to-disable-them"></a>
@@ -222,7 +222,7 @@ object to go out of scope. We can adjust the above example to use the
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.012  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  mem        0.013  0     1</span></span></code></pre></div>
 <p>Note that you only need to initialize the ScopedTimer. Once it goes
 out of scope it will call <code>timer.toc("mem")</code>
 automatically.</p>

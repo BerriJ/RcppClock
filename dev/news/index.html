@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rcpptimer</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.0" id="rcpptimer-110">rcpptimer 1.1.0<a class="anchor" aria-label="anchor" href="#rcpptimer-110"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.1.0" id="rcpptimer-110">rcpptimer 1.1.0<a class="anchor" aria-label="anchor" href="#rcpptimer-110"></a></h2><p class="text-muted">CRAN release: 2024-03-20</p>
 <div class="section level3">
 <h3 id="improvements-1-1-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-1-0"></a></h3>
 <ul><li>Add new <code>Rcpp::CppTimer::ScopedTimer</code> class. This can be used to time the lifespan of an object until it goes out of scope. This is useful for timing the duration of a function or a loop. The <code>fibonacci</code> example was updated to use this new class.</li>
@@ -56,14 +56,20 @@
 <ul><li>Fixed cases where only <code>toc()</code> was called without matching <code>tic()</code>.
 <ul><li>This led to a segfault in the previous version.</li>
 </ul></li>
-<li>Fix <code>reset()</code> method wich was not working properly in some cases where timers spread out over multiple methods.</li>
+<li>Fix <code>reset()</code> method which was not working properly in some cases where timers spread out over multiple methods.</li>
 <li>Fix non-default constructors of the <code>Timer</code> class. They were not working properly in the previous version.</li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="rcpptimer-100">rcpptimer 1.0.0<a class="anchor" aria-label="anchor" href="#rcpptimer-100"></a></h2><p class="text-muted">CRAN release: 2024-03-05</p>
-<p>This is the initial release of <code>rcpptimer</code>. It is based on <code>RcppClock</code> but contains a number of improvements: - OpenMP support - Auomatically returns results to R as soon as the C++ Object goes out of scope - Fast computation of Mean and Standard Deviation of the results in C++ - Uses <code>tic</code> and <code>toc</code> instead of <code>tick</code> and <code>tock</code> to be consistent with R’s <code>tictoc</code> package - Allways reports microseconds resolution - Many more performance improvements</p>
-</div>
+<p>This is the initial release of <code>rcpptimer</code>. It is based on <code>RcppClock</code> but contains a number of improvements:</p>
+<ul><li>OpenMP support</li>
+<li>Auomatically returns results to R as soon as the C++ Object goes out of scope</li>
+<li>Fast computation of Mean and Standard Deviation of the results in C++</li>
+<li>Uses <code>tic</code> and <code>toc</code> instead of <code>tick</code> and <code>tock</code> to be consistent with R’s <code>tictoc</code> package</li>
+<li>Allways reports microseconds resolution</li>
+<li>Many more performance improvements</li>
+</ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
