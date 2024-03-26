@@ -24,7 +24,7 @@ namespace Rcpp
     Timer() : CppTimer() {} // Will use "times", true
     Timer(const char *name) : CppTimer(name) {}
     Timer(bool verbose) : CppTimer(verbose) {}
-    Timer(std::string name, bool verbose) : CppTimer(name, verbose) {}
+    Timer(const char *name, bool verbose) : CppTimer(name, verbose) {}
 
     // Pass data to R / Python
     void stop()
