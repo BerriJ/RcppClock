@@ -27,7 +27,7 @@ namespace Rcpp
     Timer(const char *name, bool verbose) : CppTimer(name, verbose) {}
 
     // Pass data to R / Python
-    void stop()
+    DataFrame stop()
     {
       aggregate();
 
@@ -51,14 +51,19 @@ namespace Rcpp
         out_counts.push_back(count);
       }
 
-      DataFrame df = DataFrame::create(
+      DataFrame results = DataFrame::create(
           Named("Name") = out_tags,
           Named("Milliseconds") = out_means,
           Named("SD") = out_sd,
           Named("Count") = out_counts);
 
-      Environment env = Environment::global_env();
-      env[name] = df;
+      if (autoreturn)
+      {
+        Environment env = Environment::global_env();
+        env[name] = results;
+      }
+
+      return results;
     }
 
     // Destructor
