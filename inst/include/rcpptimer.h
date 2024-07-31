@@ -36,14 +36,15 @@ namespace Rcpp
       std::vector<unsigned long int> out_counts;
       std::vector<double> out_means, out_sd;
 
-      for (auto const &ent1 : data)
+      for (auto const &entry : data)
       {
         // Save tag
-        out_tags.push_back(ent1.first);
+        out_tags.push_back(entry.first);
 
-        unsigned long int count = std::get<2>(ent1.second);
-        double mean = std::get<0>(ent1.second);
-        double variance = std::get<1>(ent1.second) / count;
+        // Get count, mean and variance
+        unsigned long int count = std::get<2>(entry.second);
+        double mean = std::get<0>(entry.second);
+        double variance = std::get<1>(entry.second) / count;
 
         // Convert to milliseconds and round to 3 decimal places
         out_means.push_back(std::round(mean) * 1e-3);
