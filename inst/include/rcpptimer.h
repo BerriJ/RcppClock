@@ -19,12 +19,13 @@ namespace Rcpp
   {
 
   public:
+    std::string name = "times"; // Name of R object to return
     bool autoreturn = true;
 
-    Timer() : CppTimer() {} // Will use "times", true
-    Timer(const char *name) : CppTimer(name) {}
+    Timer() : CppTimer() {}
+    Timer(const char *name) : CppTimer() { this->name = name; }
     Timer(bool verbose) : CppTimer(verbose) {}
-    Timer(const char *name, bool verbose) : CppTimer(name, verbose) {}
+    Timer(const char *name, bool verbose) : CppTimer(verbose) { this->name = name; }
 
     // Pass data to R / Python
     DataFrame stop()
