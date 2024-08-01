@@ -1,0 +1,87 @@
+---
+title: "Automatic and Manual Return of the Timings"
+author: Jonathan Berrisch
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: no
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{Autoreturn}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+It may be necessary for you to handle the resulting DataFrame yourself instead of letting `rcpptimer` write it to the global environment. 
+
+The above actually consists of two elements:
+
+- Turn off the automatic return
+- Handle the results yourself
+
+First, to turn off the automatic return, set `autoreturn` to `false`. This will prevent the `timer` from writing the results to the global environment.
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+int mem()
+{
+  Rcpp::Timer timer;
+  timer.autoreturn = false;
+  timer.tic("mem");
+  std::string s;
+  s.reserve(1048576);
+  timer.toc("mem");
+  return(0);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+
+print(ls())
+```
+
+Now, the results are not written to the global environment. Instead, you can access them through the `timer` object using the `stop()` method.
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+DataFrame mem()
+{
+  Rcpp::Timer timer;
+  timer.autoreturn = false;
+  timer.tic("mem");
+  std::string s;
+  s.reserve(1048576);
+  timer.toc("mem");
+  DataFrame times = timer.stop();
+  return(times);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+```
+
+Its also possible to use `stop()` *and* let rcpptimer pass the results automatically. In the above example, we just set autoreturn to true (the default). 
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+DataFrame mem()
+{
+  Rcpp::Timer timer;
+  timer.autoreturn = true;
+  timer.tic("mem");
+  std::string s;
+  s.reserve(1048576);
+  timer.toc("mem");
+  DataFrame times = timer.stop();
+  return(times);
+}',
+  depends = "rcpptimer"
+)
+
+manually_returned <- mem()
+print(ls())
+```
+
+In the above example, `mem()` returns the results *and* rcpptimer writes them as `times` to the global environment.
