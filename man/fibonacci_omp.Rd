@@ -25,7 +25,7 @@ Runtime for computations less than \code{n = 15} is nearly unmeasurable.
 }
 \examples{
 \donttest{
-fibonacci_omp(n = rep(10*(1:4), 10))
+fibonacci_omp(n = rep(20:25, 10))
 # this function creates a global environment variable "times"
 times
 }
