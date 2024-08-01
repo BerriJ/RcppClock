@@ -73,6 +73,8 @@ mem()
 print(mytimes)
 ```
 
+It is also possible to deactivate this automatic passing of the results to R and handle the results in C++ yourself (see `vignette("autoreturn")`).
+
 ## Warnings and how to disable them
 
 The default setting will warn about timers that have not been stopped and `toc` calls for timers that have not yet been started using a matching call to `tic`:
