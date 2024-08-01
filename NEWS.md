@@ -1,4 +1,5 @@
 rcpptimer 1.2.0
+==============
 
 ## Improvements
 
