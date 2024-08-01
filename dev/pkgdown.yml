@@ -3,7 +3,7 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   rcpptimer: rcpptimer.html
-last_built: 2024-07-30T06:38Z
+last_built: 2024-08-01T05:36Z
 urls:
   reference: https://rcpptimer.berrisch.biz/reference
   article: https://rcpptimer.berrisch.biz/articles
