@@ -61,7 +61,7 @@
                         <h4 data-toc-skip class="author">Jonathan
 Berrisch</h4>
             
-            <h4 data-toc-skip class="date">2024-08-01</h4>
+            <h4 data-toc-skip class="date">2024-08-06</h4>
       
 
       <div class="d-none name"><code>rcpptimer.Rmd</code></div>
@@ -108,7 +108,7 @@ something to measure:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.009  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  mem        0.007  0     1</span></span></code></pre></div>
 <p>The results will be passed to the R environment as a dataframe named
 <code>times</code>. If you want to give the dataframe a different name
 you can pass that name to the constructor:</p>
@@ -131,7 +131,7 @@ you can pass that name to the constructor:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mytimes</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.002  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  mem        0.001  0     1</span></span></code></pre></div>
 <p>It is also possible to deactivate this automatic passing of the
 results to R and handle the results in C++ yourself (see
 <code><a href="../articles/autoreturn.html">vignette("autoreturn")</a></code>).</p>
@@ -167,7 +167,7 @@ using a matching call to <code>tic</code>:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1 reserve        0.008  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 reserve        0.006  0     1</span></span></code></pre></div>
 <p>Note that this does not affect correctly terminated timers such as
 <code>reserve</code>. These warnings occur at runtime. Unfortunately, we
 can’t check for this at compile time since the <code>tic</code> and
@@ -220,7 +220,7 @@ object to go out of scope. We can adjust the above example to use the
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.008  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  mem        0.007  0     1</span></span></code></pre></div>
 <p>Note that you only need to initialize the ScopedTimer. Once it goes
 out of scope it will call <code>timer.toc("mem")</code>
 automatically.</p>
