@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Rcpp Tic-Toc Timer with OpenMP Support">
-<meta name="description" content="Provides Rcpp bindings for cpptimer, a simple tic-toc timer class for benchmarking C++ code &lt;https://github.com/BerriJ/cpptimer&gt;. Its not just simple, its blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism &lt;https://www.openmp.org/&gt;. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.">
-<meta property="og:description" content="Provides Rcpp bindings for cpptimer, a simple tic-toc timer class for benchmarking C++ code &lt;https://github.com/BerriJ/cpptimer&gt;. Its not just simple, its blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism &lt;https://www.openmp.org/&gt;. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.">
+<meta name="description" content="Provides Rcpp bindings for cpptimer, a simple tic-toc timer class for benchmarking C++ code &lt;https://github.com/BerriJ/cpptimer&gt;. Its not just simple, its blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism &lt;https://www.openmp.org/&gt;. It boasts a nanosecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.">
+<meta property="og:description" content="Provides Rcpp bindings for cpptimer, a simple tic-toc timer class for benchmarking C++ code &lt;https://github.com/BerriJ/cpptimer&gt;. Its not just simple, its blazing fast! This sleek tic-toc timer class supports overlapping timers as well as OpenMP parallelism &lt;https://www.openmp.org/&gt;. It boasts a nanosecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to R as a data frame.">
 <meta name="robots" content="noindex">
 </head>
 <body>
@@ -58,7 +58,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="rcpptimer---rcpp-tic-toc-timer-with-openmp-support">rcpptimer - Rcpp Tic-Toc Timer with OpenMP Support<a class="anchor" aria-label="anchor" href="#rcpptimer---rcpp-tic-toc-timer-with-openmp-support"></a>
 </h1></div>
-<p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a>, a simple tic-toc timer class for benchmarking C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a microsecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.</p>
+<p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a>, a simple tic-toc timer class for benchmarking C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a nanosecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.</p>
 <div class="section level2">
 <h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
 </h2>
@@ -100,7 +100,7 @@
 <div class="section level2">
 <h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
 </h2>
-<p>Processes taking less than a microsecond cannot be timed.</p>
+<p>Processes taking less than a nanosecond cannot be timed.</p>
 <p>Unmatched <code>.tic()</code> and <code>.toc()</code> calls do not raise errors at compile time. However, they throw warnings at runtime.</p>
 </div>
 <div class="section level2">
