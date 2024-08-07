@@ -20,19 +20,21 @@ Using rcpptimer in your package is simple. Just link to it in your `DESCRIPTION`
 LinkingTo: rcpptimer (>= 1.2.0)
 ```
 
-Now, you can include it into your .cpp files using `//[[Rcpp::depends(rcpptimer)]]`, and load the header library with `#include <rcpptimer.h>`. 
-
-Then create an instance of the `Rcpp::Timer` class and use:
+and add the header into your .cpp file `#include <rcpptimer.h>`. Now, you can create and use an instance of the `Rcpp::Timer` class. Consider this `fibonacci_omp` function:
 
 ```c++
-//[[Rcpp::depends(rcpptimer)]]
 #include <rcpptimer.h>
+
+long int fib(long int n)
+{
+  return ((n <= 1) ? n : fib(n - 1) + fib(n - 2));
+}
 
 //[[Rcpp::export]]
 std::vector<long int> fibonacci_omp(std::vector<long int> n)
 {
   Rcpp::Timer timer;
-  // This scoped timer measures the total execution time of 'fibonacci'
+ // This scoped timer measures the total execution time of 'fibonacci'
   Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
   std::vector<long int> results = n;
   #pragma omp parallel for
@@ -47,11 +49,11 @@ std::vector<long int> fibonacci_omp(std::vector<long int> n)
 ```
 This function is available in rcpptimer you can try it yourself, e.g.  `rcpptimer::fibonacci_omp(n = rep(20:25, 10))`. After that you can observe the timings by executing `print(times)`.
 
-As you see, it writes the timings to the global environment as a data.frame called `times`. Read the next section to learn why this is probably not what you want in a package. 
+As you see, it writes the timings to the global environment as data.frame called `times`. Read the following section to learn why this is not what you want in a package. 
 
 ## Autoreturn
 
-When using rcpptimer in your package, you should consider disabling the autoreturn feature of the timer. Users of your package may not be aware of this functionality and may already have some object named `times` in their global environment or have very strict expectations about what objects they want to write into their environment.
-Instead, you probably want to include the timings into your own data structures, or parameterize either the name of the returned object or the autoreturn feature itself or both.
+When using rcpptimer in your package, you should consider disabling the timer's autoreturn feature. Users of your package may not be aware of this functionality, may already have an object named `times` in their global environment, or may have very strict expectations about what objects they want to write into their environment.
+Instead, you should include the timings in your data structures or parameterize the name of the returned object, the autoreturn feature itself, or both.
 
 See `vignette("autoreturn")` vignette to read about this in detail.

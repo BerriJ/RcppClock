@@ -23,13 +23,13 @@ knitr::opts_chunk$set(
 Sys.setenv("OMP_THREAD_LIMIT" = 2)
 ```
 
-This package provides a simple timer for Rcpp code. The interface is very similar to the [tictoc](https://CRAN.R-project.org/package=tictoc) R package. The package wraps [cpptimer](https://github.com/BerriJ/cpptimer), a header-only library that contains a class called `CppTimer`. rcpptimer adds this class as `Timer` to the `Rcpp` namespace. 
+This package provides a simple timer for Rcpp code. The interface is similar to the [tictoc](https://CRAN.R-project.org/package=tictoc) R package. The package wraps [cpptimer](https://github.com/BerriJ/cpptimer), a header-only library that contains a class called `CppTimer`. rcpptimer adds this class as `Timer` to the `Rcpp` namespace. 
 
-This introduction explains how the `Rcpp::Timer` class can be used with `Rcpp::cppFunction` and how:
+This introduction explains how to use `Rcpp::Timer` with `Rcpp::cppFunction` and how:
 
-- Multiple, (potentially nested) timers can be used
-- The `Rcpp::Timer::ScopedTimer` can be used for timing scopes
-- Warnings can be disabled
+- You can use multiple (potentially nested) timers
+- You can time scoped using `Rcpp::Timer::ScopedTimer`
+- You can turn off Warnings
 
 Check out the other vignettes for:
 
@@ -39,7 +39,7 @@ Check out the other vignettes for:
 
 ## Initialize a timer
 
-Initializing a timer is simple. There are 4 construcors available. The default constructor initializes a timer with warnings enabled that will write the results as a data.frame called "times" to the R environment:
+Initializing a timer is simple. There are four constructors available. The default constructor initializes a timer with warnings enabled that will write the results as data.frame called "times" to the R environment:
 
 ```c++
 Rcpp::Timer timer;                    // default constructor
@@ -72,7 +72,7 @@ mem()
 print(times)
 ```
 
-The results will be passed to the R environment as a dataframe named `times`. Read more on that autoreturn feature (i.e. how to assign a custom variable name, how to manually handle the results) in: `vignette("autoreturn")`. 
+This function will automatically write a data frame called "times" to the R environment. Read more about that autoreturn feature (i.e., how to assign a custom variable name and how to manually handle the results) in `vignette("autoreturn")`. 
 
 ## Multiple timers
 
@@ -99,7 +99,7 @@ mem()
 print(times)
 ```
 
-Multiple timers with the same name will be grouped and the results will be aggregated. Considers this more advanced example which also uses OpenMP:
+rcpptimer will group multiple timers with the same name and calculate summary statistics for them. Consider this more advanced example, which also uses OpenMP:
 
 ```c++
 // fibonacci_omp.cpp
@@ -108,24 +108,24 @@ std::vector<long int> fibonacci_omp(std::vector<long int> n)
 
   Rcpp::Timer timer;
 
-  // This scoped timer measures the total execution time of 'fibonacci'
+ // This scoped timer measures the total execution time of 'fibonacci'
   Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
 
   std::vector<long int> results = n;
 
   #pragma omp parallel for
   for (unsigned int i = 0; i < n.size(); ++i)
-  {
-    timer.tic("fib_" + std::to_string(n[i]));
-    results[i] = fib(n[i]);
-    timer.toc("fib_" + std::to_string(n[i]));
-  }
+ {
+ timer.tic("fib_" + std::to_string(n[i]));
+ results[i] = fib(n[i]);
+ timer.toc("fib_" + std::to_string(n[i]));
+ }
 
   return (results);
 }
 ```
 
-This function is included in rcpptimer so we can execute it right away: 
+This function is included in rcpptimer, so we can execute it right away: 
 
 ```{r, eval = TRUE}
 results <- rcpptimer::fibonacci_omp(n = rep(20:25, 10))
@@ -158,7 +158,7 @@ Note that you only need to initialize the ScopedTimer. Once it goes out of scope
 
 ## Warnings and how to disable them
 
-The default setting will warn about timers that have been started using `.tic` but have never been sopped using `.toc()` and vice versa. This is usefull to catch unmatched `.tic()` and `.toc()` calls that may be unmatched due to missing statements or due to typos.
+The default setting will warn about timers that have been started using `.tic` but never stopped using `.toc()` and vice versa. This is useful to catch unmatched `.tic()` and `.toc()` calls that may be unmatched due to missing statements or typos.
 
 For example, the following code will produce two warnings:
 
@@ -180,7 +180,7 @@ int mem()
 mem()
 ```
 
-Note that this does not affect correctly terminated timers such as 'mem'. 
+Note that this does not affect terminated timers such as 'mem'. 
 
 ```{r, eval = TRUE}
 print(times)
@@ -188,7 +188,7 @@ print(times)
 
 These warnings occur at runtime. Unfortunately, we can't check for this at compile time.
 
-However, you can turn off these warnings by passing `false` to the constructor. This is usefull if you need `.toc()` calls in code block that may not be executed, e.g. in a conditional statements. The example below will not produce any warnings:
+However, you can turn off these warnings by passing `false` to the constructor. This is useful if you need `.toc()` calls in code blocks that may not get executed, e.g. in conditional statements. The example below will not produce any warnings:
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('

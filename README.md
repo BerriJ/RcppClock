@@ -1,6 +1,6 @@
 # rcpptimer - Rcpp Tic-Toc Timer with OpenMP Support
 
-This R Package provides Rcpp bindings for [cpptimer](https://github.com/BerriJ/cpptimer), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports nested and overlapping timers as well as OpenMP parallelism. It boasts a microsecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
+This R Package provides Rcpp bindings for [cpptimer](https://github.com/BerriJ/cpptimer), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a microsecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
 
 ## Install
 
@@ -12,18 +12,18 @@ install.packages("rcpptimer")
 
 ## Basic Usage with Rcpp::cppFunction
 
-Here is a very simple example of using the `Rcpp::Timer` with Rcpp::cppFunction:
+Here is a straightforward example of using the `Rcpp::Timer` with Rcpp::cppFunction:
 
 ```r
 Rcpp::cppFunction("
 int mem()
 {
-  Rcpp::Timer timer;   // Create a timer object
-  timer.tic();         // Start the timer
-  std::string s;
-  s.reserve(1048576);
-  timer.toc();         // Stop the timer
-  return(0);
+ Rcpp::Timer timer;   // Create a timer object
+ timer.tic();         // Start the timer
+ std::string s;
+ s.reserve(1048576);
+ timer.toc();         // Stop the timer
+ return(0);
 }",
   depends = "rcpptimer"
 )
@@ -31,13 +31,12 @@ int mem()
 mem()
 ```
 
-
-The output is automatically written to your R environment as a data frame:
+The timer object will automatically write its result to the R environment:
 
 ```r
 print(times)
 
-    Name Milliseconds SD Count
+ Name Milliseconds SD Count
 1 tictoc        0.005  0     1
 ```
 
