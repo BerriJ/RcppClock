@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Introduction • rcpptimer</title>
+<title>A Short Introduction to rcpptimer • rcpptimer</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="A Short Introduction to rcpptimer">
 <meta name="robots" content="noindex">
 </head>
 <body>
@@ -36,6 +36,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/autoreturn.html">Automatic and Manual Return of the Timings</a></li>
+    <li><a class="dropdown-item" href="../articles/packages.html">Adding rcpptimer to a Package</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -57,11 +58,11 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Introduction</h1>
+      <h1>A Short Introduction to rcpptimer</h1>
                         <h4 data-toc-skip class="author">Jonathan
 Berrisch</h4>
             
-            <h4 data-toc-skip class="date">2024-08-06</h4>
+            <h4 data-toc-skip class="date">2024-08-07</h4>
       
 
       <div class="d-none name"><code>rcpptimer.Rmd</code></div>
@@ -69,37 +70,66 @@ Berrisch</h4>
 
     
     
+<p>This package provides a simple timer for Rcpp code. The interface is
+very similar to the <a href="https://CRAN.R-project.org/package=tictoc" class="external-link">tictoc</a> R package.
+The package wraps <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a>, a header-only
+library that contains a class called <code>CppTimer</code>. rcpptimer
+adds this class as <code>Timer</code> to the <code>Rcpp</code>
+namespace.</p>
+<p>This introduction explains how the <code>Rcpp::Timer</code> class can
+be used with <code><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">Rcpp::cppFunction</a></code> and how:</p>
+<ul>
+<li>Multiple, (potentially nested) timers can be used</li>
+<li>The <code>Rcpp::Timer::ScopedTimer</code> can be used for timing
+scopes</li>
+<li>Warnings can be disabled</li>
+</ul>
+<p>Check out the other vignettes for:</p>
+<ul>
+<li>Using rcpptimer together with <code><a href="https://rdrr.io/pkg/Rcpp/man/sourceCpp.html" class="external-link">Rcpp::sourceCpp</a></code>
+<code>vignette("sourceCpp")</code>
+</li>
+<li>Adding rcpptimer to a Package <code><a href="../articles/packages.html">vignette("packages")</a></code>
+</li>
+<li>Automatic and Manual Return of the Timings
+<code><a href="../articles/autoreturn.html">vignette("autoreturn")</a></code>
+</li>
+</ul>
 <div class="section level2">
-<h2 id="a-short-introduction-to-rcpptimer">A Short Introduction to rcpptimer<a class="anchor" aria-label="anchor" href="#a-short-introduction-to-rcpptimer"></a>
+<h2 id="initialize-a-timer">Initialize a timer<a class="anchor" aria-label="anchor" href="#initialize-a-timer"></a>
 </h2>
-<p>This package provides a simple timer for Rcpp code. It is similar to
-the <a href="https://CRAN.R-project.org/package=tictoc" class="external-link">tictoc</a> R
-package.</p>
-<p>The Package wraps <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a> which is a header
-only library that contains a class called <code>CppTimer</code>.
-‘rcpptimer’ adds this class as <code>Timer</code> to the
-<code>Rcpp</code> namespace.</p>
-<div class="section level3">
-<h3 id="basic-usage-of-the-timer-with-rcppcppfunction">Basic usage of the Timer with Rcpp::cppFunction<a class="anchor" aria-label="anchor" href="#basic-usage-of-the-timer-with-rcppcppfunction"></a>
-</h3>
-<p>With <code><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">Rcpp::cppFunction</a></code> we have to add the
-<code>depends</code> argument to the function. To tell the compiler that
-we want to link the ‘rcpptimer’ library to the ‘Rcpp’ code. That is, we
-can construct an instance if the <code>Timer</code> class and use the
+<p>Initializing a timer is simple. There are 4 construcors available.
+The default constructor initializes a timer with warnings enabled that
+will write the results as a data.frame called “times” to the R
+environment:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>Rcpp<span class="op">::</span>Timer timer<span class="op">;</span>                    <span class="co">// default constructor</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>Rcpp<span class="op">::</span>Timer timer<span class="op">(</span><span class="st">"my_timer"</span><span class="op">);</span>        <span class="co">// Set a custom name for the results</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>Rcpp<span class="op">::</span>Timer timer<span class="op">(</span><span class="kw">false</span><span class="op">);</span>             <span class="co">// Disable warnings</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>Rcpp<span class="op">::</span>Timer timer<span class="op">(</span><span class="st">"my_timer"</span><span class="op">,</span> <span class="kw">false</span><span class="op">);</span> <span class="co">// Set a custom name and disable warnings</span></span></code></pre></div>
+<p>Below and throughout other vignettes, we will use all four as
+needed.</p>
+</div>
+<div class="section level2">
+<h2 id="basic-usage-of-the-timer-with-rcppcppfunction">Basic usage of the Timer with Rcpp::cppFunction<a class="anchor" aria-label="anchor" href="#basic-usage-of-the-timer-with-rcppcppfunction"></a>
+</h2>
+<p>With <code><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">Rcpp::cppFunction</a></code>, we must add the
+<code>depends</code> argument to the function to tell the compiler we
+want to link the ‘rcpptimer’ library to the C++ code. Then, we can
+construct an instance of the <code>Timer</code> class and use the
 <code>tic</code> and <code>toc</code> methods to measure the time it
-takes to execute a function. Here, we just allocate some memory to have
+takes to execute a code block. Here, we allocate some memory to have
 something to measure:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">int mem()</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
-<span><span class="st">  timer.tic("mem");</span></span>
+<span><span class="st">  timer.tic();</span></span>
 <span><span class="st">  std::string s;</span></span>
 <span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("mem");</span></span>
+<span><span class="st">  timer.toc();</span></span>
 <span><span class="st">  return(0);</span></span>
-<span><span class="st">}'</span>,</span>
+<span><span class="st">}"</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -107,102 +137,88 @@ something to measure:</p>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.007  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt;     Name Milliseconds SD Count</span></span>
+<span><span class="co">#&gt; 1 tictoc        0.007  0     1</span></span></code></pre></div>
 <p>The results will be passed to the R environment as a dataframe named
-<code>times</code>. If you want to give the dataframe a different name
-you can pass that name to the constructor:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">int mem()</span></span>
-<span><span class="st">{</span></span>
-<span><span class="st">  Rcpp::Timer timer("mytimes");</span></span>
-<span><span class="st">  timer.tic("mem");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("mem");</span></span>
-<span><span class="st">  return(0);</span></span>
-<span><span class="st">}'</span>,</span>
-<span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mytimes</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.001  0     1</span></span></code></pre></div>
-<p>It is also possible to deactivate this automatic passing of the
-results to R and handle the results in C++ yourself (see
-<code><a href="../articles/autoreturn.html">vignette("autoreturn")</a></code>).</p>
+<code>times</code>. Read more on that autoreturn feature (i.e. how to
+assign a custom variable name, how to manually handle the results) in:
+<code><a href="../articles/autoreturn.html">vignette("autoreturn")</a></code>.</p>
 </div>
-<div class="section level3">
-<h3 id="warnings-and-how-to-disable-them">Warnings and how to disable them<a class="anchor" aria-label="anchor" href="#warnings-and-how-to-disable-them"></a>
-</h3>
-<p>The default setting will warn about timers that have not been stopped
-and <code>toc</code> calls for timers that have not yet been started
-using a matching call to <code>tic</code>:</p>
+<div class="section level2">
+<h2 id="multiple-timers">Multiple timers<a class="anchor" aria-label="anchor" href="#multiple-timers"></a>
+</h2>
+<p>You can also use multiple timers in the same function. Just pass a
+string to the <code>tic</code> and <code>toc</code> methods to identify
+the timer:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">int mem()</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
-<span><span class="st">  timer.tic("start");</span></span>
+<span><span class="st">  timer.tic("body");</span></span>
 <span><span class="st">  std::string s;</span></span>
 <span><span class="st">  timer.tic("reserve");</span></span>
 <span><span class="st">  s.reserve(1048576);</span></span>
 <span><span class="st">  timer.toc("reserve");</span></span>
-<span><span class="st">  timer.toc("finish");</span></span>
+<span><span class="st">  timer.toc("body");</span></span>
 <span><span class="st">  return(0);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in mem(): Timer "finish" not started yet. </span></span>
-<span><span class="co">#&gt; Use tic("finish") to start the timer.</span></span>
-<span><span class="co">#&gt; Warning in mem(): Timer "start" not stopped yet. </span></span>
-<span><span class="co">#&gt; Use toc("start") to stop the timer.</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1 reserve        0.006  0     1</span></span></code></pre></div>
-<p>Note that this does not affect correctly terminated timers such as
-<code>reserve</code>. These warnings occur at runtime. Unfortunately, we
-can’t check for this at compile time since the <code>tic</code> and
-<code>toc</code> calls might spread over various functions so that (in
-some cases) we do not know the execution flow upfront.</p>
-<p>However, if you are sure that you are using the timer correctly you
-can disable these warnings by passing <code>false</code> to the
-constructor:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">int mem()</span></span>
-<span><span class="st">{</span></span>
-<span><span class="st">  Rcpp::Timer timer(false); // Disable warnings</span></span>
-<span><span class="st">  timer.tic("start");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  timer.tic("reserve");</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("reserve");</span></span>
-<span><span class="st">  timer.toc("finish");</span></span>
-<span><span class="st">  return(0);</span></span>
-<span><span class="st">}'</span>,</span>
-<span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    body        0.003  0     1</span></span>
+<span><span class="co">#&gt; 2 reserve        0.001  0     1</span></span></code></pre></div>
+<p>Multiple timers with the same name will be grouped and the results
+will be aggregated. Considers this more advanced example which also uses
+OpenMP:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">// fibonacci_omp.cpp</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> fibonacci_omp<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  Rcpp<span class="op">::</span>Timer timer<span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="co">// This scoped timer measures the total execution time of 'fibonacci'</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  Rcpp<span class="op">::</span>Timer<span class="op">::</span>ScopedTimer scpdtmr<span class="op">(</span>timer<span class="op">,</span> <span class="st">"fib_body"</span><span class="op">);</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> results <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="pp">#pragma omp parallel for</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="op">{</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>    timer<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>    results<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">(</span>n<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>    timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This function is included in rcpptimer so we can execute it right
+away:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">rcpptimer</span><span class="fu">::</span><span class="fu"><a href="../reference/fibonacci_omp.html">fibonacci_omp</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">20</span><span class="op">:</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       Name Milliseconds    SD Count</span></span>
+<span><span class="co">#&gt; 1   fib_20        0.032 0.013    10</span></span>
+<span><span class="co">#&gt; 2   fib_21        0.037 0.004    10</span></span>
+<span><span class="co">#&gt; 3   fib_22        0.071 0.007    10</span></span>
+<span><span class="co">#&gt; 4   fib_23        0.108 0.023    10</span></span>
+<span><span class="co">#&gt; 5   fib_24        0.178 0.017    10</span></span>
+<span><span class="co">#&gt; 6   fib_25        0.259 0.022    10</span></span>
+<span><span class="co">#&gt; 7 fib_body        2.309 0.000     1</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="rcpptimerscopedtimer">Rcpp::Timer::ScopedTimer<a class="anchor" aria-label="anchor" href="#rcpptimerscopedtimer"></a>
-</h3>
+<div class="section level2">
+<h2 id="timing-scopes-with-rcpptimerscopedtimer">Timing Scopes with Rcpp::Timer::ScopedTimer<a class="anchor" aria-label="anchor" href="#timing-scopes-with-rcpptimerscopedtimer"></a>
+</h2>
 <p>We offer an alternative to the tic-toc interface. The
 <code>ScopedTimer</code> lets you measure the time it takes for the
 object to go out of scope. We can adjust the above example to use the
 <code>ScopedTimer</code> instead:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">int mem()</span></span>
 <span><span class="st">{</span></span>
@@ -220,13 +236,75 @@ object to go out of scope. We can adjust the above example to use the
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
-<span><span class="co">#&gt; 1  mem        0.007  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  mem        0.005  0     1</span></span></code></pre></div>
 <p>Note that you only need to initialize the ScopedTimer. Once it goes
-out of scope it will call <code>timer.toc("mem")</code>
-automatically.</p>
-<p>We will add vignettes on how to use the package with Rcpp::sourceCpp
-and how to add it to your package soon.</p>
+out of scope, it will automatically call
+<code>timer.toc("mem")</code>.</p>
 </div>
+<div class="section level2">
+<h2 id="warnings-and-how-to-disable-them">Warnings and how to disable them<a class="anchor" aria-label="anchor" href="#warnings-and-how-to-disable-them"></a>
+</h2>
+<p>The default setting will warn about timers that have been started
+using <code>.tic</code> but have never been sopped using
+<code>.toc()</code> and vice versa. This is usefull to catch unmatched
+<code>.tic()</code> and <code>.toc()</code> calls that may be unmatched
+due to missing statements or due to typos.</p>
+<p>For example, the following code will produce two warnings:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
+<span><span class="st">int mem()</span></span>
+<span><span class="st">{</span></span>
+<span><span class="st">  Rcpp::Timer timer;</span></span>
+<span><span class="st">  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");</span></span>
+<span><span class="st">  std::string s;</span></span>
+<span><span class="st">  timer.tic("reserve");</span></span>
+<span><span class="st">  s.reserve(1048576);</span></span>
+<span><span class="st">  timer.toc("reserv");</span></span>
+<span><span class="st">  return(0);</span></span>
+<span><span class="st">}'</span>,</span>
+<span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in mem(): Timer "reserv" not started yet. </span></span>
+<span><span class="co">#&gt; Use tic("reserv") to start the timer.</span></span>
+<span><span class="co">#&gt; Warning in mem(): Timer "reserve" not stopped yet. </span></span>
+<span><span class="co">#&gt; Use toc("reserve") to stop the timer.</span></span>
+<span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<p>Note that this does not affect correctly terminated timers such as
+‘mem’.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
+<span><span class="co">#&gt; 1  mem         0.19  0     1</span></span></code></pre></div>
+<p>These warnings occur at runtime. Unfortunately, we can’t check for
+this at compile time.</p>
+<p>However, you can turn off these warnings by passing
+<code>false</code> to the constructor. This is usefull if you need
+<code>.toc()</code> calls in code block that may not be executed,
+e.g. in a conditional statements. The example below will not produce any
+warnings:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
+<span><span class="st">int mem()</span></span>
+<span><span class="st">{</span></span>
+<span><span class="st">  Rcpp::Timer timer(false);</span></span>
+<span><span class="st">  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");</span></span>
+<span><span class="st">  std::string s;</span></span>
+<span><span class="st">  timer.tic("reserve");</span></span>
+<span><span class="st">  s.reserve(1048576);</span></span>
+<span><span class="st">  timer.toc("reserv");</span></span>
+<span><span class="st">  return(0);</span></span>
+<span><span class="st">}'</span>,</span>
+<span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   Name Milliseconds SD Count</span></span>
+<span><span class="co">#&gt; 1  mem        0.003  0     1</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
