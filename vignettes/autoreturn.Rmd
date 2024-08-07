@@ -12,14 +12,43 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+## Assign a Custom Name to the Timings Object
+
+If you want to give the dataframe a different name, you can pass that name to the constructor:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+int mem()
+{
+  Rcpp::Timer timer("mytimes");
+  timer.tic();
+  std::string s;
+  s.reserve(1048576);
+  timer.toc();
+  return(0);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+
+print(mytimes)
+```
+
+```{r, eval = TRUE, echo = FALSE}
+rm(list = ls())
+```
+
+## Manually Handling the Results
+
 It may be necessary for you to handle the resulting DataFrame yourself instead of letting `rcpptimer` write it to the global environment. 
 
-The above actually consists of two elements:
+This issue actually consists of two elements:
 
-- Turn off the automatic return
+- Turn off the autoreturn feature
 - Handle the results yourself
 
-First, to turn off the automatic return, set `autoreturn` to `false`. This will prevent the `timer` from writing the results to the global environment.
+First, to turn off the autoreturn feature, set the `autoreturn` variable of the `timer` class to `false`. This will prevent the `timer` from writing the results to the global environment. 
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
@@ -64,24 +93,35 @@ mem()
 
 Its also possible to use `stop()` *and* let rcpptimer pass the results automatically. In the above example, we just set autoreturn to true (the default). 
 
+In the above example, `mem()` returns the results *and* rcpptimer writes them as `times` to the global environment.
+
+## Considerations for package authors
+
+```{r, eval = TRUE, echo = FALSE}
+rm(list = ls())
+```
+
+As a package author, you may want to parameterize the autoreturn feature so that your users can decide whether they want the results to be written to the global environment and what name should be assigned. Below is an example of how to do this.
+
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-DataFrame mem()
+void mem(bool return_timings = false,
+         const char* timings_name = "times")
 {
-  Rcpp::Timer timer;
-  timer.autoreturn = true;
+  Rcpp::Timer timer(timings_name);
+  timer.autoreturn = return_timings;
   timer.tic("mem");
   std::string s;
   s.reserve(1048576);
   timer.toc("mem");
-  DataFrame times = timer.stop();
-  return(times);
 }',
   depends = "rcpptimer"
 )
 
-manually_returned <- mem()
-print(ls())
+mem(return_timings = FALSE)
+ls()
+mem(return_timings = TRUE)
+ls()
+mem(return_timings = TRUE, timings_name = "my_times")
+ls()
 ```
-
-In the above example, `mem()` returns the results *and* rcpptimer writes them as `times` to the global environment.

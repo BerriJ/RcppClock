@@ -1,0 +1,57 @@
+---
+title: "Adding rcpptimer to a Package"
+author: Jonathan Berrisch
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: no
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{packages}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Adding rcpptimer to your Package
+
+Using rcpptimer in your package is simple. Just link to it in your `DESCRIPTION` file:
+
+```r
+LinkingTo: rcpptimer (>= 1.2.0)
+```
+
+Now, you can include it into your .cpp files using `//[[Rcpp::depends(rcpptimer)]]`, and load the header library with `#include <rcpptimer.h>`. 
+
+Then create an instance of the `Rcpp::Timer` class and use:
+
+```c++
+//[[Rcpp::depends(rcpptimer)]]
+#include <rcpptimer.h>
+
+//[[Rcpp::export]]
+std::vector<long int> fibonacci_omp(std::vector<long int> n)
+{
+  Rcpp::Timer timer;
+  // This scoped timer measures the total execution time of 'fibonacci'
+  Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
+  std::vector<long int> results = n;
+  #pragma omp parallel for
+  for (unsigned int i = 0; i < n.size(); ++i)
+  {
+    timer.tic("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    timer.toc("fib_" + std::to_string(n[i]));
+  }
+  return (results);
+}
+```
+This function is available in rcpptimer you can try it yourself, e.g.  `rcpptimer::fibonacci_omp(n = rep(20:25, 10))`. After that you can observe the timings by executing `print(times)`.
+
+As you see, it writes the timings to the global environment as a data.frame called `times`. Read the next section to learn why this is probably not what you want in a package. 
+
+## Autoreturn
+
+When using rcpptimer in your package, you should consider disabling the autoreturn feature of the timer. Users of your package may not be aware of this functionality and may already have some object named `times` in their global environment or have very strict expectations about what objects they want to write into their environment.
+Instead, you probably want to include the timings into your own data structures, or parameterize either the name of the returned object or the autoreturn feature itself or both.
+
+See `vignette("autoreturn")` vignette to read about this in detail.
