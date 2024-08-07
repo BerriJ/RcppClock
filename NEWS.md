@@ -4,6 +4,8 @@ rcpptimer 1.2.0
 ## Improvements
 
 * The `stop()` method of `Rcpp::Timer` now returns a DataFrame with the results. This is usefull if you want to set autoreturn to false and manually handle the results. It is also possible to just call `aggregate()` and access the public variable `data` of `Rcpp::Timer`. `data` is a map containing the results (Names, Mean, Standard Deviation, Count). 
+* The tag arguments of `tic()`, `toc()` and `ScopedTimer()` have default values now.
+
 
 rcpptimer 1.1.0
 ==============
