@@ -37,6 +37,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/autoreturn.html">Automatic and Manual Return of the Timings</a></li>
     <li><a class="dropdown-item" href="../articles/packages.html">Adding rcpptimer to a Package</a></li>
+    <li><a class="dropdown-item" href="../articles/sourceCpp.html">Using rcpptimer with Rcpp::sourceCpp</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -94,14 +95,13 @@ name to the constructor:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mytimes</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##     Name Milliseconds SD Count</span></span>
-<span><span class="co">## 1 tictoc        0.007  0     1</span></span></code></pre>
+<span><span class="co">## 1 tictoc        0.008  0     1</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="manually-handling-the-results">Manually Handling the Results<a class="anchor" aria-label="anchor" href="#manually-handling-the-results"></a>
 </h2>
-<p>It may be necessary for you to handle the resulting DataFrame
-yourself instead of letting <code>rcpptimer</code> write it to the
-global environment.</p>
+<p>You may need to handle the resulting DataFrame yourself instead of
+letting <code>rcpptimer</code> write it to the global environment.</p>
 <p>This issue actually consists of two elements:</p>
 <ul>
 <li>Turn off the autoreturn feature</li>
@@ -109,7 +109,7 @@ global environment.</p>
 </ul>
 <p>First, to turn off the autoreturn feature, set the
 <code>autoreturn</code> variable of the <code>timer</code> class to
-<code>false</code>. This will prevent the <code>timer</code> from
+<code>false</code>. That will prevent the <code>timer</code> from
 writing the results to the global environment.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
@@ -131,9 +131,9 @@ writing the results to the global environment.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "mem"</span></span></code></pre>
-<p>Now, the results are not written to the global environment. Instead,
-you can access them through the <code>timer</code> object using the
-<code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> method.</p>
+<p>Now, <code>mem</code> will not write to the global environment.
+However, you can still access the results through the timer’s
+<code>.stop()</code> method:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">DataFrame mem()</span></span>
@@ -152,21 +152,18 @@ you can access them through the <code>timer</code> object using the
 <span></span>
 <span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Name Milliseconds SD Count</span></span>
-<span><span class="co">## 1  mem        0.006  0     1</span></span></code></pre>
-<p>Its also possible to use <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> <em>and</em> let
+<span><span class="co">## 1  mem        0.007  0     1</span></span></code></pre>
+<p>It is also possible to use <code>.stop()</code> <em>and</em> let
 rcpptimer pass the results automatically. In the above example, we just
-set autoreturn to true (the default).</p>
-<p>In the above example, <code>mem()</code> returns the results
-<em>and</em> rcpptimer writes them as <code>times</code> to the global
-environment.</p>
+set autoreturn to true (the default) or delete that line.</p>
 </div>
 <div class="section level2">
 <h2 id="considerations-for-package-authors">Considerations for package authors<a class="anchor" aria-label="anchor" href="#considerations-for-package-authors"></a>
 </h2>
-<p>As a package author, you may want to parameterize the autoreturn
-feature so that your users can decide whether they want the results to
-be written to the global environment and what name should be assigned.
-Below is an example of how to do this.</p>
+<p>As a package author, you should parameterize the auto-return feature
+so your users can decide whether they want the results to be passed to
+the global environment and what name should be assigned. Below is an
+example of how to do this.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">void mem(bool return_timings = false,</span></span>

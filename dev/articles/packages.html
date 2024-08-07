@@ -37,6 +37,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/autoreturn.html">Automatic and Manual Return of the Timings</a></li>
     <li><a class="dropdown-item" href="../articles/packages.html">Adding rcpptimer to a Package</a></li>
+    <li><a class="dropdown-item" href="../articles/sourceCpp.html">Using rcpptimer with Rcpp::sourceCpp</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -76,49 +77,52 @@ Berrisch</h4>
 <p>Using rcpptimer in your package is simple. Just link to it in your
 <code>DESCRIPTION</code> file:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>LinkingTo<span class="sc">:</span> <span class="fu">rcpptimer</span> (<span class="sc">&gt;=</span> <span class="dv">1</span>.<span class="fl">2.0</span>)</span></code></pre></div>
-<p>Now, you can include it into your .cpp files using
-<code>//[[Rcpp::depends(rcpptimer)]]</code>, and load the header library
-with <code>#include &lt;rcpptimer.h&gt;</code>.</p>
-<p>Then create an instance of the <code>Rcpp::Timer</code> class and
-use:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">//[[Rcpp::depends(rcpptimer)]]</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;rcpptimer.h&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">//[[Rcpp::export]]</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> fibonacci_omp<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  Rcpp<span class="op">::</span>Timer timer<span class="op">;</span></span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="co">// This scoped timer measures the total execution time of 'fibonacci'</span></span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  Rcpp<span class="op">::</span>Timer<span class="op">::</span>ScopedTimer scpdtmr<span class="op">(</span>timer<span class="op">,</span> <span class="st">"fib_body"</span><span class="op">);</span></span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> results <span class="op">=</span> n<span class="op">;</span></span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="pp">#pragma omp parallel for</span></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  <span class="op">{</span></span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    timer<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    results<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">(</span>n<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>    timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>and add the header into your .cpp file
+<code>#include &lt;rcpptimer.h&gt;</code>. Now, you can create and use
+an instance of the <code>Rcpp::Timer</code> class. Consider this
+<code>fibonacci_omp</code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;rcpptimer.h&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="dt">long</span> <span class="dt">int</span> fib<span class="op">(</span><span class="dt">long</span> <span class="dt">int</span> n<span class="op">)</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">((</span>n <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">)</span> <span class="op">?</span> n <span class="op">:</span> fib<span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">+</span> fib<span class="op">(</span>n <span class="op">-</span> <span class="dv">2</span><span class="op">));</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">//[[Rcpp::export]]</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> fibonacci_omp<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  Rcpp<span class="op">::</span>Timer timer<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a> <span class="co">// This scoped timer measures the total execution time of 'fibonacci'</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  Rcpp<span class="op">::</span>Timer<span class="op">::</span>ScopedTimer scpdtmr<span class="op">(</span>timer<span class="op">,</span> <span class="st">"fib_body"</span><span class="op">);</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> results <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>  <span class="pp">#pragma omp parallel for</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="op">{</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>    timer<span class="op">.</span>tic<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>    results<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fib<span class="op">(</span>n<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>    timer<span class="op">.</span>toc<span class="op">(</span><span class="st">"fib_"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>n<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This function is available in rcpptimer you can try it yourself,
 e.g. <code>rcpptimer::fibonacci_omp(n = rep(20:25, 10))</code>. After
 that you can observe the timings by executing
 <code>print(times)</code>.</p>
-<p>As you see, it writes the timings to the global environment as a
-data.frame called <code>times</code>. Read the next section to learn why
-this is probably not what you want in a package.</p>
+<p>As you see, it writes the timings to the global environment as
+data.frame called <code>times</code>. Read the following section to
+learn why this is not what you want in a package.</p>
 </div>
 <div class="section level2">
 <h2 id="autoreturn">Autoreturn<a class="anchor" aria-label="anchor" href="#autoreturn"></a>
 </h2>
 <p>When using rcpptimer in your package, you should consider disabling
-the autoreturn feature of the timer. Users of your package may not be
-aware of this functionality and may already have some object named
-<code>times</code> in their global environment or have very strict
+the timer’s autoreturn feature. Users of your package may not be aware
+of this functionality, may already have an object named
+<code>times</code> in their global environment, or may have very strict
 expectations about what objects they want to write into their
-environment. Instead, you probably want to include the timings into your
-own data structures, or parameterize either the name of the returned
-object or the autoreturn feature itself or both.</p>
+environment. Instead, you should include the timings in your data
+structures or parameterize the name of the returned object, the
+autoreturn feature itself, or both.</p>
 <p>See <code><a href="../articles/autoreturn.html">vignette("autoreturn")</a></code> vignette to read about this
 in detail.</p>
 </div>
