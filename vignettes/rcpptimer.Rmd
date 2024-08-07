@@ -31,19 +31,19 @@ The Package wraps [cpptimer](https://github.com/BerriJ/cpptimer) which is a head
 
 ## Basic usage of the Timer with Rcpp::cppFunction
 
-With `Rcpp::cppFunction` we have to add the `depends` argument to the function. To tell the compiler that we want to link the 'rcpptimer' library to the 'Rcpp' code. That is, we can construct an instance if the `Timer` class and use the `tic` and `toc` methods to measure the time it takes to execute a function. Here, we just allocate some memory to have something to measure:
+With `Rcpp::cppFunction` we have to add the `depends` argument to the function. To tell the compiler that we want to link the 'rcpptimer' library to the C++ code. Then, we can construct an instance of the `Timer` class and use the `tic` and `toc` methods to measure the time it takes to execute a code block. Here, we just allocate some memory to have something to measure:
 
 ```{r, eval = TRUE}
-Rcpp::cppFunction('
+Rcpp::cppFunction("
 int mem()
 {
   Rcpp::Timer timer;
-  timer.tic("mem");
+  timer.tic();
   std::string s;
   s.reserve(1048576);
-  timer.toc("mem");
+  timer.toc();
   return(0);
-}',
+}",
   depends = "rcpptimer"
 )
 
@@ -59,10 +59,10 @@ Rcpp::cppFunction('
 int mem()
 {
   Rcpp::Timer timer("mytimes");
-  timer.tic("mem");
+  timer.tic();
   std::string s;
   s.reserve(1048576);
-  timer.toc("mem");
+  timer.toc();
   return(0);
 }',
   depends = "rcpptimer"
@@ -74,6 +74,32 @@ print(mytimes)
 ```
 
 It is also possible to deactivate this automatic passing of the results to R and handle the results in C++ yourself (see `vignette("autoreturn")`).
+
+## Multiple timers
+
+You can also use multiple timers in the same function. Just pass a string to the `tic` and `toc` methods to identify the timer:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+int mem()
+{
+  Rcpp::Timer timer;
+  timer.tic("body");
+  std::string s;
+  timer.tic("reserve");
+  s.reserve(1048576);
+  timer.toc("reserve");
+  timer.toc("body");
+  return(0);
+}',
+  depends = "rcpptimer"
+)
+
+mem()
+
+print(mytimes)
+```
+
 
 ## Warnings and how to disable them
 
