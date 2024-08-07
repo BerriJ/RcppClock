@@ -9,7 +9,7 @@ Authors@R: c(
              role = c("aut", "cre"),
              email = "Jonathan@Berrisch.biz",
              comment = c(ORCID = "0000-0002-4944-9074")))
-Description: Provides 'Rcpp' bindings for 'cpptimer', a simple tic-toc timer class for benchmarking 'C++' code <https://github.com/BerriJ/cpptimer>. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as 'OpenMP' parallelism <https://www.openmp.org/>. It boasts a microsecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to 'R' as a data frame.
+Description: Provides 'Rcpp' bindings for 'cpptimer', a simple tic-toc timer class for benchmarking 'C++' code <https://github.com/BerriJ/cpptimer>. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports overlapping timers as well as 'OpenMP' parallelism <https://www.openmp.org/>. It boasts a nanosecond-level time resolution. We did not find any overhead of the timer itself at this resolution. Results (with summary statistics) are automatically passed back to 'R' as a data frame.
 URL: https://rcpptimer.berrisch.biz
 License: GPL (>= 3)
 Encoding: UTF-8
