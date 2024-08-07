@@ -58,6 +58,7 @@ namespace Rcpp
           Named("Microseconds") = out_means,
           Named("SD") = out_sd,
           Named("Count") = out_counts);
+      results.attr("class") = CharacterVector({"rcpptimer", "data.frame"});
 
       if (autoreturn)
       {
