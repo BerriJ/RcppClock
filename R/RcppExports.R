@@ -51,3 +51,7 @@ fibonacci_omp <- function(n) {
     .Call(`_rcpptimer_fibonacci_omp`, n)
 }
 
+test_update <- function() {
+    .Call(`_rcpptimer_test_update`)
+}
+

@@ -33,10 +33,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// test_update
+List test_update();
+RcppExport SEXP _rcpptimer_test_update() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(test_update());
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rcpptimer_fibonacci", (DL_FUNC) &_rcpptimer_fibonacci, 1},
     {"_rcpptimer_fibonacci_omp", (DL_FUNC) &_rcpptimer_fibonacci_omp, 1},
+    {"_rcpptimer_test_update", (DL_FUNC) &_rcpptimer_test_update, 0},
     {NULL, NULL, 0}
 };
 
