@@ -7,3 +7,6 @@ src/test.cpp
 .vscode/.*
 inst/doc
 vignettes/*html
+*.gcno
+*.gcda
+
