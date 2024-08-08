@@ -54,12 +54,11 @@ namespace Rcpp
       }
 
       DataFrame results = DataFrame::create(
-          Named("Name") = out_tags,
           Named("Microseconds") = out_means,
           Named("SD") = out_sd,
           Named("Count") = out_counts);
       results.attr("class") = CharacterVector({"rcpptimer", "data.frame"});
-
+      results.attr("row.names") = out_tags;
       if (autoreturn)
       {
         Environment env = Environment::global_env();
