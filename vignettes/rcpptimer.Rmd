@@ -28,7 +28,7 @@ This package provides a simple timer for Rcpp code. The interface is similar to 
 This introduction explains how to use `Rcpp::Timer` with `Rcpp::cppFunction` and how:
 
 - You can use multiple (potentially nested) timers
-- You can time scoped using `Rcpp::Timer::ScopedTimer`
+- You can time scopes using `Rcpp::Timer::ScopedTimer`
 - You can turn off Warnings
 
 Check out the other vignettes for:
@@ -68,11 +68,17 @@ int mem()
 )
 
 mem()
-
-print(times)
 ```
 
 This function will automatically write a data frame called "times" to the R environment. Read more about that autoreturn feature (i.e., how to assign a custom variable name and how to manually handle the results) in `vignette("autoreturn")`. 
+
+The resulting `times` object is of class `data.frame` and `rcpptimer`. If you do not load the package, it will always use `print.data.frame` from base R and print Microseconds. If you load the package, it may scale the measurements and statistics to be more readable (see `rcpptimer::print.rcpptimer`).
+
+```r
+print(times)
+library(rcpptimer)
+print(times)
+```
 
 ## Multiple timers
 

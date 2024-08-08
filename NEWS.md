@@ -7,6 +7,7 @@ rcpptimer 1.2.0
 * The tag arguments of `tic()`, `toc()` and `ScopedTimer()` have default values now.
 * Existing vignettes got updated and a new vignette was added to the package.
 * rcpptimer now measures nanoseconds instead of microseconds.
+* Adds `print.rcpptimer` method to print the results of a timer object. In some cases timings will be scaled to a more readable unit (e.g. milliseconds, seconds, minutes, hours).
 
 rcpptimer 1.1.0
 ==============
