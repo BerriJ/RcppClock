@@ -45,9 +45,9 @@ namespace Rcpp
         // Get count, mean and variance
         unsigned long int count = std::get<2>(entry.second);
         double mean = std::get<0>(entry.second);
-        double variance = std::get<1>(entry.second) / count;
+        double variance = std::get<1>(entry.second);
 
-        // Convert to milliseconds and round to 3 decimal places
+        // Convert to microseconds and round to 3 decimal places
         out_means.push_back(std::round(mean) * 1e-3);
         out_sd.push_back(std::round(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
         out_counts.push_back(count);
@@ -55,9 +55,10 @@ namespace Rcpp
 
       DataFrame results = DataFrame::create(
           Named("Name") = out_tags,
-          Named("Milliseconds") = out_means,
+          Named("Microseconds") = out_means,
           Named("SD") = out_sd,
           Named("Count") = out_counts);
+      results.attr("class") = CharacterVector({"rcpptimer", "data.frame"});
 
       if (autoreturn)
       {

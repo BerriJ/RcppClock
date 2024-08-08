@@ -15,7 +15,7 @@ expect_invisible(scoped_timer())
 
 expect_contains(ls(as.environment(".GlobalEnv")), "times")
 expect_true(all(!is.na(times)))
-expect_gte(min(times$Milliseconds), 0)
+expect_gte(min(times$Microseconds), 0)
 expect_gte(min(times$SD), 0)
 expect_gt(min(times$Count), 0)
 expect_true(nrow(times) == 1)

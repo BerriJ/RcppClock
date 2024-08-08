@@ -1,6 +1,6 @@
 # rcpptimer - Rcpp Tic-Toc Timer with OpenMP Support
 
-This R Package provides Rcpp bindings for [cpptimer](https://github.com/BerriJ/cpptimer), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a microsecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
+This R Package provides Rcpp bindings for [cpptimer](https://github.com/BerriJ/cpptimer), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a nanosecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
 
 ## Install
 
@@ -35,9 +35,8 @@ The timer object will automatically write its result to the R environment:
 
 ```r
 print(times)
-
- Name Milliseconds SD Count
-1 tictoc        0.005  0     1
+    Name Microseconds SD Count
+1 tictoc        7.418  0     1
 ```
 
 Check out the [Documentation](https://rcpptimer.berrisch.biz/articles/rcpptimer.html) for:
@@ -49,7 +48,7 @@ Check out the [Documentation](https://rcpptimer.berrisch.biz/articles/rcpptimer.
 
 ## Limitations
 
-Processes taking less than a microsecond cannot be timed.
+Processes taking less than a nanosecond cannot be timed.
 
 Unmatched `.tic()` and `.toc()` calls do not raise errors at compile time. However, they throw warnings at runtime.
 
