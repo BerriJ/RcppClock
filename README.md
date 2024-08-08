@@ -35,9 +35,8 @@ The timer object will automatically write its result to the R environment:
 
 ```r
 print(times)
-
- Name Milliseconds SD Count
-1 tictoc        0.005  0     1
+    Name Microseconds SD Count
+1 tictoc        7.418  0     1
 ```
 
 Check out the [Documentation](https://rcpptimer.berrisch.biz/articles/rcpptimer.html) for:
