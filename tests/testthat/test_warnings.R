@@ -14,7 +14,7 @@ void missing_toc()
 # We expect that a warning is thrown
 expect_warning(missing_toc(),
   'Timer "t2" not stopped yet.',
-  ignore.case = TRUE
+  ignore.case = FALSE
 )
 
 # We expect, despite that warning, times is still returned
@@ -37,7 +37,7 @@ void missing_tic()
 # We expect, despite that warning, times is still returned
 expect_warning(missing_tic(),
   'Timer "t2" not started yet.',
-  ignore.case = TRUE
+  ignore.case = FALSE
 )
 
 # We expect, despite that warning, times is still returned
