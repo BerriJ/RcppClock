@@ -2,26 +2,39 @@
 using namespace Rcpp;
 
 //[[Rcpp::export]]
+double test_default(double &x, double &y)
+{
+  Rcpp::Timer timer;
+  Rcpp::Timer::ScopedTimer scoped_timer(timer);
+  timer.tic();
+  double z = x + y;
+  timer.toc();
+  return (z);
+}
+
+//[[Rcpp::export]]
 List test_update()
 {
   Rcpp::Timer timer;
   timer.autoreturn = false;
   List L = List::create();
+  double z;
   {
     Rcpp::Timer::ScopedTimer scoped_timer(timer, "t1");
     timer.tic("t2");
     std::string s1;
-    s1.reserve(1048576);
+    double x = rnorm(1, 1)[0];
+    double y = rnorm(1, 1)[0];
     timer.toc("t2");
     DataFrame results1 = timer.stop();
     L.push_back(results1);
     timer.tic("t2");
-    std::string s2;
-    s2.reserve(1048576);
+    z = x + y;
     timer.toc("t2");
   }
   DataFrame results2 = timer.stop();
   L.push_back(results2);
+  L.push_back(z);
   return (L);
 }
 
@@ -61,4 +74,20 @@ void test_missings(const bool tic = true,
   s.reserve(1048576);
   if (toc)
     timer.toc("t2");
+}
+
+//[[Rcpp::export]]
+DataFrame test_return(const bool autoreturn = true)
+{
+  Rcpp::Timer timer;
+  {
+    Rcpp::Timer::ScopedTimer scoped_timer(timer, "t1");
+    timer.autoreturn = autoreturn;
+    timer.tic("t2");
+    std::string s;
+    s.reserve(1048576);
+    timer.toc("t2");
+  }
+  DataFrame results = timer.stop();
+  return (results);
 }

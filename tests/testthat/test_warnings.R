@@ -1,16 +1,3 @@
-# Test if a warning is thrown when verbose = true (default) and toc is missing
-Rcpp::cppFunction('
-void missing_toc()
-{
-  Rcpp::Timer timer;
-  Rcpp::Timer::ScopedTimer scoped_timer(timer, "t1");
-  timer.tic("t2");
-  std::string s;
-  s.reserve(1048576);
-}',
-  depends = "rcpptimer"
-)
-
 # We expect that a warning is thrown
 expect_warning(test_missings(toc = FALSE),
   'Timer "t2" not stopped yet.',

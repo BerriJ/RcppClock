@@ -33,6 +33,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// test_default
+double test_default(double& x, double& y);
+RcppExport SEXP _rcpptimer_test_default(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(test_default(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
 // test_update
 List test_update();
 RcppExport SEXP _rcpptimer_test_update() {
@@ -65,13 +77,26 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// test_return
+DataFrame test_return(const bool autoreturn);
+RcppExport SEXP _rcpptimer_test_return(SEXP autoreturnSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const bool >::type autoreturn(autoreturnSEXP);
+    rcpp_result_gen = Rcpp::wrap(test_return(autoreturn));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rcpptimer_fibonacci", (DL_FUNC) &_rcpptimer_fibonacci, 1},
     {"_rcpptimer_fibonacci_omp", (DL_FUNC) &_rcpptimer_fibonacci_omp, 1},
+    {"_rcpptimer_test_default", (DL_FUNC) &_rcpptimer_test_default, 2},
     {"_rcpptimer_test_update", (DL_FUNC) &_rcpptimer_test_update, 0},
     {"_rcpptimer_test_reset", (DL_FUNC) &_rcpptimer_test_reset, 0},
     {"_rcpptimer_test_missings", (DL_FUNC) &_rcpptimer_test_missings, 3},
+    {"_rcpptimer_test_return", (DL_FUNC) &_rcpptimer_test_return, 1},
     {NULL, NULL, 0}
 };
 
