@@ -61,10 +61,12 @@ List test_reset()
 DataFrame test_misc(const bool tic = true,
                     const bool toc = true,
                     const bool verbose = true,
-                    const bool autoreturn = true)
+                    const bool autoreturn = true,
+                    const bool scoped_timer = true)
 {
   Rcpp::Timer timer(verbose);
   timer.autoreturn = autoreturn;
+  if (scoped_timer)
   {
     Rcpp::Timer::ScopedTimer scoped_timer(timer, "t1");
     if (tic)

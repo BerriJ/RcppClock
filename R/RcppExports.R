@@ -63,7 +63,7 @@ test_reset <- function() {
     .Call(`_rcpptimer_test_reset`)
 }
 
-test_misc <- function(tic = TRUE, toc = TRUE, verbose = TRUE, autoreturn = TRUE) {
-    .Call(`_rcpptimer_test_misc`, tic, toc, verbose, autoreturn)
+test_misc <- function(tic = TRUE, toc = TRUE, verbose = TRUE, autoreturn = TRUE, scoped_timer = TRUE) {
+    .Call(`_rcpptimer_test_misc`, tic, toc, verbose, autoreturn, scoped_timer)
 }
 

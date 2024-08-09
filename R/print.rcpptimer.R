@@ -13,6 +13,11 @@
 #' @rdname print.rcpptimer
 #' @export
 print.rcpptimer <- function(x, scale = TRUE, ...) {
+  if (nrow(x) == 0) {
+    warning("This object does not contain any timings yet. \nPlace .tic() and .toc() statements in your c++ code to add timings.")
+    return(invisible(x))
+  }
+
   if (!scale) {
     print.data.frame(x, digits = 4, row.names = TRUE)
     return(invisible(x))
