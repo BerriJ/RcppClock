@@ -55,3 +55,11 @@ test_update <- function() {
     .Call(`_rcpptimer_test_update`)
 }
 
+test_reset <- function() {
+    .Call(`_rcpptimer_test_reset`)
+}
+
+test_missings <- function(tic = TRUE, toc = TRUE, verbose = TRUE) {
+    invisible(.Call(`_rcpptimer_test_missings`, tic, toc, verbose))
+}
+
