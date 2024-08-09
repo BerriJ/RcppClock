@@ -86,3 +86,10 @@ times$Microseconds <- c(5e+3, 5e+3, 5e+3)
 expect_output(p_out <- print(times, FALSE))
 testthat::expect_contains(colnames(p_out), "Microseconds")
 expect_equal(p_out$Microseconds, c(5e+3, 5e+3, 5e+3))
+
+expect_no_condition(out <- test_misc(tic = FALSE, toc = FALSE, scoped_timer = FALSE))
+
+expect_warning(
+  print(out),
+  "This object does not contain any timings yet."
+)

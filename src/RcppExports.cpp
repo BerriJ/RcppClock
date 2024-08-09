@@ -63,8 +63,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // test_misc
-DataFrame test_misc(const bool tic, const bool toc, const bool verbose, const bool autoreturn);
-RcppExport SEXP _rcpptimer_test_misc(SEXP ticSEXP, SEXP tocSEXP, SEXP verboseSEXP, SEXP autoreturnSEXP) {
+DataFrame test_misc(const bool tic, const bool toc, const bool verbose, const bool autoreturn, const bool scoped_timer);
+RcppExport SEXP _rcpptimer_test_misc(SEXP ticSEXP, SEXP tocSEXP, SEXP verboseSEXP, SEXP autoreturnSEXP, SEXP scoped_timerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -72,7 +72,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type toc(tocSEXP);
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< const bool >::type autoreturn(autoreturnSEXP);
-    rcpp_result_gen = Rcpp::wrap(test_misc(tic, toc, verbose, autoreturn));
+    Rcpp::traits::input_parameter< const bool >::type scoped_timer(scoped_timerSEXP);
+    rcpp_result_gen = Rcpp::wrap(test_misc(tic, toc, verbose, autoreturn, scoped_timer));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -83,7 +84,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rcpptimer_test_default", (DL_FUNC) &_rcpptimer_test_default, 0},
     {"_rcpptimer_test_update", (DL_FUNC) &_rcpptimer_test_update, 0},
     {"_rcpptimer_test_reset", (DL_FUNC) &_rcpptimer_test_reset, 0},
-    {"_rcpptimer_test_misc", (DL_FUNC) &_rcpptimer_test_misc, 4},
+    {"_rcpptimer_test_misc", (DL_FUNC) &_rcpptimer_test_misc, 5},
     {NULL, NULL, 0}
 };
 
