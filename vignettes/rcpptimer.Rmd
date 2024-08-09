@@ -7,7 +7,7 @@ output:
     number_sections: no
     toc: no
 vignette: >
-  %\VignetteIndexEntry{Introduction}
+  %\VignetteIndexEntry{A Short Introduction to rcpptimer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -55,19 +55,18 @@ With `Rcpp::cppFunction`, we must add the `depends` argument to the function to 
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction("
-int mem()
+double add(double &x, double &y)
 {
   Rcpp::Timer timer;
   timer.tic();
-  std::string s;
-  s.reserve(1048576);
+  double z = x + y;
   timer.toc();
-  return(0);
+  return(z);
 }",
   depends = "rcpptimer"
 )
 
-mem()
+add(rnorm(1), runif(1))
 ```
 
 This function will automatically write a data frame called "times" to the R environment. Read more about that autoreturn feature (i.e., how to assign a custom variable name and how to manually handle the results) in `vignette("autoreturn")`. 
@@ -86,21 +85,20 @@ You can also use multiple timers in the same function. Just pass a string to the
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-int mem()
+double add(double &x, double &y)
 {
   Rcpp::Timer timer;
   timer.tic("body");
-  std::string s;
-  timer.tic("reserve");
-  s.reserve(1048576);
-  timer.toc("reserve");
+  timer.tic("add");
+  double z = x + y;
+  timer.toc("add");
   timer.toc("body");
-  return(0);
+  return(z);
 }',
   depends = "rcpptimer"
 )
 
-mem()
+add(rnorm(1), runif(1))
 
 print(times)
 ```
@@ -134,7 +132,7 @@ std::vector<long int> fibonacci_omp(std::vector<long int> n)
 This function is included in rcpptimer, so we can execute it right away: 
 
 ```{r, eval = TRUE}
-results <- rcpptimer::fibonacci_omp(n = rep(20:25, 10))
+results <- rcpptimer::fibonacci_omp(n = rep(20:25, 5))
 print(times)
 ```
 
@@ -144,18 +142,17 @@ We offer an alternative to the tic-toc interface. The `ScopedTimer` lets you mea
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-int mem()
+double add(double &x, double &y)
 {
   Rcpp::Timer timer;
-  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");
-  std::string s;
-  s.reserve(1048576);
-  return(0);
+  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
+  double z = x + y;
+  return(z);
 }',
   depends = "rcpptimer"
 )
 
-mem()
+add(rnorm(1), runif(1))
 
 print(times)
 ```
@@ -170,20 +167,19 @@ For example, the following code will produce two warnings:
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-int mem()
+double add(double &x, double &y)
 {
   Rcpp::Timer timer;
-  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");
-  std::string s;
-  timer.tic("reserve");
-  s.reserve(1048576);
-  timer.toc("reserv");
-  return(0);
+  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
+  timer.tic("add");
+  double z = x + y;
+  timer.toc("ad");
+  return(z);
 }',
   depends = "rcpptimer"
 )
 
-mem()
+add(rnorm(1), runif(1))
 ```
 
 Note that this does not affect terminated timers such as 'mem'. 
@@ -198,20 +194,19 @@ However, you can turn off these warnings by passing `false` to the constructor. 
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-int mem()
+double add(double &x, double &y)
 {
   Rcpp::Timer timer(false);
-  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");
-  std::string s;
-  timer.tic("reserve");
-  s.reserve(1048576);
-  timer.toc("reserv");
-  return(0);
+  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
+  timer.tic("add");
+  double z = x + y;
+  timer.toc("ad");
+  return(z);
 }',
   depends = "rcpptimer"
 )
 
-mem()
+add(rnorm(1), runif(1))
 
 print(times)
 ```

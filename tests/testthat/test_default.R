@@ -1,4 +1,4 @@
-test_default(rnorm(1), runif(1))
+test_default()
 
 # We expect, despite that warning, times is still returned
 expect_identical(ls(as.environment(".GlobalEnv")), "times")

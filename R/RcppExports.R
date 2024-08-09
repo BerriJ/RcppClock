@@ -51,8 +51,8 @@ fibonacci_omp <- function(n) {
     .Call(`_rcpptimer_fibonacci_omp`, n)
 }
 
-test_default <- function(x, y) {
-    .Call(`_rcpptimer_test_default`, x, y)
+test_default <- function() {
+    invisible(.Call(`_rcpptimer_test_default`))
 }
 
 test_update <- function() {
@@ -63,11 +63,7 @@ test_reset <- function() {
     .Call(`_rcpptimer_test_reset`)
 }
 
-test_missings <- function(tic = TRUE, toc = TRUE, verbose = TRUE) {
-    invisible(.Call(`_rcpptimer_test_missings`, tic, toc, verbose))
-}
-
-test_return <- function(autoreturn = TRUE) {
-    .Call(`_rcpptimer_test_return`, autoreturn)
+test_misc <- function(tic = TRUE, toc = TRUE, verbose = TRUE, autoreturn = TRUE) {
+    .Call(`_rcpptimer_test_misc`, tic, toc, verbose, autoreturn)
 }
 

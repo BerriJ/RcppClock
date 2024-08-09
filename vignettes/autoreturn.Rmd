@@ -18,19 +18,18 @@ If you want to give the dataframe a different name, you can pass that name to th
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-int mem()
+double demo_rnorm()
 {
   Rcpp::Timer timer("mytimes");
   timer.tic();
-  std::string s;
-  s.reserve(1048576);
+  double x = rnorm(1, 1)[0];
   timer.toc();
-  return(0);
+  return(x);
 }',
   depends = "rcpptimer"
 )
 
-mem()
+demo_rnorm()
 
 print(mytimes)
 ```
@@ -52,20 +51,19 @@ First, to turn off the autoreturn feature, set the `autoreturn` variable of the 
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-int mem()
+double demo_rnorm()
 {
   Rcpp::Timer timer;
   timer.autoreturn = false;
-  timer.tic("mem");
-  std::string s;
-  s.reserve(1048576);
-  timer.toc("mem");
-  return(0);
+  timer.tic("rnorm");
+  double x = rnorm(1, 1)[0];
+  timer.toc("rnorm");
+  return(x);
 }',
   depends = "rcpptimer"
 )
 
-mem()
+demo_rnorm()
 
 print(ls())
 ```
@@ -74,21 +72,20 @@ Now, `mem` will not write to the global environment. However, you can still acce
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-DataFrame mem()
+DataFrame demo_rnorm()
 {
   Rcpp::Timer timer;
   timer.autoreturn = false;
-  timer.tic("mem");
-  std::string s;
-  s.reserve(1048576);
-  timer.toc("mem");
+  timer.tic("rnorm");
+  double x = rnorm(1, 1)[0];
+  timer.toc("rnorm");
   DataFrame times = timer.stop();
   return(times);
 }',
   depends = "rcpptimer"
 )
 
-mem()
+demo_rnorm()
 ```
 
 It is also possible to use `.stop()` *and* let rcpptimer pass the results automatically. In the above example, we just set autoreturn to true (the default) or delete that line. 
@@ -103,23 +100,23 @@ As a package author, you should parameterize the auto-return feature so your use
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
-void mem(bool return_timings = false,
-         const char* timings_name = "times")
+double demo_rnorm(bool return_timings = false,
+                const char* timings_name = "times")
 {
   Rcpp::Timer timer(timings_name);
   timer.autoreturn = return_timings;
-  timer.tic("mem");
-  std::string s;
-  s.reserve(1048576);
-  timer.toc("mem");
+  timer.tic("rnorm");
+  double x = rnorm(1, 1)[0];
+  timer.toc("rnorm");
+  return(x);
 }',
   depends = "rcpptimer"
 )
 
-mem(return_timings = FALSE)
+demo_rnorm(return_timings = FALSE)
 ls()
-mem(return_timings = TRUE)
+demo_rnorm(return_timings = TRUE)
 ls()
-mem(return_timings = TRUE, timings_name = "my_times")
+demo_rnorm(return_timings = TRUE, timings_name = "my_times")
 ls()
 ```

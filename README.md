@@ -16,27 +16,26 @@ Here is a straightforward example of using the `Rcpp::Timer` with Rcpp::cppFunct
 
 ```r
 Rcpp::cppFunction("
-int mem()
+double demo_rnorm()
 {
- Rcpp::Timer timer;   // Create a timer object
- timer.tic();         // Start the timer
- std::string s;
- s.reserve(1048576);
- timer.toc();         // Stop the timer
- return(0);
+  Rcpp::Timer timer;
+  timer.tic();
+  double x = rnorm(1, 1)[0];
+  timer.toc();
+  return(x);
 }",
   depends = "rcpptimer"
 )
 
-mem()
+demo_rnorm()
 ```
 
 The timer object will automatically write its result to the R environment:
 
 ```r
 print(times)
-    Name Microseconds SD Count
-1 tictoc        7.418  0     1
+       Microseconds SD Count
+tictoc         5.48  0     1
 ```
 
 Check out the [Documentation](https://rcpptimer.berrisch.biz/articles/rcpptimer.html) for:
