@@ -122,20 +122,19 @@ takes to execute a code block. Here, we allocate some memory to have
 something to measure:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">"</span></span>
-<span><span class="st">int mem()</span></span>
+<span><span class="st">double add(double &amp;x, double &amp;y)</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
 <span><span class="st">  timer.tic();</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
+<span><span class="st">  double z = x + y;</span></span>
 <span><span class="st">  timer.toc();</span></span>
-<span><span class="st">  return(0);</span></span>
+<span><span class="st">  return(z);</span></span>
 <span><span class="st">}"</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<span><span class="fu">add</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] -0.7992826</span></span></code></pre></div>
 <p>This function will automatically write a data frame called “times” to
 the R environment. Read more about that autoreturn feature (i.e., how to
 assign a custom variable name and how to manually handle the results) in
@@ -159,27 +158,26 @@ string to the <code>tic</code> and <code>toc</code> methods to identify
 the timer:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">int mem()</span></span>
+<span><span class="st">double add(double &amp;x, double &amp;y)</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
 <span><span class="st">  timer.tic("body");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  timer.tic("reserve");</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("reserve");</span></span>
+<span><span class="st">  timer.tic("add");</span></span>
+<span><span class="st">  double z = x + y;</span></span>
+<span><span class="st">  timer.toc("add");</span></span>
 <span><span class="st">  timer.toc("body");</span></span>
-<span><span class="st">  return(0);</span></span>
+<span><span class="st">  return(z);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="fu">add</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] -0.5396038</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         Microseconds SD Count</span></span>
-<span><span class="co">#&gt; body           3.477  0     1</span></span>
-<span><span class="co">#&gt; reserve        1.704  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt;      Microseconds SD Count</span></span>
+<span><span class="co">#&gt; add         0.762  0     1</span></span>
+<span><span class="co">#&gt; body        3.556  0     1</span></span></code></pre></div>
 <p>rcpptimer will group multiple timers with the same name and calculate
 summary statistics for them. Consider this more advanced example, which
 also uses OpenMP:</p>
@@ -207,16 +205,16 @@ also uses OpenMP:</p>
 <p>This function is included in rcpptimer, so we can execute it right
 away:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">rcpptimer</span><span class="fu">::</span><span class="fu"><a href="../reference/fibonacci_omp.html">fibonacci_omp</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">20</span><span class="op">:</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">rcpptimer</span><span class="fu">::</span><span class="fu"><a href="../reference/fibonacci_omp.html">fibonacci_omp</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">20</span><span class="op">:</span><span class="fl">25</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          Microseconds     SD Count</span></span>
-<span><span class="co">#&gt; fib_20          38.53 22.243    10</span></span>
-<span><span class="co">#&gt; fib_21          37.52  3.534    10</span></span>
-<span><span class="co">#&gt; fib_22          71.31  6.401    10</span></span>
-<span><span class="co">#&gt; fib_23         111.62 20.165    10</span></span>
-<span><span class="co">#&gt; fib_24         177.07 16.337    10</span></span>
-<span><span class="co">#&gt; fib_25         251.76 23.015    10</span></span>
-<span><span class="co">#&gt; fib_body      2581.25  0.000     1</span></span></code></pre></div>
+<span><span class="co">#&gt; fib_20          39.61  9.768     5</span></span>
+<span><span class="co">#&gt; fib_21          54.21 15.447     5</span></span>
+<span><span class="co">#&gt; fib_22         101.63 29.310     5</span></span>
+<span><span class="co">#&gt; fib_23         131.61 27.961     5</span></span>
+<span><span class="co">#&gt; fib_24         226.45 58.855     5</span></span>
+<span><span class="co">#&gt; fib_25         336.96 72.748     5</span></span>
+<span><span class="co">#&gt; fib_body      1930.62  0.000     1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="timing-scopes-with-rcpptimerscopedtimer">Timing Scopes with Rcpp::Timer::ScopedTimer<a class="anchor" aria-label="anchor" href="#timing-scopes-with-rcpptimerscopedtimer"></a>
@@ -227,23 +225,22 @@ object to go out of scope. We can adjust the above example to use the
 <code>ScopedTimer</code> instead:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">int mem()</span></span>
+<span><span class="st">double add(double &amp;x, double &amp;y)</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
-<span><span class="st">  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  return(0);</span></span>
+<span><span class="st">  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");</span></span>
+<span><span class="st">  double z = x + y;</span></span>
+<span><span class="st">  return(z);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="fu">add</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.7273107</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Microseconds SD Count</span></span>
-<span><span class="co">#&gt; mem        7.914  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; add        2.194  0     1</span></span></code></pre></div>
 <p>Note that you only need to initialize the ScopedTimer. Once it goes
 out of scope, it will automatically call
 <code>timer.toc("mem")</code>.</p>
@@ -259,30 +256,27 @@ statements or typos.</p>
 <p>For example, the following code will produce two warnings:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">int mem()</span></span>
+<span><span class="st">double add(double &amp;x, double &amp;y)</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
-<span><span class="st">  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  timer.tic("reserve");</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("reserv");</span></span>
-<span><span class="st">  return(0);</span></span>
+<span><span class="st">  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");</span></span>
+<span><span class="st">  timer.tic("add");</span></span>
+<span><span class="st">  double z = x + y;</span></span>
+<span><span class="st">  timer.toc("ad");</span></span>
+<span><span class="st">  return(z);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in mem(): Timer "reserv" not started yet. </span></span>
-<span><span class="co">#&gt; Use tic("reserv") to start the timer.</span></span>
-<span><span class="co">#&gt; Warning in mem(): Timer "reserve" not stopped yet. </span></span>
-<span><span class="co">#&gt; Use toc("reserve") to stop the timer.</span></span>
-<span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<span><span class="fu">add</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in add(rnorm(1), runif(1)): Timer "ad" not started yet. </span></span>
+<span><span class="co">#&gt; Use tic("ad") to start the timer.</span></span>
+<span><span class="co">#&gt; [1] 0.9221172</span></span></code></pre></div>
 <p>Note that this does not affect terminated timers such as ‘mem’.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Microseconds SD Count</span></span>
-<span><span class="co">#&gt; mem        184.6  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; add        306.1  0     1</span></span></code></pre></div>
 <p>These warnings occur at runtime. Unfortunately, we can’t check for
 this at compile time.</p>
 <p>However, you can turn off these warnings by passing
@@ -292,25 +286,24 @@ e.g. in conditional statements. The example below will not produce any
 warnings:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">int mem()</span></span>
+<span><span class="st">double add(double &amp;x, double &amp;y)</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer(false);</span></span>
-<span><span class="st">  Rcpp::Timer::ScopedTimer scoped_timer(timer, "mem");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  timer.tic("reserve");</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("reserv");</span></span>
-<span><span class="st">  return(0);</span></span>
+<span><span class="st">  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");</span></span>
+<span><span class="st">  timer.tic("add");</span></span>
+<span><span class="st">  double z = x + y;</span></span>
+<span><span class="st">  timer.toc("ad");</span></span>
+<span><span class="st">  return(z);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="fu">add</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] -1.419489</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     Microseconds SD Count</span></span>
-<span><span class="co">#&gt; mem        2.455  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt;     Nanoseconds SD Count</span></span>
+<span><span class="co">#&gt; add         551  0     1</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

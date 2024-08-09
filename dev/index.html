@@ -71,23 +71,22 @@
 <p>Here is a straightforward example of using the <code>Rcpp::Timer</code> with Rcpp::cppFunction:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">"</span></span>
-<span><span class="st">int mem()</span></span>
+<span><span class="st">double demo_rnorm()</span></span>
 <span><span class="st">{</span></span>
-<span><span class="st"> Rcpp::Timer timer;   // Create a timer object</span></span>
-<span><span class="st"> timer.tic();         // Start the timer</span></span>
-<span><span class="st"> std::string s;</span></span>
-<span><span class="st"> s.reserve(1048576);</span></span>
-<span><span class="st"> timer.toc();         // Stop the timer</span></span>
-<span><span class="st"> return(0);</span></span>
+<span><span class="st">  Rcpp::Timer timer;</span></span>
+<span><span class="st">  timer.tic();</span></span>
+<span><span class="st">  double x = rnorm(1, 1)[0];</span></span>
+<span><span class="st">  timer.toc();</span></span>
+<span><span class="st">  return(x);</span></span>
 <span><span class="st">}"</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The timer object will automatically write its result to the R environment:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">print</span>(times)</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>    Name Microseconds SD Count</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="dv">1</span> tictoc        <span class="fl">7.418</span>  <span class="dv">0</span>     <span class="dv">1</span></span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>       Microseconds SD Count</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>tictoc         <span class="fl">5.48</span>  <span class="dv">0</span>     <span class="dv">1</span></span></code></pre></div>
 <p>Check out the <a href="https://rcpptimer.berrisch.biz/articles/rcpptimer.html">Documentation</a> for:</p>
 <ul>
 <li>Setting up multiple, nested, and overlapping timers</li>

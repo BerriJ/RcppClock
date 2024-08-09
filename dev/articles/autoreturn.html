@@ -78,24 +78,23 @@ Berrisch</h4>
 name to the constructor:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">int mem()</span></span>
+<span><span class="st">double demo_rnorm()</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer("mytimes");</span></span>
 <span><span class="st">  timer.tic();</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
+<span><span class="st">  double x = rnorm(1, 1)[0];</span></span>
 <span><span class="st">  timer.toc();</span></span>
-<span><span class="st">  return(0);</span></span>
+<span><span class="st">  return(x);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0</span></span></code></pre>
+<span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] -0.4000435</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mytimes</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        Microseconds SD Count</span></span>
-<span><span class="co">## tictoc        8.706  0     1</span></span></code></pre>
+<span><span class="co">## tictoc        15.45  0     1</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="manually-handling-the-results">Manually Handling the Results<a class="anchor" aria-label="anchor" href="#manually-handling-the-results"></a>
@@ -113,46 +112,44 @@ letting <code>rcpptimer</code> write it to the global environment.</p>
 writing the results to the global environment.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">int mem()</span></span>
+<span><span class="st">double demo_rnorm()</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
 <span><span class="st">  timer.autoreturn = false;</span></span>
-<span><span class="st">  timer.tic("mem");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("mem");</span></span>
-<span><span class="st">  return(0);</span></span>
+<span><span class="st">  timer.tic("rnorm");</span></span>
+<span><span class="st">  double x = rnorm(1, 1)[0];</span></span>
+<span><span class="st">  timer.toc("rnorm");</span></span>
+<span><span class="st">  return(x);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0</span></span></code></pre>
+<span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1.255317</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "mem"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "demo_rnorm"</span></span></code></pre>
 <p>Now, <code>mem</code> will not write to the global environment.
 However, you can still access the results through the timer’s
 <code>.stop()</code> method:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">DataFrame mem()</span></span>
+<span><span class="st">DataFrame demo_rnorm()</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
 <span><span class="st">  timer.autoreturn = false;</span></span>
-<span><span class="st">  timer.tic("mem");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("mem");</span></span>
+<span><span class="st">  timer.tic("rnorm");</span></span>
+<span><span class="st">  double x = rnorm(1, 1)[0];</span></span>
+<span><span class="st">  timer.toc("rnorm");</span></span>
 <span><span class="st">  DataFrame times = timer.stop();</span></span>
 <span><span class="st">  return(times);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##     Microseconds SD Count</span></span>
-<span><span class="co">## mem        8.045  0     1</span></span></code></pre>
+<span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##       Microseconds SD Count</span></span>
+<span><span class="co">## rnorm        10.21  0     1</span></span></code></pre>
 <p>It is also possible to use <code>.stop()</code> <em>and</em> let
 rcpptimer pass the results automatically. In the above example, we just
 set autoreturn to true (the default) or delete that line.</p>
@@ -166,30 +163,36 @@ the global environment and what name should be assigned. Below is an
 example of how to do this.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">void mem(bool return_timings = false,</span></span>
-<span><span class="st">         const char* timings_name = "times")</span></span>
+<span><span class="st">double demo_rnorm(bool return_timings = false,</span></span>
+<span><span class="st">                const char* timings_name = "times")</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer(timings_name);</span></span>
 <span><span class="st">  timer.autoreturn = return_timings;</span></span>
-<span><span class="st">  timer.tic("mem");</span></span>
-<span><span class="st">  std::string s;</span></span>
-<span><span class="st">  s.reserve(1048576);</span></span>
-<span><span class="st">  timer.toc("mem");</span></span>
+<span><span class="st">  timer.tic("rnorm");</span></span>
+<span><span class="st">  double x = rnorm(1, 1)[0];</span></span>
+<span><span class="st">  timer.toc("rnorm");</span></span>
+<span><span class="st">  return(x);</span></span>
 <span><span class="st">}'</span>,</span>
 <span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mem</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "mem"</span></span></code></pre>
+<span><span class="fu">demo_rnorm</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.9944287</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">mem</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "mem"   "times"</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "demo_rnorm"</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">mem</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">TRUE</span>, timings_name <span class="op">=</span> <span class="st">"my_times"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "mem"      "my_times" "times"</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">demo_rnorm</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1.621553</span></span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "demo_rnorm" "times"</span></span></code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">demo_rnorm</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">TRUE</span>, timings_name <span class="op">=</span> <span class="st">"my_times"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2.148412</span></span></code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "demo_rnorm" "my_times"   "times"</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

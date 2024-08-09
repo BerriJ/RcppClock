@@ -105,9 +105,8 @@ an instance of the <code>Rcpp::Timer</code> class. Consider this
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
 <span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This function is available in rcpptimer you can try it yourself,
-e.g. <code>rcpptimer::fibonacci_omp(n = rep(20:25, 10))</code>. After
-that you can observe the timings by executing
-<code>print(times)</code>.</p>
+e.g. <code>rcpptimer::fibonacci(n = rep(15:20, 10))</code>. After that
+you can observe the timings by executing <code>print(times)</code>.</p>
 <p>As you see, it writes the timings to the global environment as
 data.frame called <code>times</code>. Read the following section to
 learn why this is not what you want in a package.</p>
