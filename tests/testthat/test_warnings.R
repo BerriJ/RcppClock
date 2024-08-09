@@ -1,5 +1,5 @@
 # We expect that a warning is thrown
-expect_warning(test_misc(toc = FALSE),
+expect_warning(test_misc(toc = FALSE, autoreturn = FALSE),
   'Timer "t2" not stopped yet.',
   ignore.case = FALSE
 )

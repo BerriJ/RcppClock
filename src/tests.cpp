@@ -19,7 +19,6 @@ List test_update()
   Rcpp::Timer timer;
   timer.autoreturn = false;
   List L = List::create();
-  double z;
   {
     Rcpp::Timer::ScopedTimer scoped_timer(timer, "t1");
     timer.tic("t2");
@@ -33,7 +32,6 @@ List test_update()
   }
   DataFrame results2 = timer.stop();
   L.push_back(results2);
-  L.push_back(z);
   return (L);
 }
 
