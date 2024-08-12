@@ -1,6 +1,13 @@
 url: https://rcpptimer.berrisch.biz
-template:
-  bootstrap: 5
+
+authors:
+  "Jonathan Berrisch":
+    href: https://www.berrisch.biz/
+
+destination: docs
 
 development:
   mode: auto
+
+template:
+  bootstrap: 5

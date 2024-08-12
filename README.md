@@ -1,4 +1,4 @@
-# rcpptimer <a href="https://rcpptimer.berrisch.biz"><img src="man/figures/rcpptimer_hex.png" align="right" height="138" /></a>
+# rcpptimer <a href="https://rcpptimer.berrisch.biz"><img src="man/figures/rcpptimer_hex.png" align="right" height="138" style="float:right; height:138px;"></a>
 
 This R Package provides Rcpp bindings for [cpptimer](https://github.com/BerriJ/cpptimer), a simple tic-toc timer class for benchmarking C++ code. It's not just simple, it's blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a nanosecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.
 
