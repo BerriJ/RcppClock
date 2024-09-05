@@ -43,9 +43,7 @@ namespace Rcpp
         out_tags.push_back(entry.first);
 
         // Get count, mean and variance
-        unsigned long int count = std::get<2>(entry.second);
-        double mean = std::get<0>(entry.second);
-        double variance = std::get<1>(entry.second);
+        auto [mean, variance, count] = entry.second;
 
         // Convert to microseconds and round to 3 decimal places
         out_means.push_back(std::round(mean) * 1e-3);
