@@ -177,8 +177,8 @@ the timer:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      Microseconds SD Count</span></span>
-<span><span class="co">#&gt; add         0.792  0     1</span></span>
-<span><span class="co">#&gt; body        3.226  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; add         0.862  0     1</span></span>
+<span><span class="co">#&gt; body        3.197  0     1</span></span></code></pre></div>
 <p>rcpptimer will group multiple timers with the same name and calculate
 summary statistics for them. Consider this more advanced example, which
 also uses OpenMP:</p>
@@ -209,13 +209,13 @@ away:</p>
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">rcpptimer</span><span class="fu">::</span><span class="fu"><a href="../reference/fibonacci_omp.html">fibonacci_omp</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">20</span><span class="op">:</span><span class="fl">25</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          Microseconds     SD Count</span></span>
-<span><span class="co">#&gt; fib_20         29.371  3.905     5</span></span>
-<span><span class="co">#&gt; fib_21         39.624  4.776     5</span></span>
-<span><span class="co">#&gt; fib_22         83.496 19.708     5</span></span>
-<span><span class="co">#&gt; fib_23        111.287 19.336     5</span></span>
-<span><span class="co">#&gt; fib_24        192.098 28.195     5</span></span>
-<span><span class="co">#&gt; fib_25        282.835 60.416     5</span></span>
-<span><span class="co">#&gt; fib_body     1595.232  0.000     1</span></span></code></pre></div>
+<span><span class="co">#&gt; fib_20         28.754  3.583     5</span></span>
+<span><span class="co">#&gt; fib_21         39.039  4.882     5</span></span>
+<span><span class="co">#&gt; fib_22         82.796 18.024     5</span></span>
+<span><span class="co">#&gt; fib_23        102.297 12.412     5</span></span>
+<span><span class="co">#&gt; fib_24        185.043 25.610     5</span></span>
+<span><span class="co">#&gt; fib_25        275.207 45.897     5</span></span>
+<span><span class="co">#&gt; fib_body     1474.248  0.000     1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="timing-scopes-with-rcpptimerscopedtimer">Timing Scopes with Rcpp::Timer::ScopedTimer<a class="anchor" aria-label="anchor" href="#timing-scopes-with-rcpptimerscopedtimer"></a>
@@ -241,7 +241,7 @@ object to go out of scope. We can adjust the above example to use the
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Microseconds SD Count</span></span>
-<span><span class="co">#&gt; add        1.363  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; add        1.183  0     1</span></span></code></pre></div>
 <p>Note that you only need to initialize the ScopedTimer. Once it goes
 out of scope, it will automatically call
 <code>timer.toc("mem")</code>.</p>
@@ -277,7 +277,7 @@ statements or typos.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Microseconds SD Count</span></span>
-<span><span class="co">#&gt; add      214.229  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; add      218.227  0     1</span></span></code></pre></div>
 <p>These warnings occur at runtime. Unfortunately, we can’t check for
 this at compile time.</p>
 <p>However, you can turn off these warnings by passing
@@ -304,7 +304,7 @@ warnings:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Nanoseconds SD Count</span></span>
-<span><span class="co">#&gt; add         501  0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; add         391  0     1</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
