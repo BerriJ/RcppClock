@@ -19,7 +19,7 @@ print.rcpptimer <- function(x, scale = TRUE, ...) {
   }
 
   if (!scale) {
-    print.data.frame(x, digits = 4, row.names = TRUE)
+    print.data.frame(x, row.names = TRUE)
     return(invisible(x))
   }
   cols_to_scale <- c("Microseconds", "SD")
@@ -39,7 +39,7 @@ print.rcpptimer <- function(x, scale = TRUE, ...) {
   } else if (scale_up > 1) { # All timings bigger than threshold
     scale_to <- scale_up
   } else {
-    print.data.frame(x, digits = 4, row.names = TRUE)
+    print.data.frame(x, row.names = TRUE)
     return(invisible(x))
   }
 
@@ -47,10 +47,10 @@ print.rcpptimer <- function(x, scale = TRUE, ...) {
   x[, cols_to_scale] <-
     x[, cols_to_scale] |>
     {
-      \(x) x / scale_to
+      \(x) round(x / scale_to, 3)
     }()
   names(x)[names(x) == "Microseconds"] <- names(scale_to)
-  print.data.frame(x, digits = 4, row.names = TRUE)
+  print.data.frame(x, row.names = TRUE)
   # Remove `rcpptimer` class to avoid problems with printing the output
   class(x) <- c("data.frame")
   return(invisible(x))
