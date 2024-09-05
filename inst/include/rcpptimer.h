@@ -35,26 +35,30 @@ namespace Rcpp
       // Output Objects
       std::vector<std::string> out_tags;
       std::vector<unsigned long int> out_counts;
-      std::vector<double> out_means, out_sd;
+      std::vector<double> out_mean, out_sd, out_min, out_max;
 
       for (auto const &entry : data)
       {
         out_tags.push_back(entry.first);
 
-        auto [mean, sst, count] = entry.second;
+        auto [mean, sst, min, max, count] = entry.second;
 
         // Convert to microseconds and round to 3 decimal places
-        out_means.push_back(std::round(mean) * 1e-3);
+        out_mean.push_back(std::round(mean) * 1e-3);
         unsigned long int one = 1;
         // Bessels' correction
         double variance = sst / std::max(count - 1, one);
         out_sd.push_back(std::round(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
+        out_min.push_back(std::round(min) * 1e-3);
+        out_max.push_back(std::round(max) * 1e-3);
         out_counts.push_back(count);
       }
 
       DataFrame results = DataFrame::create(
-          Named("Microseconds") = out_means,
+          Named("Microseconds") = out_mean,
           Named("SD") = out_sd,
+          Named("Min") = out_min,
+          Named("Max") = out_max,
           Named("Count") = out_counts);
       results.attr("class") = CharacterVector({"rcpptimer", "data.frame"});
       results.attr("row.names") = out_tags;

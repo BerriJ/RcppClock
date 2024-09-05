@@ -22,7 +22,7 @@ print.rcpptimer <- function(x, scale = TRUE, ...) {
     print.data.frame(x, row.names = TRUE)
     return(invisible(x))
   }
-  cols_to_scale <- c("Microseconds", "SD")
+  cols_to_scale <- c("Microseconds", "SD", "Min", "Max")
   scaling_factors <- c(
     "Nanoseconds" = 1e-3,
     "Microseconds" = 1,
