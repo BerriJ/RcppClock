@@ -9,6 +9,7 @@
 #include <cpptimer/cpptimer.h>
 #include <string>
 #include <vector>
+#include <cfenv>
 
 namespace Rcpp
 {
@@ -32,6 +33,8 @@ namespace Rcpp
     {
       aggregate();
 
+      std::fesetround(FE_TONEAREST);
+
       // Output Objects
       std::vector<std::string> out_tags;
       std::vector<unsigned long int> out_counts;
@@ -43,14 +46,14 @@ namespace Rcpp
 
         auto [mean, sst, min, max, count] = entry.second;
 
-        // Convert to microseconds and round to 3 decimal places
-        out_mean.push_back(std::round(mean) * 1e-3);
-        unsigned long int one = 1;
+        // round to the nearest integer and to even in halfway cases and
+        // convert to microseconds
+        out_mean.push_back(std::nearbyint(mean) * 1e-3);
         // Bessels' correction
-        double variance = sst / std::max(count - 1, one);
-        out_sd.push_back(std::round(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
-        out_min.push_back(std::round(min) * 1e-3);
-        out_max.push_back(std::round(max) * 1e-3);
+        double variance = sst / std::max(double(count - 1), 1.0);
+        out_sd.push_back(std::nearbyint(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
+        out_min.push_back(std::nearbyint(min) * 1e-3);
+        out_max.push_back(std::nearbyint(max) * 1e-3);
         out_counts.push_back(count);
       }
 
