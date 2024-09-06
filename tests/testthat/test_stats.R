@@ -1,5 +1,6 @@
 test_that("Summary statistics are calculated correctly", {
-  out <- test_stats(100, 10)
+  N <- 100
+  out <- test_stats(N, 10)
 
   means <- as.numeric(tapply(out[[1]], out[[2]], mean))
   sds <- as.numeric(tapply(out[[1]], out[[2]], sd))
@@ -15,6 +16,7 @@ test_that("Summary statistics are calculated correctly", {
     rep(TRUE, length(times$Microseconds))
   )
 
+
   expect_equal(
     abs(times$SD - as.numeric(round(sds) * 1e-3)) < 2e-3,
     rep(TRUE, length(times$SD))
@@ -25,8 +27,23 @@ test_that("Summary statistics are calculated correctly", {
     as.numeric(maxs) * 1e-3
   )
 
+  expect_equal(
+    times$Max >= times$Microseconds,
+    rep(TRUE, length(times$Microseconds))
+  )
+
   expect_identical(
     times$Min,
     as.numeric(mins) * 1e-3
+  )
+
+  expect_equal(
+    times$Min <= times$Microseconds,
+    rep(TRUE, length(times$Microseconds))
+  )
+
+  expect_equal(
+    times$Count,
+    rep(N, length(times$Count))
   )
 })
