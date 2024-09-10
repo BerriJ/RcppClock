@@ -72,20 +72,22 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="fu">fibonacci</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">20</span><span class="op">:</span><span class="fl">25</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">fibonacci</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">20</span><span class="op">:</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  6765 10946 17711 28657 46368 75025  6765 10946 17711 28657 46368 75025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13]  6765 10946 17711 28657 46368 75025  6765 10946 17711 28657 46368 75025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25]  6765 10946 17711 28657 46368 75025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25]  6765 10946 17711 28657 46368 75025  6765 10946 17711 28657 46368 75025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [37]  6765 10946 17711 28657 46368 75025  6765 10946 17711 28657 46368 75025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [49]  6765 10946 17711 28657 46368 75025  6765 10946 17711 28657 46368 75025</span>
 <span class="r-in"><span><span class="co"># this function creates a global environment variable "times"</span></span></span>
 <span class="r-in"><span><span class="va">times</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Microseconds    SD      Min      Max Count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fib_20         14.421 1.247   13.836   16.651     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fib_21         18.971 0.400   18.775   19.687     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fib_22         35.953 0.163   35.827   36.238     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fib_23         49.628 0.169   49.452   49.872     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fib_24         89.869 0.169   89.647   90.077     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fib_25        128.014 0.167  127.858  128.229     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fib_body     1691.902 0.000 1691.902 1691.902     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Microseconds     SD      Min      Max Count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fib_20         14.183  0.932   13.836   16.832    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fib_21         19.028  0.447   18.784   20.117    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fib_22         36.092  0.336   35.837   36.688    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fib_23         49.667  0.216   49.462   50.133    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fib_24         89.969  0.086   89.887   90.127    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fib_25        133.543 14.932  128.008  175.937    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fib_body     3433.061  0.000 3433.061 3433.061     1</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
