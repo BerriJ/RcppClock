@@ -78,3 +78,25 @@ DataFrame test_misc(const bool tic = true,
   DataFrame results = timer.stop();
   return (results);
 }
+
+//[[Rcpp::export]]
+Rcpp::List test_stats(unsigned int N, unsigned int K)
+{
+  Rcpp::Timer timer;
+
+  for (unsigned int k = 0; k < K; ++k)
+  {
+    for (unsigned int i = 0; i < N; ++i)
+    {
+      timer.tic("summary" + std::to_string(k));
+      std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+      timer.toc("summary" + std::to_string(k));
+    }
+  }
+
+  Rcpp::List L;
+  L.push_back(timer.durations);
+  L.push_back(timer.tags);
+  L.push_back(timer.stop());
+  return (L);
+}

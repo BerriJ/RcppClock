@@ -9,6 +9,7 @@
 #include <cpptimer/cpptimer.h>
 #include <string>
 #include <vector>
+#include <cfenv>
 
 namespace Rcpp
 {
@@ -32,30 +33,35 @@ namespace Rcpp
     {
       aggregate();
 
+      std::fesetround(FE_TONEAREST);
+
       // Output Objects
       std::vector<std::string> out_tags;
       std::vector<unsigned long int> out_counts;
-      std::vector<double> out_means, out_sd;
+      std::vector<double> out_mean, out_sd, out_min, out_max;
 
       for (auto const &entry : data)
       {
-        // Save tag
         out_tags.push_back(entry.first);
 
-        // Get count, mean and variance
-        unsigned long int count = std::get<2>(entry.second);
-        double mean = std::get<0>(entry.second);
-        double variance = std::get<1>(entry.second);
+        auto [mean, sst, min, max, count] = entry.second;
 
-        // Convert to microseconds and round to 3 decimal places
-        out_means.push_back(std::round(mean) * 1e-3);
-        out_sd.push_back(std::round(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
+        // round to the nearest integer and to even in halfway cases and
+        // convert to microseconds
+        out_mean.push_back(std::nearbyint(mean) * 1e-3);
+        // Bessels' correction
+        double variance = sst / std::max(double(count - 1), 1.0);
+        out_sd.push_back(std::nearbyint(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
+        out_min.push_back(std::nearbyint(min) * 1e-3);
+        out_max.push_back(std::nearbyint(max) * 1e-3);
         out_counts.push_back(count);
       }
 
       DataFrame results = DataFrame::create(
-          Named("Microseconds") = out_means,
+          Named("Microseconds") = out_mean,
           Named("SD") = out_sd,
+          Named("Min") = out_min,
+          Named("Max") = out_max,
           Named("Count") = out_counts);
       results.attr("class") = CharacterVector({"rcpptimer", "data.frame"});
       results.attr("row.names") = out_tags;

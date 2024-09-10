@@ -67,3 +67,7 @@ test_misc <- function(tic = TRUE, toc = TRUE, verbose = TRUE, autoreturn = TRUE,
     .Call(`_rcpptimer_test_misc`, tic, toc, verbose, autoreturn, scoped_timer)
 }
 
+test_stats <- function(N, K) {
+    .Call(`_rcpptimer_test_stats`, N, K)
+}
+
