@@ -132,7 +132,7 @@ std::vector<long int> fibonacci_omp(std::vector<long int> n)
 This function is included in rcpptimer, so we can execute it right away: 
 
 ```{r, eval = TRUE}
-results <- rcpptimer::fibonacci_omp(n = rep(20:25, 5))
+results <- rcpptimer::fibonacci_omp(n = rep(20:25, 10))
 print(times)
 ```
 

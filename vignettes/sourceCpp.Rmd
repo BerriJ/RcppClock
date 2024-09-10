@@ -49,4 +49,4 @@ Place that file in your working directory and run:
 Rcpp::sourceCpp("fibonacci_omp.cpp")
 ```
 
-This will compile the C++ code and load the function `fibonacci_omp` into your R environment. You can now call it with `fibonacci_omp(n = rep(20:25, 5))` and observe the timings by executing `print(times)`.
+This will compile the C++ code and load the function `fibonacci_omp` into your R environment. You can now call it with `fibonacci_omp(n = rep(20:25, 10))` and observe the timings by executing `print(times)`.

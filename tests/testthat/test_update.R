@@ -4,7 +4,15 @@ test_that("Updating works", {
   t1 <- times[[1]]
   t2 <- times[[2]]
 
+  expect_gt(t1$Microseconds, 0)
+  expect_equal(t1$Microseconds, t1$Min)
+  expect_equal(t1$Microseconds, t1$Max)
+  expect_equal(t1$SD, 0)
   expect_equal(row.names(t1), "t2")
+
   expect_equal(row.names(t2), c("t1", "t2"))
   expect_equal(t2[row.names(t2) == "t2", "Count"], 2)
+
+  expect_gt(t2["t2", "Microseconds"], t2["t2", "Min"])
+  expect_lt(t2["t2", "Microseconds"], t2["t2", "Max"])
 })

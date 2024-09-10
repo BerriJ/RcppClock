@@ -28,6 +28,28 @@ namespace Rcpp
     Timer(bool verbose) : CppTimer(verbose) {}
     Timer(const char *name, bool verbose) : CppTimer(verbose) { this->name = name; }
 
+    // Print warnings:
+    void print_warnings()
+    {
+      // Warn about all timers not being started
+      for (auto const &tag : missing_tics)
+      {
+        std::string msg;
+        msg += "Timer \"" + tag + "\" not started yet. \n";
+        msg += "Use tic(\"" + tag + "\") to start the timer.";
+        Rcpp::warning(msg);
+      }
+
+      // All remaining timers in `tics` are not stopped
+      for (auto const &tic : tics)
+      {
+        std::string msg;
+        msg += "Timer \"" + tic.first.first + "\" not stopped yet. \n";
+        msg += "Use toc(\"" + tic.first.first + "\") to stop the timer.";
+        Rcpp::warning(msg);
+      }
+    }
+
     // Pass data to R / Python
     DataFrame stop()
     {
@@ -79,6 +101,8 @@ namespace Rcpp
     {
       if (autoreturn)
         stop();
+      if (verbose)
+        print_warnings();
     }
   };
 }

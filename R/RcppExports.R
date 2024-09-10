@@ -18,7 +18,7 @@
 #' @export
 #' @examples
 #' \donttest{
-#' fibonacci(n = rep(20:25, 5))
+#' fibonacci(n = rep(20:25, 10))
 #' # this function creates a global environment variable "times"
 #' times
 #' }
@@ -43,7 +43,7 @@ fibonacci <- function(n) {
 #' @export
 #' @examples
 #' \donttest{
-#' fibonacci_omp(n = rep(20:25, 5))
+#' fibonacci_omp(n = rep(20:25, 10))
 #' # this function creates a global environment variable "times"
 #' times
 #' }

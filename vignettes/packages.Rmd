@@ -47,7 +47,7 @@ std::vector<long int> fibonacci_omp(std::vector<long int> n)
   return (results);
 }
 ```
-This function is available in rcpptimer you can try it yourself, e.g.  `rcpptimer::fibonacci(n = rep(15:20, 10))`. After that you can observe the timings by executing `print(times)`.
+This function is available in rcpptimer you can try it yourself, e.g.  `rcpptimer::fibonacci(n = rep(20:25, 10))`. After that you can observe the timings by executing `print(times)`.
 
 As you see, it writes the timings to the global environment as data.frame called `times`. Read the following section to learn why this is not what you want in a package. 
 

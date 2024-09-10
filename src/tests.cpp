@@ -24,6 +24,7 @@ List test_update()
     timer.tic("t2");
     std::this_thread::sleep_for(std::chrono::nanoseconds(5));
     timer.toc("t2");
+    timer.print_warnings();
     DataFrame results1 = timer.stop();
     L.push_back(results1);
     timer.tic("t2");
@@ -31,6 +32,7 @@ List test_update()
     timer.toc("t2");
   }
   DataFrame results2 = timer.stop();
+  timer.print_warnings();
   L.push_back(results2);
   return (L);
 }
