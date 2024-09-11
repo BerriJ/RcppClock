@@ -35,4 +35,17 @@ test_that("Warnings", {
   # We expect, despite that warning, times is still returned
   expect_contains(ls(as.environment(".GlobalEnv")), "times")
   rm(times, envir = as.environment(".GlobalEnv"))
+
+  # Test if warnings also work in parallelized code
+  expect_warning(test_stats(5, 5, missing_tic = TRUE),
+    'Timer "summary_2" not started yet.',
+    ignore.case = FALSE
+  )
+  rm(times, envir = as.environment(".GlobalEnv"))
+
+  expect_warning(test_stats(5, 5, missing_toc = TRUE),
+    'Timer "summary_2" not stopped yet.',
+    ignore.case = FALSE
+  )
+  rm(times, envir = as.environment(".GlobalEnv"))
 })

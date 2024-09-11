@@ -82,17 +82,23 @@ DataFrame test_misc(const bool tic = true,
 }
 
 //[[Rcpp::export]]
-Rcpp::List test_stats(unsigned int N, unsigned int K)
+Rcpp::List test_stats(unsigned int N,
+                      unsigned int K,
+                      const bool missing_tic = false,
+                      const bool missing_toc = false)
 {
   Rcpp::Timer timer;
 
+#pragma omp parallel for
   for (unsigned int k = 0; k < K; ++k)
   {
     for (unsigned int i = 0; i < N; ++i)
     {
-      timer.tic("summary" + std::to_string(k));
+      if ((k != 2) | !missing_tic)
+        timer.tic("summary_" + std::to_string(k));
       std::this_thread::sleep_for(std::chrono::nanoseconds(5));
-      timer.toc("summary" + std::to_string(k));
+      if ((k != 2) | !missing_toc)
+        timer.toc("summary_" + std::to_string(k));
     }
   }
 

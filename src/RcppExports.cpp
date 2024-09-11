@@ -78,14 +78,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // test_stats
-Rcpp::List test_stats(unsigned int N, unsigned int K);
-RcppExport SEXP _rcpptimer_test_stats(SEXP NSEXP, SEXP KSEXP) {
+Rcpp::List test_stats(unsigned int N, unsigned int K, const bool missing_tic, const bool missing_toc);
+RcppExport SEXP _rcpptimer_test_stats(SEXP NSEXP, SEXP KSEXP, SEXP missing_ticSEXP, SEXP missing_tocSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< unsigned int >::type N(NSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type K(KSEXP);
-    rcpp_result_gen = Rcpp::wrap(test_stats(N, K));
+    Rcpp::traits::input_parameter< const bool >::type missing_tic(missing_ticSEXP);
+    Rcpp::traits::input_parameter< const bool >::type missing_toc(missing_tocSEXP);
+    rcpp_result_gen = Rcpp::wrap(test_stats(N, K, missing_tic, missing_toc));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -97,7 +99,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rcpptimer_test_update", (DL_FUNC) &_rcpptimer_test_update, 0},
     {"_rcpptimer_test_reset", (DL_FUNC) &_rcpptimer_test_reset, 0},
     {"_rcpptimer_test_misc", (DL_FUNC) &_rcpptimer_test_misc, 5},
-    {"_rcpptimer_test_stats", (DL_FUNC) &_rcpptimer_test_stats, 2},
+    {"_rcpptimer_test_stats", (DL_FUNC) &_rcpptimer_test_stats, 4},
     {NULL, NULL, 0}
 };
 
