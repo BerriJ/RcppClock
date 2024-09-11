@@ -11,6 +11,8 @@
 #include <vector>
 #include <cfenv>
 
+using namespace std;
+
 namespace Rcpp
 {
   // This class inherits its main functionality from CppClock
@@ -20,7 +22,7 @@ namespace Rcpp
   {
 
   public:
-    std::string name = "times"; // Name of R object to return
+    string name = "times"; // Name of R object to return
     bool autoreturn = true;
 
     Timer() : CppTimer() {}
@@ -34,19 +36,22 @@ namespace Rcpp
       // Warn about all timers not being started
       for (auto const &tag : missing_tics)
       {
-        std::string msg;
-        msg += "Timer \"" + tag + "\" not started yet. \n";
-        msg += "Use tic(\"" + tag + "\") to start the timer.";
+        string msg;
+        msg += "Timer \"" + tag + "\" not started yet. \n" +
+               "Use tic(\"" + tag + "\") to start the timer.";
         Rcpp::warning(msg);
       }
 
-      // All remaining timers in `tics` are not stopped
+      // All entries in tics which have min() assigned are fine
       for (auto const &tic : tics)
       {
-        std::string msg;
-        msg += "Timer \"" + tic.first.first + "\" not stopped yet. \n";
-        msg += "Use toc(\"" + tic.first.first + "\") to stop the timer.";
-        Rcpp::warning(msg);
+        if (tic.second != tic.second.min())
+        {
+          string msg;
+          msg += "Timer \"" + tic.first.first + "\" not stopped yet. \n" +
+                 "Use toc(\"" + tic.first.first + "\") to stop the timer.";
+          Rcpp::warning(msg);
+        }
       }
     }
 
@@ -55,12 +60,12 @@ namespace Rcpp
     {
       aggregate();
 
-      std::fesetround(FE_TONEAREST);
+      fesetround(FE_TONEAREST);
 
       // Output Objects
-      std::vector<std::string> out_tags;
-      std::vector<unsigned long int> out_counts;
-      std::vector<double> out_mean, out_sd, out_min, out_max;
+      vector<string> out_tags;
+      vector<unsigned long int> out_counts;
+      vector<double> out_mean, out_sd, out_min, out_max;
 
       for (auto const &entry : data)
       {
@@ -70,12 +75,12 @@ namespace Rcpp
 
         // round to the nearest integer and to even in halfway cases and
         // convert to microseconds
-        out_mean.push_back(std::nearbyint(mean) * 1e-3);
+        out_mean.push_back(nearbyint(mean) * 1e-3);
         // Bessels' correction
         double variance = sst / std::max(double(count - 1), 1.0);
-        out_sd.push_back(std::nearbyint(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
-        out_min.push_back(std::nearbyint(min) * 1e-3);
-        out_max.push_back(std::nearbyint(max) * 1e-3);
+        out_sd.push_back(nearbyint(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
+        out_min.push_back(nearbyint(min) * 1e-3);
+        out_max.push_back(nearbyint(max) * 1e-3);
         out_counts.push_back(count);
       }
 
