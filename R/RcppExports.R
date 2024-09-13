@@ -63,11 +63,11 @@ test_reset <- function() {
     .Call(`_rcpptimer_test_reset`)
 }
 
-test_misc <- function(tic = TRUE, toc = TRUE, verbose = TRUE, autoreturn = TRUE, scoped_timer = TRUE) {
-    .Call(`_rcpptimer_test_misc`, tic, toc, verbose, autoreturn, scoped_timer)
+test_misc <- function(tic = TRUE, toc = TRUE, extra_toc = FALSE, verbose = TRUE, autoreturn = TRUE, scoped_timer = TRUE) {
+    .Call(`_rcpptimer_test_misc`, tic, toc, extra_toc, verbose, autoreturn, scoped_timer)
 }
 
-test_stats <- function(N, K, missing_tic = FALSE, missing_toc = FALSE) {
-    .Call(`_rcpptimer_test_stats`, N, K, missing_tic, missing_toc)
+test_stats <- function(N, K, missing_tic = FALSE, missing_toc = FALSE, extra_toc = FALSE) {
+    .Call(`_rcpptimer_test_stats`, N, K, missing_tic, missing_toc, extra_toc)
 }
 

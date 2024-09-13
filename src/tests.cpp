@@ -62,6 +62,7 @@ List test_reset()
 //[[Rcpp::export]]
 DataFrame test_misc(const bool tic = true,
                     const bool toc = true,
+                    const bool extra_toc = false,
                     const bool verbose = true,
                     const bool autoreturn = true,
                     const bool scoped_timer = true)
@@ -76,6 +77,9 @@ DataFrame test_misc(const bool tic = true,
     std::this_thread::sleep_for(std::chrono::nanoseconds(5));
     if (toc)
       timer.toc("t2");
+    std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+    if (extra_toc)
+      timer.toc("t2");
   }
   DataFrame results = timer.stop();
   return (results);
@@ -85,7 +89,8 @@ DataFrame test_misc(const bool tic = true,
 Rcpp::List test_stats(unsigned int N,
                       unsigned int K,
                       const bool missing_tic = false,
-                      const bool missing_toc = false)
+                      const bool missing_toc = false,
+                      const bool extra_toc = false)
 {
   Rcpp::Timer timer;
 

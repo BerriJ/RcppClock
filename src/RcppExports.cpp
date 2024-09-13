@@ -63,23 +63,24 @@ BEGIN_RCPP
 END_RCPP
 }
 // test_misc
-DataFrame test_misc(const bool tic, const bool toc, const bool verbose, const bool autoreturn, const bool scoped_timer);
-RcppExport SEXP _rcpptimer_test_misc(SEXP ticSEXP, SEXP tocSEXP, SEXP verboseSEXP, SEXP autoreturnSEXP, SEXP scoped_timerSEXP) {
+DataFrame test_misc(const bool tic, const bool toc, const bool extra_toc, const bool verbose, const bool autoreturn, const bool scoped_timer);
+RcppExport SEXP _rcpptimer_test_misc(SEXP ticSEXP, SEXP tocSEXP, SEXP extra_tocSEXP, SEXP verboseSEXP, SEXP autoreturnSEXP, SEXP scoped_timerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const bool >::type tic(ticSEXP);
     Rcpp::traits::input_parameter< const bool >::type toc(tocSEXP);
+    Rcpp::traits::input_parameter< const bool >::type extra_toc(extra_tocSEXP);
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< const bool >::type autoreturn(autoreturnSEXP);
     Rcpp::traits::input_parameter< const bool >::type scoped_timer(scoped_timerSEXP);
-    rcpp_result_gen = Rcpp::wrap(test_misc(tic, toc, verbose, autoreturn, scoped_timer));
+    rcpp_result_gen = Rcpp::wrap(test_misc(tic, toc, extra_toc, verbose, autoreturn, scoped_timer));
     return rcpp_result_gen;
 END_RCPP
 }
 // test_stats
-Rcpp::List test_stats(unsigned int N, unsigned int K, const bool missing_tic, const bool missing_toc);
-RcppExport SEXP _rcpptimer_test_stats(SEXP NSEXP, SEXP KSEXP, SEXP missing_ticSEXP, SEXP missing_tocSEXP) {
+Rcpp::List test_stats(unsigned int N, unsigned int K, const bool missing_tic, const bool missing_toc, const bool extra_toc);
+RcppExport SEXP _rcpptimer_test_stats(SEXP NSEXP, SEXP KSEXP, SEXP missing_ticSEXP, SEXP missing_tocSEXP, SEXP extra_tocSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -87,7 +88,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< unsigned int >::type K(KSEXP);
     Rcpp::traits::input_parameter< const bool >::type missing_tic(missing_ticSEXP);
     Rcpp::traits::input_parameter< const bool >::type missing_toc(missing_tocSEXP);
-    rcpp_result_gen = Rcpp::wrap(test_stats(N, K, missing_tic, missing_toc));
+    Rcpp::traits::input_parameter< const bool >::type extra_toc(extra_tocSEXP);
+    rcpp_result_gen = Rcpp::wrap(test_stats(N, K, missing_tic, missing_toc, extra_toc));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -98,8 +100,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rcpptimer_test_default", (DL_FUNC) &_rcpptimer_test_default, 0},
     {"_rcpptimer_test_update", (DL_FUNC) &_rcpptimer_test_update, 0},
     {"_rcpptimer_test_reset", (DL_FUNC) &_rcpptimer_test_reset, 0},
-    {"_rcpptimer_test_misc", (DL_FUNC) &_rcpptimer_test_misc, 5},
-    {"_rcpptimer_test_stats", (DL_FUNC) &_rcpptimer_test_stats, 4},
+    {"_rcpptimer_test_misc", (DL_FUNC) &_rcpptimer_test_misc, 6},
+    {"_rcpptimer_test_stats", (DL_FUNC) &_rcpptimer_test_stats, 5},
     {NULL, NULL, 0}
 };
 

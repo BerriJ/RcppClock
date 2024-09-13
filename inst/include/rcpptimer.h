@@ -53,14 +53,21 @@ namespace Rcpp
           Rcpp::warning(msg);
         }
       }
+
+      // Warn about superfluous toc calls
+      for (auto const &tag : needless_tocs)
+      {
+        string msg;
+        msg += "Timer \"" + tag + "\" stopped more than once. \n" +
+               "Only the first .toc(\"" + tag + "\") was considered. \n";
+        Rcpp::warning(msg);
+      }
     }
 
     // Pass data to R / Python
     DataFrame stop()
     {
-      aggregate();
-
-      fesetround(FE_TONEAREST);
+      aggregate(), fesetround(FE_TONEAREST);
 
       // Output Objects
       vector<string> out_tags;

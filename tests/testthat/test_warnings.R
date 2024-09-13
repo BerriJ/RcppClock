@@ -48,4 +48,10 @@ test_that("Warnings", {
     ignore.case = FALSE
   )
   rm(times, envir = as.environment(".GlobalEnv"))
+
+  expect_warning(test_misc(extra_toc = TRUE),
+    'Timer "t2" stopped more than once. ',
+    ignore.case = FALSE
+  )
+  rm(times, envir = as.environment(".GlobalEnv"))
 })
