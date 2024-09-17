@@ -53,7 +53,7 @@ As you see, it writes the timings to the global environment as data.frame called
 
 ## Autoreturn
 
-When using rcpptimer in your package, you should consider disabling the timer's autoreturn feature. Users of your package may not be aware of this functionality, may already have an object named `times` in their global environment, or may have very strict expectations about what objects they want to write into their environment.
+When using rcpptimer in your package, you should consider disabling the timer's autoreturn feature. Users of your package may not be aware of this functionality. They may already have an object named `times` in their global environment, or may have very strict expectations about what objects they want to write into their environment.
 Instead, you should include the timings in your data structures or parameterize the name of the returned object, the autoreturn feature itself, or both.
 
 See `vignette("autoreturn")` vignette to read about this in detail.

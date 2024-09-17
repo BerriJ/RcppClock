@@ -47,7 +47,7 @@ This issue actually consists of two elements:
 - Turn off the autoreturn feature
 - Handle the results yourself
 
-First, to turn off the autoreturn feature, set the `autoreturn` variable of the `timer` class to `false`. That will prevent the `timer` from writing the results to the global environment. 
+First, to turn off the autoreturn feature, set the `autoreturn` variable of your `Timer` instance to `false`. That will prevent the `timer` from writing the results to the global environment. 
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
@@ -88,7 +88,36 @@ DataFrame demo_rnorm()
 demo_rnorm()
 ```
 
-It is also possible to use `.stop()` *and* let rcpptimer pass the results automatically. In the above example, we just set autoreturn to true (the default) or delete that line. 
+It is also possible to use `.stop()` *and* let rcpptimer pass the results automatically. In the above example, just set autoreturn to true (the default) or delete that line. 
+
+## Accessing Unprocessed Data
+
+The `stop()` method returns the aggregated data as a `DataFrame`. However, you can also access the raw data if you need to. The `timer` class stores the timings in two vectors: `durations` and `tags`, both public class members. The snippet below demonstrates how to access them: 
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+DataFrame demo_rnorm()
+{
+  Rcpp::Timer timer;
+  double x=0;
+  for(int i = 0; i < 7; i++)
+  {
+    timer.tic("rnorm");
+    x += rnorm(1, 1)[0];
+    timer.toc("rnorm");
+  }
+  DataFrame times = DataFrame::create(
+          Named("Durations") = timer.durations,
+          Named("Tags") = timer.tags);
+  return(times);
+}',
+  depends = "rcpptimer"
+)
+
+demo_rnorm()
+```
+
+You can see that the `tags` vector contains the names of the timings, and the `durations` vector contains the actual timings (in nanoseconds).
 
 ## Considerations for package authors
 
