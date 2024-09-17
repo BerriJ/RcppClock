@@ -64,7 +64,7 @@
                         <h4 data-toc-skip class="author">Jonathan
 Berrisch</h4>
             
-            <h4 data-toc-skip class="date">2024-09-13</h4>
+            <h4 data-toc-skip class="date">2024-09-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/BerriJ/rcpptimer/blob/dev/vignettes/packages.Rmd" class="external-link"><code>vignettes/packages.Rmd</code></a></small>
       <div class="d-none name"><code>packages.Rmd</code></div>
@@ -117,7 +117,7 @@ learn why this is not what you want in a package.</p>
 </h2>
 <p>When using rcpptimer in your package, you should consider disabling
 the timer’s autoreturn feature. Users of your package may not be aware
-of this functionality, may already have an object named
+of this functionality. They may already have an object named
 <code>times</code> in their global environment, or may have very strict
 expectations about what objects they want to write into their
 environment. Instead, you should include the timings in your data

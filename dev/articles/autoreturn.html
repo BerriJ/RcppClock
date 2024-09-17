@@ -64,7 +64,7 @@
                         <h4 data-toc-skip class="author">Jonathan
 Berrisch</h4>
             
-            <h4 data-toc-skip class="date">2024-09-13</h4>
+            <h4 data-toc-skip class="date">2024-09-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/BerriJ/rcpptimer/blob/dev/vignettes/autoreturn.Rmd" class="external-link"><code>vignettes/autoreturn.Rmd</code></a></small>
       <div class="d-none name"><code>autoreturn.Rmd</code></div>
@@ -95,7 +95,7 @@ name to the constructor:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mytimes</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        Microseconds SD    Min    Max Count</span></span>
-<span><span class="co">## tictoc       12.042  0 12.042 12.042     1</span></span></code></pre>
+<span><span class="co">## tictoc       11.381  0 11.381 11.381     1</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="manually-handling-the-results">Manually Handling the Results<a class="anchor" aria-label="anchor" href="#manually-handling-the-results"></a>
@@ -108,7 +108,7 @@ letting <code>rcpptimer</code> write it to the global environment.</p>
 <li>Handle the results yourself</li>
 </ul>
 <p>First, to turn off the autoreturn feature, set the
-<code>autoreturn</code> variable of the <code>timer</code> class to
+<code>autoreturn</code> variable of your <code>Timer</code> instance to
 <code>false</code>. That will prevent the <code>timer</code> from
 writing the results to the global environment.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -150,10 +150,51 @@ However, you can still access the results through the timer’s
 <span></span>
 <span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##       Microseconds SD   Min   Max Count</span></span>
-<span><span class="co">## rnorm        7.885  0 7.885 7.885     1</span></span></code></pre>
+<span><span class="co">## rnorm        6.121  0 6.121 6.121     1</span></span></code></pre>
 <p>It is also possible to use <code>.stop()</code> <em>and</em> let
-rcpptimer pass the results automatically. In the above example, we just
-set autoreturn to true (the default) or delete that line.</p>
+rcpptimer pass the results automatically. In the above example, just set
+autoreturn to true (the default) or delete that line.</p>
+</div>
+<div class="section level2">
+<h2 id="accessing-unprocessed-data">Accessing Unprocessed Data<a class="anchor" aria-label="anchor" href="#accessing-unprocessed-data"></a>
+</h2>
+<p>The <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> method returns the aggregated data as a
+<code>DataFrame</code>. However, you can also access the raw data if you
+need to. The <code>timer</code> class stores the timings in two vectors:
+<code>durations</code> and <code>tags</code>, both public class members.
+The snippet below demonstrates how to access them:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
+<span><span class="st">DataFrame demo_rnorm()</span></span>
+<span><span class="st">{</span></span>
+<span><span class="st">  Rcpp::Timer timer;</span></span>
+<span><span class="st">  double x=0;</span></span>
+<span><span class="st">  for(int i = 0; i &lt; 7; i++)</span></span>
+<span><span class="st">  {</span></span>
+<span><span class="st">    timer.tic("rnorm");</span></span>
+<span><span class="st">    x += rnorm(1, 1)[0];</span></span>
+<span><span class="st">    timer.toc("rnorm");</span></span>
+<span><span class="st">  }</span></span>
+<span><span class="st">  DataFrame times = DataFrame::create(</span></span>
+<span><span class="st">          Named("Durations") = timer.durations,</span></span>
+<span><span class="st">          Named("Tags") = timer.tags);</span></span>
+<span><span class="st">  return(times);</span></span>
+<span><span class="st">}'</span>,</span>
+<span>  depends <span class="op">=</span> <span class="st">"rcpptimer"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   Durations  Tags</span></span>
+<span><span class="co">## 1      6773 rnorm</span></span>
+<span><span class="co">## 2       290 rnorm</span></span>
+<span><span class="co">## 3       171 rnorm</span></span>
+<span><span class="co">## 4       491 rnorm</span></span>
+<span><span class="co">## 5       160 rnorm</span></span>
+<span><span class="co">## 6       150 rnorm</span></span>
+<span><span class="co">## 7       140 rnorm</span></span></code></pre>
+<p>You can see that the <code>tags</code> vector contains the names of
+the timings, and the <code>durations</code> vector contains the actual
+timings (in nanoseconds).</p>
 </div>
 <div class="section level2">
 <h2 id="considerations-for-package-authors">Considerations for package authors<a class="anchor" aria-label="anchor" href="#considerations-for-package-authors"></a>
@@ -162,7 +203,7 @@ set autoreturn to true (the default) or delete that line.</p>
 so your users can decide whether they want the results to be passed to
 the global environment and what name should be assigned. Below is an
 example of how to do this.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">double demo_rnorm(bool return_timings = false,</span></span>
 <span><span class="st">                const char* timings_name = "times")</span></span>
@@ -178,20 +219,20 @@ example of how to do this.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">demo_rnorm</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.9944287</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## [1] 0.4463006</span></span></code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "demo_rnorm"</span></span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">demo_rnorm</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1.621553</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">demo_rnorm</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1.628982</span></span></code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "demo_rnorm" "times"</span></span></code></pre>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">demo_rnorm</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">TRUE</span>, timings_name <span class="op">=</span> <span class="st">"my_times"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 2.148412</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">demo_rnorm</span><span class="op">(</span>return_timings <span class="op">=</span> <span class="cn">TRUE</span>, timings_name <span class="op">=</span> <span class="st">"my_times"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 3.065025</span></span></code></pre>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "demo_rnorm" "my_times"   "times"</span></span></code></pre>
 </div>
