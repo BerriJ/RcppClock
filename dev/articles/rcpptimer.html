@@ -154,18 +154,20 @@ measurements and statistics to be more readable (see
 <div class="section level2">
 <h2 id="multiple-timers">Multiple timers<a class="anchor" aria-label="anchor" href="#multiple-timers"></a>
 </h2>
-<p>You can also use multiple timers in the same function. Just pass a
-string to the <code>tic</code> and <code>toc</code> methods to identify
-the timer:</p>
+<p>You can also use multiple timers in the same function. The Timers can
+be nested and overlapping. Just pass a string to the <code>tic</code>
+and <code>toc</code> methods to distinguish the timers:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">double add(double &amp;x, double &amp;y)</span></span>
 <span><span class="st">{</span></span>
 <span><span class="st">  Rcpp::Timer timer;</span></span>
 <span><span class="st">  timer.tic("body");</span></span>
-<span><span class="st">  timer.tic("add");</span></span>
+<span><span class="st">  timer.tic("add_1");</span></span>
+<span><span class="st">  timer.tic("add_2");</span></span>
 <span><span class="st">  double z = x + y;</span></span>
-<span><span class="st">  timer.toc("add");</span></span>
+<span><span class="st">  timer.toc("add_1");</span></span>
+<span><span class="st">  timer.toc("add_2");</span></span>
 <span><span class="st">  timer.toc("body");</span></span>
 <span><span class="st">  return(z);</span></span>
 <span><span class="st">}'</span>,</span>
@@ -176,12 +178,13 @@ the timer:</p>
 <span><span class="co">#&gt; [1] -0.5396038</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      Microseconds SD   Min   Max Count</span></span>
-<span><span class="co">#&gt; add         0.671  0 0.671 0.671     1</span></span>
-<span><span class="co">#&gt; body        2.064  0 2.064 2.064     1</span></span></code></pre></div>
-<p>rcpptimer will group multiple timers with the same name and calculate
-summary statistics for them. Consider this more advanced example, which
-also uses OpenMP:</p>
+<span><span class="co">#&gt;       Microseconds SD   Min   Max Count</span></span>
+<span><span class="co">#&gt; add_1        0.972  0 0.972 0.972     1</span></span>
+<span><span class="co">#&gt; add_2        0.842  0 0.842 0.842     1</span></span>
+<span><span class="co">#&gt; body         2.775  0 2.775 2.775     1</span></span></code></pre></div>
+<p><code>rcpptimer</code> will group multiple timers with the same name
+and calculate summary statistics for them. Consider this more advanced
+example, which also uses OpenMP:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">// fibonacci_omp.cpp</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> fibonacci_omp<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">long</span> <span class="dt">int</span><span class="op">&gt;</span> n<span class="op">)</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="op">{</span></span>
@@ -209,21 +212,21 @@ away:</p>
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">rcpptimer</span><span class="fu">::</span><span class="fu"><a href="../reference/fibonacci_omp.html">fibonacci_omp</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">20</span><span class="op">:</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          Microseconds     SD      Min      Max Count</span></span>
-<span><span class="co">#&gt; fib_20         35.727 16.528   26.710   79.930    10</span></span>
-<span><span class="co">#&gt; fib_21         38.820  5.598   35.647   49.493    10</span></span>
-<span><span class="co">#&gt; fib_22         74.482 10.517   68.980   94.477    10</span></span>
-<span><span class="co">#&gt; fib_23        112.322 24.344   93.506  157.835    10</span></span>
-<span><span class="co">#&gt; fib_24        197.269 31.283  171.661  235.550    10</span></span>
-<span><span class="co">#&gt; fib_25        270.895 39.401  238.276  333.945    10</span></span>
-<span><span class="co">#&gt; fib_body     2537.089  0.000 2537.089 2537.089     1</span></span></code></pre></div>
+<span><span class="co">#&gt; fib_20         33.042  9.920   26.790   54.912    10</span></span>
+<span><span class="co">#&gt; fib_21         37.620  3.915   35.446   45.094    10</span></span>
+<span><span class="co">#&gt; fib_22         72.220  7.659   63.539   86.502    10</span></span>
+<span><span class="co">#&gt; fib_23        111.526 27.640   93.655  173.625    10</span></span>
+<span><span class="co">#&gt; fib_24        182.954 18.024  171.591  217.186    10</span></span>
+<span><span class="co">#&gt; fib_25        252.432 26.138  238.356  302.616    10</span></span>
+<span><span class="co">#&gt; fib_body     2303.516  0.000 2303.516 2303.516     1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="timing-scopes-with-rcpptimerscopedtimer">Timing Scopes with Rcpp::Timer::ScopedTimer<a class="anchor" aria-label="anchor" href="#timing-scopes-with-rcpptimerscopedtimer"></a>
 </h2>
-<p>We offer an alternative to the tic-toc interface. The
-<code>ScopedTimer</code> lets you measure the time it takes for the
-object to go out of scope. We can adjust the above example to use the
-<code>ScopedTimer</code> instead:</p>
+<p>The <code>ScopedTimer</code> lets you measure the execution time of
+scopes. It will call .<code>.tic()</code> upon creation and
+<code>.toc()</code> upon destruction. Consider the simple example
+below:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/cppFunction.html" class="external-link">cppFunction</a></span><span class="op">(</span><span class="st">'</span></span>
 <span><span class="st">double add(double &amp;x, double &amp;y)</span></span>
@@ -240,11 +243,10 @@ object to go out of scope. We can adjust the above example to use the
 <span><span class="co">#&gt; [1] 0.7273107</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     Microseconds SD   Min   Max Count</span></span>
-<span><span class="co">#&gt; add        1.102  0 1.102 1.102     1</span></span></code></pre></div>
+<span><span class="co">#&gt;     Nanoseconds SD Min Max Count</span></span>
+<span><span class="co">#&gt; add         862  0 862 862     1</span></span></code></pre></div>
 <p>Note that you only need to initialize the ScopedTimer. Once it goes
-out of scope, it will automatically call
-<code>timer.toc("mem")</code>.</p>
+out of scope, it will automatically stop the timer.</p>
 </div>
 <div class="section level2">
 <h2 id="warnings-and-how-to-disable-them">Warnings and how to disable them<a class="anchor" aria-label="anchor" href="#warnings-and-how-to-disable-them"></a>
@@ -277,7 +279,7 @@ statements or typos.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Nanoseconds SD Min Max Count</span></span>
-<span><span class="co">#&gt; add         681  0 681 681     1</span></span></code></pre></div>
+<span><span class="co">#&gt; add         702  0 702 702     1</span></span></code></pre></div>
 <p>These warnings occur at runtime. Unfortunately, we can’t check for
 this at compile time.</p>
 <p>However, you can turn off these warnings by passing
@@ -304,7 +306,7 @@ warnings:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Nanoseconds SD Min Max Count</span></span>
-<span><span class="co">#&gt; add         431  0 431 431     1</span></span></code></pre></div>
+<span><span class="co">#&gt; add         691  0 691 691     1</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
