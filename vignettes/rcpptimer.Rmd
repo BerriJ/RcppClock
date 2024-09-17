@@ -81,7 +81,7 @@ print(times)
 
 ## Multiple timers
 
-You can also use multiple timers in the same function. Just pass a string to the `tic` and `toc` methods to identify the timer:
+You can also use multiple timers in the same function. The Timers can be nested and overlapping. Just pass a string to the `tic` and `toc` methods to distinguish the timers:
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
@@ -89,9 +89,11 @@ double add(double &x, double &y)
 {
   Rcpp::Timer timer;
   timer.tic("body");
-  timer.tic("add");
+  timer.tic("add_1");
+  timer.tic("add_2");
   double z = x + y;
-  timer.toc("add");
+  timer.toc("add_1");
+  timer.toc("add_2");
   timer.toc("body");
   return(z);
 }',
@@ -103,7 +105,7 @@ add(rnorm(1), runif(1))
 print(times)
 ```
 
-rcpptimer will group multiple timers with the same name and calculate summary statistics for them. Consider this more advanced example, which also uses OpenMP:
+`rcpptimer` will group multiple timers with the same name and calculate summary statistics for them. Consider this more advanced example, which also uses OpenMP:
 
 ```c++
 // fibonacci_omp.cpp
@@ -138,7 +140,7 @@ print(times)
 
 ## Timing Scopes with Rcpp::Timer::ScopedTimer
 
-We offer an alternative to the tic-toc interface. The `ScopedTimer` lets you measure the time it takes for the object to go out of scope. We can adjust the above example to use the `ScopedTimer` instead:
+The `ScopedTimer` lets you measure the execution time of scopes. It will call .`.tic()` upon creation and `.toc()` upon destruction. Consider the simple example below:
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
@@ -157,7 +159,7 @@ add(rnorm(1), runif(1))
 print(times)
 ```
 
-Note that you only need to initialize the ScopedTimer. Once it goes out of scope, it will automatically call `timer.toc("mem")`.
+Note that you only need to initialize the ScopedTimer. Once it goes out of scope, it will automatically stop the timer.
 
 ## Warnings and how to disable them
 
