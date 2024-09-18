@@ -24,15 +24,17 @@ List test_update()
     timer.tic("t2");
     std::this_thread::sleep_for(std::chrono::nanoseconds(5));
     timer.toc("t2");
-    timer.print_warnings();
     DataFrame results1 = timer.stop();
+    timer.print_warnings();
     L.push_back(results1);
     timer.tic("t2");
     std::this_thread::sleep_for(std::chrono::nanoseconds(500));
     timer.toc("t2");
+    timer.tic("t3");
+    std::this_thread::sleep_for(std::chrono::nanoseconds(500));
+    timer.toc("t3");
   }
   DataFrame results2 = timer.stop();
-  timer.print_warnings();
   L.push_back(results2);
   return (L);
 }

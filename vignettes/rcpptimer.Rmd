@@ -36,8 +36,9 @@ Check out the other vignettes for:
 - Using rcpptimer together with `Rcpp::sourceCpp` `vignette("sourceCpp")`
 - Adding rcpptimer to a Package `vignette("packages")`
 - Automatic and Manual Return of the Timings `vignette("autoreturn")`
+- Accessing unprocessed Timings, Resetting and Updating the Timer Results `vignette("advanced")`
 
-## Initialize a timer
+## Initialize a Timer
 
 Initializing a timer is simple. There are four constructors available. The default constructor initializes a timer with warnings enabled that will write the results as data.frame called "times" to the R environment:
 
@@ -79,7 +80,7 @@ library(rcpptimer)
 print(times)
 ```
 
-## Multiple timers
+## Multiple Timers
 
 You can also use multiple timers in the same function. The Timers can be nested and overlapping. Just pass a string to the `tic` and `toc` methods to distinguish the timers:
 
@@ -161,7 +162,7 @@ print(times)
 
 Note that you only need to initialize the ScopedTimer. Once it goes out of scope, it will automatically stop the timer.
 
-## Warnings and how to disable them
+## Warnings and how to Disable them
 
 The default setting will warn about timers that have been started using `.tic` but never stopped using `.toc()` and vice versa. This is useful to catch unmatched `.tic()` and `.toc()` calls that may be unmatched due to missing statements or typos.
 
