@@ -72,11 +72,9 @@ add(rnorm(1), runif(1))
 
 This function will automatically write a data frame called "times" to the R environment. Read more about that `autoreturn` feature (i.e., how to assign a custom variable name and how to manually handle the results) in `vignette("autoreturn")`. 
 
-The resulting `times` object is of class `data.frame` and `rcpptimer`. If you do not load the package, it will always use `print.data.frame` from base R and print Microseconds. If you load the package, it may scale the measurements and statistics to be more readable (see `rcpptimer::print.rcpptimer`).
+The resulting `times` object has two classes: `data.frame` and `rcpptimer`. We provide a custom S3 method for printing the results. If it is registered, it may scale the results to improve readability (see `rcpptimer::print.rcpptimer`). Otherwise, it will print the results using  `base::print.data.frame`.
 
-```r
-print(times)
-library(rcpptimer)
+```{r, eval = TRUE}
 print(times)
 ```
 
