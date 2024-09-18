@@ -103,13 +103,13 @@ The snippet below demonstrates how to access them:</p>
 <span></span>
 <span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Durations  Tags</span></span>
-<span><span class="co">## 1     11281 rnorm</span></span>
-<span><span class="co">## 2       320 rnorm</span></span>
-<span><span class="co">## 3       711 rnorm</span></span>
-<span><span class="co">## 4       171 rnorm</span></span>
-<span><span class="co">## 5       140 rnorm</span></span>
+<span><span class="co">## 1     11251 rnorm</span></span>
+<span><span class="co">## 2       301 rnorm</span></span>
+<span><span class="co">## 3       501 rnorm</span></span>
+<span><span class="co">## 4       150 rnorm</span></span>
+<span><span class="co">## 5       141 rnorm</span></span>
 <span><span class="co">## 6       140 rnorm</span></span>
-<span><span class="co">## 7       270 rnorm</span></span></code></pre>
+<span><span class="co">## 7       280 rnorm</span></span></code></pre>
 <p>You can see that the <code>tags</code> vector contains the names of
 the timings, and the <code>durations</code> vector contains the actual
 timings (in nanoseconds).</p>
@@ -153,14 +153,14 @@ have been observed. The snippet below demonstrates this:</p>
 <pre><code><span><span class="co">## Warning in rcpptimer:::test_update(): Timer "t1" not stopped yet. </span></span>
 <span><span class="co">## Use toc("t1") to stop the timer.</span></span></code></pre>
 <pre><code><span><span class="co">## [[1]]</span></span>
-<span><span class="co">##    Microseconds SD   Min   Max Count</span></span>
-<span><span class="co">## t2        69.28  0 69.28 69.28     1</span></span>
+<span><span class="co">##    Microseconds SD    Min    Max Count</span></span>
+<span><span class="co">## t2       66.164  0 66.164 66.164     1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
 <span><span class="co">##    Microseconds    SD      Min      Max Count</span></span>
-<span><span class="co">## t1     1123.276 0.000 1123.276 1123.276     1</span></span>
-<span><span class="co">## t2       68.624 0.928   67.967   69.280     2</span></span>
-<span><span class="co">## t3       66.344 0.000   66.344   66.344     1</span></span></code></pre>
+<span><span class="co">## t1     1065.280 0.000 1065.280 1065.280     1</span></span>
+<span><span class="co">## t2       66.815 0.921   66.164   67.466     2</span></span>
+<span><span class="co">## t3       62.166 0.000   62.166   62.166     1</span></span></code></pre>
 <p>You can see that the timer “t2” has been updated with the new timing.
 This example also shows that it is unnecessary to stop all timers before
 calling <code>.stop()</code>. In this example, timer “t1” is started
@@ -204,12 +204,12 @@ demonstrates how to use it:</p>
 <code class="sourceCode R"><span><span class="fu">rcpptimer</span><span class="fu">:::</span><span class="fu">test_reset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">##    Microseconds SD    Min    Max Count</span></span>
-<span><span class="co">## t1       73.647  0 73.647 73.647     1</span></span>
-<span><span class="co">## t2       71.493  0 71.493 71.493     1</span></span>
+<span><span class="co">## t1       73.948  0 73.948 73.948     1</span></span>
+<span><span class="co">## t2       71.433  0 71.433 71.433     1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
 <span><span class="co">##    Microseconds SD   Min   Max Count</span></span>
-<span><span class="co">## t3        1.312  0 1.312 1.312     1</span></span></code></pre>
+<span><span class="co">## t3        1.422  0 1.422 1.422     1</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
