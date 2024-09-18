@@ -79,7 +79,7 @@ Berrisch</h4>
 <p>Using rcpptimer in your package is simple. Just link to it in your
 <code>DESCRIPTION</code> file:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>LinkingTo<span class="sc">:</span> <span class="fu">rcpptimer</span> (<span class="sc">&gt;=</span> <span class="dv">1</span>.<span class="fl">2.0</span>)</span></code></pre></div>
-<p>and add the header into your .cpp file
+<p>And add the header into your .cpp file
 <code>#include &lt;rcpptimer.h&gt;</code>. Now, you can create and use
 an instance of the <code>Rcpp::Timer</code> class. Consider this
 <code>fibonacci_omp</code> function:</p>
@@ -106,27 +106,51 @@ an instance of the <code>Rcpp::Timer</code> class. Consider this
 <span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span>results<span class="op">);</span></span>
 <span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>This function is available in rcpptimer you can try it yourself,
-e.g. <code>rcpptimer::fibonacci(n = rep(20:25, 10))</code>. After that
-you can observe the timings by executing <code>print(times)</code>.</p>
-<p>As you see, it writes the timings to the global environment as
+<p>This function is available in rcpptimer so you can try it yourself,
+e.g., <code>rcpptimer::fibonacci(n = rep(20:25, 10))</code>. After that,
+you can inspect the timings by executing <code>print(times)</code>.</p>
+<p>As you can see, it writes the timings to the global environment as
 data.frame called <code>times</code>. Read the following section to
-learn why this is not what you want in a package.</p>
+learn why this differs from what you want in a package.</p>
 </div>
 <div class="section level2">
 <h2 id="autoreturn">Autoreturn<a class="anchor" aria-label="anchor" href="#autoreturn"></a>
 </h2>
-<p>When using rcpptimer in your package, you should consider disabling
-the timer’s autoreturn feature. Users of your package may not be aware
-of this functionality. They may already have an object named
-<code>times</code> in their global environment, or may have very strict
-expectations about what objects they want to write into their
+<p>When using rcpptimer in your package, consider turning off the
+timer’s <code>autoreturn</code> feature. Users of your package may need
+to be made aware of this functionality. They may already have an object
+named <code>times</code> in their global environment or may have
+rigorous expectations about what objects they want to write into their
 environment. Instead, you should include the timings in your data
 structures or parameterize the name of the returned object, the
-autoreturn feature itself, or both.</p>
+<code>autoreturn</code> feature itself, or both.</p>
 <p>See <code><a href="../articles/autoreturn.html">vignette("autoreturn")</a></code> vignette to read about this
 in detail.</p>
 </div>
+<div class="section level2">
+<h2 id="reexport-print-method">Reexport Print Method<a class="anchor" aria-label="anchor" href="#reexport-print-method"></a>
+</h2>
+<p>If you use <code>rcpptimer</code> in your package, you may want to
+suggest <code>rcpptimer</code> in your DESCRIPTION and register the S3
+method <code>print.rcpptimer</code>. This method is used to print the
+timings in a more readable way. It will scale the results to be more
+readable. I.e. if all timings are greater than 1 second, it will print
+the results in seconds.</p>
+<p>Two adjustments are necessary in your package:</p>
+<p>First, add the following line to your <code>DESCRIPTION</code>
+file:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>Suggests<span class="sc">:</span> <span class="fu">rcpptimer</span> (<span class="sc">&gt;=</span> <span class="dv">1</span>.<span class="fl">2.0</span>)</span></code></pre></div>
+<p>Second, add the following code to your package:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"rcpptimer"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/ns-internal.html" class="external-link">registerS3method</a></span><span class="op">(</span><span class="st">"print"</span>, <span class="st">"rcpptimer"</span>, <span class="fu">rcpptimer</span><span class="fu">:::</span><span class="va"><a href="../reference/print.rcpptimer.html">print.rcpptimer</a></span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>This will register <code>print.rcpptimer</code> if
+<code>rcpptimer</code> is available. You can place this code in a
+function that uses <code>rcpptimer</code> or your package’s
+<code>.onLoad</code> function<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;&lt;a href="https://r-pkgs.org/code.html#sec-code-onLoad-onAttach" class="external-link uri"&gt;https://r-pkgs.org/code.html#sec-code-onLoad-onAttach&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a>.</p>
+</div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
