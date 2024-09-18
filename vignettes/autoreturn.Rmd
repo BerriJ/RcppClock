@@ -20,11 +20,11 @@ If you want to give the dataframe a different name, you can pass that name to th
 Rcpp::cppFunction('
 double demo_rnorm()
 {
-  Rcpp::Timer timer("mytimes");
-  timer.tic();
-  double x = rnorm(1, 1)[0];
-  timer.toc();
-  return(x);
+ Rcpp::Timer timer("mytimes");
+ timer.tic();
+ double x = rnorm(1, 1)[0];
+ timer.toc();
+ return(x);
 }',
   depends = "rcpptimer"
 )
@@ -42,23 +42,23 @@ rm(list = ls())
 
 You may need to handle the resulting DataFrame yourself instead of letting `rcpptimer` write it to the global environment. 
 
-This issue actually consists of two elements:
+This issue consists of two elements:
 
-- Turn off the autoreturn feature
+- Turn off the `autoreturn` feature
 - Handle the results yourself
 
-First, to turn off the autoreturn feature, set the `autoreturn` variable of your `Timer` instance to `false`. That will prevent the `timer` from writing the results to the global environment. 
+First, to turn off `autoreturn`, set the `autoreturn` variable of your `Timer` instance to `false`. That will prevent the `timer` from writing the results to the global environment. 
 
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
 double demo_rnorm()
 {
-  Rcpp::Timer timer;
-  timer.autoreturn = false;
-  timer.tic("rnorm");
-  double x = rnorm(1, 1)[0];
-  timer.toc("rnorm");
-  return(x);
+ Rcpp::Timer timer;
+ timer.autoreturn = false;
+ timer.tic("rnorm");
+ double x = rnorm(1, 1)[0];
+ timer.toc("rnorm");
+ return(x);
 }',
   depends = "rcpptimer"
 )
@@ -74,13 +74,13 @@ Now, `mem` will not write to the global environment. However, you can still acce
 Rcpp::cppFunction('
 DataFrame demo_rnorm()
 {
-  Rcpp::Timer timer;
-  timer.autoreturn = false;
-  timer.tic("rnorm");
-  double x = rnorm(1, 1)[0];
-  timer.toc("rnorm");
-  DataFrame times = timer.stop();
-  return(times);
+ Rcpp::Timer timer;
+ timer.autoreturn = false;
+ timer.tic("rnorm");
+ double x = rnorm(1, 1)[0];
+ timer.toc("rnorm");
+ DataFrame times = timer.stop();
+ return(times);
 }',
   depends = "rcpptimer"
 )
@@ -88,9 +88,9 @@ DataFrame demo_rnorm()
 demo_rnorm()
 ```
 
-It is also possible to use `.stop()` *and* let rcpptimer pass the results automatically. In the above example, just set autoreturn to true (the default) or delete that line. 
+It is also possible to use `.stop()` *and* let rcpptimer pass the results automatically. In the above example, just set `autoreturn` to true (the default) or delete that line. 
 
-If you want to access the raw timings data, you can find instructions in `vignette("advanced")`. 
+You can find instructions in `vignette("advanced")` if you want to access the raw timings data. 
 
 ## Considerations for package authors
 
@@ -103,14 +103,14 @@ As a package author, you should parameterize the auto-return feature so your use
 ```{r, eval = TRUE}
 Rcpp::cppFunction('
 double demo_rnorm(bool return_timings = false,
-                const char* timings_name = "times")
+ const char* timings_name = "times")
 {
-  Rcpp::Timer timer(timings_name);
-  timer.autoreturn = return_timings;
-  timer.tic("rnorm");
-  double x = rnorm(1, 1)[0];
-  timer.toc("rnorm");
-  return(x);
+ Rcpp::Timer timer(timings_name);
+ timer.autoreturn = return_timings;
+ timer.tic("rnorm");
+ double x = rnorm(1, 1)[0];
+ timer.toc("rnorm");
+ return(x);
 }',
   depends = "rcpptimer"
 )

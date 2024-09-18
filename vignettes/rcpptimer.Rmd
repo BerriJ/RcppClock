@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 Sys.setenv("OMP_THREAD_LIMIT" = 2)
 ```
 
-This package provides a simple timer for Rcpp code. The interface is similar to the [tictoc](https://CRAN.R-project.org/package=tictoc) R package. The package wraps [cpptimer](https://github.com/BerriJ/cpptimer), a header-only library that contains a class called `CppTimer`. rcpptimer adds this class as `Timer` to the `Rcpp` namespace. 
+This package provides a simple timer for `Rcpp` code. The interface resembles the [tictoc](https://CRAN.R-project.org/package=tictoc) R package. The package wraps [cpptimer](https://github.com/BerriJ/cpptimer), a header-only library that contains a class called `CppTimer`. rcpptimer adds this class as `Timer` to the `Rcpp` namespace. 
 
 This introduction explains how to use `Rcpp::Timer` with `Rcpp::cppFunction` and how:
 
@@ -43,9 +43,9 @@ Check out the other vignettes for:
 Initializing a timer is simple. There are four constructors available. The default constructor initializes a timer with warnings enabled that will write the results as data.frame called "times" to the R environment:
 
 ```c++
-Rcpp::Timer timer;                    // default constructor
-Rcpp::Timer timer("my_timer");        // Set a custom name for the results
-Rcpp::Timer timer(false);             // Disable warnings
+Rcpp::Timer timer; // default constructor
+Rcpp::Timer timer("my_timer"); // Set a custom name for the results
+Rcpp::Timer timer(false); // Disable warnings
 Rcpp::Timer timer("my_timer", false); // Set a custom name and disable warnings
 ```
 Below and throughout other vignettes, we will use all four as needed.
@@ -58,11 +58,11 @@ With `Rcpp::cppFunction`, we must add the `depends` argument to the function to 
 Rcpp::cppFunction("
 double add(double &x, double &y)
 {
-  Rcpp::Timer timer;
-  timer.tic();
-  double z = x + y;
-  timer.toc();
-  return(z);
+ Rcpp::Timer timer;
+ timer.tic();
+ double z = x + y;
+ timer.toc();
+ return(z);
 }",
   depends = "rcpptimer"
 )
@@ -70,7 +70,7 @@ double add(double &x, double &y)
 add(rnorm(1), runif(1))
 ```
 
-This function will automatically write a data frame called "times" to the R environment. Read more about that autoreturn feature (i.e., how to assign a custom variable name and how to manually handle the results) in `vignette("autoreturn")`. 
+This function will automatically write a data frame called "times" to the R environment. Read more about that `autoreturn` feature (i.e., how to assign a custom variable name and how to manually handle the results) in `vignette("autoreturn")`. 
 
 The resulting `times` object is of class `data.frame` and `rcpptimer`. If you do not load the package, it will always use `print.data.frame` from base R and print Microseconds. If you load the package, it may scale the measurements and statistics to be more readable (see `rcpptimer::print.rcpptimer`).
 
@@ -88,15 +88,15 @@ You can also use multiple timers in the same function. The Timers can be nested 
 Rcpp::cppFunction('
 double add(double &x, double &y)
 {
-  Rcpp::Timer timer;
-  timer.tic("body");
-  timer.tic("add_1");
-  timer.tic("add_2");
-  double z = x + y;
-  timer.toc("add_1");
-  timer.toc("add_2");
-  timer.toc("body");
-  return(z);
+ Rcpp::Timer timer;
+ timer.tic("body");
+ timer.tic("add_1");
+ timer.tic("add_2");
+ double z = x + y;
+ timer.toc("add_1");
+ timer.toc("add_2");
+ timer.toc("body");
+ return(z);
 }',
   depends = "rcpptimer"
 )
@@ -147,10 +147,10 @@ The `ScopedTimer` lets you measure the execution time of scopes. It will call .`
 Rcpp::cppFunction('
 double add(double &x, double &y)
 {
-  Rcpp::Timer timer;
-  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
-  double z = x + y;
-  return(z);
+ Rcpp::Timer timer;
+ Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
+ double z = x + y;
+ return(z);
 }',
   depends = "rcpptimer"
 )
@@ -160,7 +160,7 @@ add(rnorm(1), runif(1))
 print(times)
 ```
 
-Note that you only need to initialize the ScopedTimer. Once it goes out of scope, it will automatically stop the timer.
+Note that you only need to initialize the ScopedTimer. Once it goes out of scope, the timer will automatically be stopped.
 
 ## Warnings and how to Disable them
 
@@ -172,12 +172,12 @@ For example, the following code will produce two warnings:
 Rcpp::cppFunction('
 double add(double &x, double &y)
 {
-  Rcpp::Timer timer;
-  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
-  timer.tic("add");
-  double z = x + y;
-  timer.toc("ad");
-  return(z);
+ Rcpp::Timer timer;
+ Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
+ timer.tic("add");
+ double z = x + y;
+ timer.toc("ad");
+ return(z);
 }',
   depends = "rcpptimer"
 )
@@ -199,12 +199,12 @@ However, you can turn off these warnings by passing `false` to the constructor. 
 Rcpp::cppFunction('
 double add(double &x, double &y)
 {
-  Rcpp::Timer timer(false);
-  Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
-  timer.tic("add");
-  double z = x + y;
-  timer.toc("ad");
-  return(z);
+ Rcpp::Timer timer(false);
+ Rcpp::Timer::ScopedTimer scoped_timer(timer, "add");
+ timer.tic("add");
+ double z = x + y;
+ timer.toc("ad");
+ return(z);
 }',
   depends = "rcpptimer"
 )

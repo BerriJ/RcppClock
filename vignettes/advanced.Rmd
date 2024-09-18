@@ -43,7 +43,7 @@ You can see that the `tags` vector contains the names of the timings, and the `d
 
 ## Updating the Results
 
-In some cases, you may want to access the results of your `Timer` instance before all timers have finished. This is possible. Due to the way the `Timer` class processes the data, it is also very efficient. The `.aggregate()` method (called by `.stop()`) will update the results if new timings have been observed. The snippet below demonstrates this:
+Sometimes, you may want to access the results of your `Timer` instance before all timers have finished. This is possible. Due to the way the `Timer` class processes the data, it is also very efficient. The `.aggregate()` method (called by `.stop()`) will update the results if new timings have been observed. The snippet below demonstrates this:
 
 ```c++
 List test_update()
