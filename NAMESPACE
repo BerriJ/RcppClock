@@ -3,6 +3,5 @@
 S3method(print,rcpptimer)
 export(fibonacci)
 export(fibonacci_omp)
-export(print.rcpptimer)
 import(Rcpp)
 useDynLib(rcpptimer, .registration = TRUE)

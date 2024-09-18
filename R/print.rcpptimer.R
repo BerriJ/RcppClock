@@ -6,12 +6,10 @@
 #' a Millisecond / Seconds / Minutes / Hours, the timings are printed in
 #' the unit of that threshold. This behavior can be disabled by setting
 #' scale = FALSE.
-#' @method print rcpptimer
 #' @param x Object of class rcpptimer
 #' @param scale Scale the timings and statistics to a more human readable format
 #' @param ...  further arguments are ignored
 #' @rdname print.rcpptimer
-#' @export print.rcpptimer
 #' @export
 print.rcpptimer <- function(x, scale = TRUE, ...) {
   if (nrow(x) == 0) {
