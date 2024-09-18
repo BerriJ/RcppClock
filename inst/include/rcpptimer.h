@@ -62,6 +62,7 @@ namespace Rcpp
                "Only the first .toc(\"" + tag + "\") was considered. \n";
         Rcpp::warning(msg);
       }
+      missing_tics.clear(), needless_tocs.clear();
     }
 
     // Pass data to R / Python
