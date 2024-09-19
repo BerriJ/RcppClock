@@ -3,11 +3,20 @@ rcpptimer 1.2.0
 
 ## Improvements
 
-* The `stop()` method of `Rcpp::Timer` now returns a DataFrame with the results. This is usefull if you want to set autoreturn to false and manually handle the results. It is also possible to just call `aggregate()` and access the public variable `data` of `Rcpp::Timer`. `data` is a map containing the results (Names, Mean, Standard Deviation, Count). 
+* The `stop()` method of `Rcpp::Timer` now returns a DataFrame with the results. This is useful if you want to set auto return to false and manually handle the results. It is also possible to call `aggregate()` and access the public variable `data` of `Rcpp::Timer`. `data` is a map containing the results (Names, Mean, Standard Deviation, Count). Look into the implementation of `stop()` in "inst/rcpptimer.h" to see how this works.
 * The tag arguments of `tic()`, `toc()` and `ScopedTimer()` have default values now.
-* Existing vignettes got updated and a new vignette was added to the package.
+* The existing vignette was updated, and we added four new vignettes to the package.
 * rcpptimer now measures nanoseconds instead of microseconds.
-* Adds `print.rcpptimer` method to print the results of a timer object. In some cases timings will be scaled to a more readable unit (e.g. milliseconds, seconds, minutes, hours).
+* Adds `print.rcpptimer` method to print the results of a timer object. Timings will be scaled to a more readable unit (e.g. milliseconds, seconds, minutes, hours) when appropriate.
+* Warn about timers for which `.toc()` was called more than once.
+* The summary now includes the minimum and maximum times.
+
+## Internal Changes
+* Added lots of tests to cover 100% of the code.
+* Public member "name" was moved from `CppTimer` to `Timer` as it is R-specific.
+* Add a hex sticker to the package.
+* The package now has a documentation entry (`?rcpptimer`).
+* Various improvements to the underlying `CppTimer` class
 
 rcpptimer 1.1.0
 ==============
