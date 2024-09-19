@@ -66,7 +66,7 @@ Berrisch</h4>
             
             <h4 data-toc-skip class="date">2024-09-19</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/BerriJ/rcpptimer/blob/dev/vignettes/autoreturn.Rmd" class="external-link"><code>vignettes/autoreturn.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/BerriJ/rcpptimer/blob/main/vignettes/autoreturn.Rmd" class="external-link"><code>vignettes/autoreturn.Rmd</code></a></small>
       <div class="d-none name"><code>autoreturn.Rmd</code></div>
     </div>
 
@@ -95,7 +95,7 @@ name to the constructor:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mytimes</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        Microseconds SD    Min    Max Count</span></span>
-<span><span class="co">## tictoc       12.443  0 12.443 12.443     1</span></span></code></pre>
+<span><span class="co">## tictoc       11.311  0 11.311 11.311     1</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="manually-handling-the-results">Manually Handling the Results<a class="anchor" aria-label="anchor" href="#manually-handling-the-results"></a>
@@ -150,7 +150,7 @@ However, you can still access the results through the timer’s
 <span></span>
 <span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##       Microseconds SD   Min   Max Count</span></span>
-<span><span class="co">## rnorm        6.533  0 6.533 6.533     1</span></span></code></pre>
+<span><span class="co">## rnorm        6.512  0 6.512 6.512     1</span></span></code></pre>
 <p>It is also possible to use <code>.stop()</code> <em>and</em> let
 rcpptimer pass the results automatically. In the above example, just set
 <code>autoreturn</code> to true (the default) or delete that line.</p>
