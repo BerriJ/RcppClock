@@ -18,7 +18,7 @@
 #' @export
 #' @examples
 #' \donttest{
-#' fibonacci(n = rep(10*(1:4), 10))
+#' fibonacci(n = rep(20:25, 10))
 #' # this function creates a global environment variable "times"
 #' times
 #' }
@@ -43,11 +43,31 @@ fibonacci <- function(n) {
 #' @export
 #' @examples
 #' \donttest{
-#' fibonacci_omp(n = rep(10*(1:4), 10))
+#' fibonacci_omp(n = rep(20:25, 10))
 #' # this function creates a global environment variable "times"
 #' times
 #' }
 fibonacci_omp <- function(n) {
     .Call(`_rcpptimer_fibonacci_omp`, n)
+}
+
+test_default <- function() {
+    invisible(.Call(`_rcpptimer_test_default`))
+}
+
+test_update <- function() {
+    .Call(`_rcpptimer_test_update`)
+}
+
+test_reset <- function() {
+    .Call(`_rcpptimer_test_reset`)
+}
+
+test_misc <- function(tic = TRUE, toc = TRUE, extra_toc = FALSE, verbose = TRUE, autoreturn = TRUE, scoped_timer = TRUE) {
+    .Call(`_rcpptimer_test_misc`, tic, toc, extra_toc, verbose, autoreturn, scoped_timer)
+}
+
+test_stats <- function(N, K, missing_tic = FALSE, missing_toc = FALSE, extra_toc = FALSE) {
+    .Call(`_rcpptimer_test_stats`, N, K, missing_tic, missing_toc, extra_toc)
 }
 

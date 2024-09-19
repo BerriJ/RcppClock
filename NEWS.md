@@ -1,3 +1,23 @@
+rcpptimer 1.2.0
+==============
+
+## Improvements
+
+* The `stop()` method of `Rcpp::Timer` now returns a `data.frame` with the results. This is useful if you want to set auto return to false and manually handle the results. It is also possible to call `aggregate()` and access the public variable `data` of `Rcpp::Timer`. `data` is a map containing the results (Names, Mean, Standard Deviation, Count). Look into the implementation of `stop()` in "inst/rcpptimer.h" to see how this works.
+* The tag arguments of `tic()`, `toc()` and `ScopedTimer()` have default values now.
+* The existing vignette was updated, and we added four new vignettes to the package.
+* rcpptimer now measures nanoseconds instead of microseconds.
+* Adds `print.rcpptimer` method to print the results of a timer object. Timings will be scaled to a more readable unit (e.g. milliseconds, seconds, minutes, hours) when appropriate.
+* Warn about timers for which `.toc()` was called more than once.
+* The summary now includes the minimum and maximum times.
+
+## Internal Changes
+* Added lots of tests to cover 100% of the code.
+* Public member "name" was moved from `CppTimer` to `Timer` as it is R-specific.
+* Add a hex sticker to the package.
+* The package now has a documentation entry (`?rcpptimer`).
+* Various improvements to the underlying `CppTimer` class
+
 rcpptimer 1.1.0
 ==============
 
@@ -22,8 +42,8 @@ rcpptimer 1.0.0
 This is the initial release of `rcpptimer`. It is based on `RcppClock` but contains a number of improvements:
 
 * OpenMP support
-* Auomatically returns results to R as soon as the C++ Object goes out of scope
+* Automatically returns results to R as soon as the C++ Object goes out of scope
 * Fast computation of Mean and Standard Deviation of the results in C++
 * Uses `tic` and `toc` instead of `tick` and `tock` to be consistent with R's `tictoc` package
-* Allways reports microseconds resolution
+* Always reports microseconds resolution
 * Many more performance improvements

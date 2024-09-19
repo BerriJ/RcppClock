@@ -1,0 +1,124 @@
+---
+title: "Automatic and Manual Return of the Timings"
+author: Jonathan Berrisch
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: no
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{Automatic and Manual Return of the Timings}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Assign a Custom Name to the Timings Object
+
+If you want to give the dataframe a different name, you can pass that name to the constructor:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+double demo_rnorm()
+{
+ Rcpp::Timer timer("mytimes");
+ timer.tic();
+ double x = rnorm(1, 1)[0];
+ timer.toc();
+ return(x);
+}',
+  depends = "rcpptimer"
+)
+
+demo_rnorm()
+
+print(mytimes)
+```
+
+```{r, eval = TRUE, echo = FALSE}
+rm(list = ls())
+```
+
+## Manually Handling the Results
+
+You may need to handle the resulting DataFrame yourself instead of letting `rcpptimer` write it to the global environment. 
+
+This issue consists of two elements:
+
+- Turn off the `autoreturn` feature
+- Handle the results yourself
+
+First, to turn off `autoreturn`, set the `autoreturn` variable of your `Timer` instance to `false`. That will prevent the `timer` from writing the results to the global environment. 
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+double demo_rnorm()
+{
+ Rcpp::Timer timer;
+ timer.autoreturn = false;
+ timer.tic("rnorm");
+ double x = rnorm(1, 1)[0];
+ timer.toc("rnorm");
+ return(x);
+}',
+  depends = "rcpptimer"
+)
+
+demo_rnorm()
+
+print(ls())
+```
+
+Now, `mem` will not write to the global environment. However, you can still access the results through the timer's `.stop()` method:
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+DataFrame demo_rnorm()
+{
+ Rcpp::Timer timer;
+ timer.autoreturn = false;
+ timer.tic("rnorm");
+ double x = rnorm(1, 1)[0];
+ timer.toc("rnorm");
+ DataFrame times = timer.stop();
+ return(times);
+}',
+  depends = "rcpptimer"
+)
+
+demo_rnorm()
+```
+
+It is also possible to use `.stop()` *and* let rcpptimer pass the results automatically. In the above example, just set `autoreturn` to true (the default) or delete that line. 
+
+You can find instructions in `vignette("advanced")` if you want to access the raw timings data. 
+
+## Considerations for package authors
+
+```{r, eval = TRUE, echo = FALSE}
+rm(list = ls())
+```
+
+As a package author, you should parameterize the auto-return feature so your users can decide whether they want the results to be passed to the global environment and what name should be assigned. Below is an example of how to do this.
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+double demo_rnorm(bool return_timings = false,
+ const char* timings_name = "times")
+{
+ Rcpp::Timer timer(timings_name);
+ timer.autoreturn = return_timings;
+ timer.tic("rnorm");
+ double x = rnorm(1, 1)[0];
+ timer.toc("rnorm");
+ return(x);
+}',
+  depends = "rcpptimer"
+)
+
+demo_rnorm(return_timings = FALSE)
+ls()
+demo_rnorm(return_timings = TRUE)
+ls()
+demo_rnorm(return_timings = TRUE, timings_name = "my_times")
+ls()
+```

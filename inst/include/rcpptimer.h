@@ -9,6 +9,9 @@
 #include <cpptimer/cpptimer.h>
 #include <string>
 #include <vector>
+#include <cfenv>
+
+using namespace std;
 
 namespace Rcpp
 {
@@ -19,51 +22,91 @@ namespace Rcpp
   {
 
   public:
+    string name = "times"; // Name of R object to return
     bool autoreturn = true;
 
-    // This ensures that there are no implicit conversions in the constructors
-    // That means, the types must exactly match the constructor signature
-    // template <typename T>
-    // Timer(T &&) = delete;
-
-    Timer() : CppTimer() {} // Will use "times", true
-    Timer(const char *name) : CppTimer(name) {}
+    Timer() : CppTimer() {}
+    Timer(const char *name) : CppTimer() { this->name = name; }
     Timer(bool verbose) : CppTimer(verbose) {}
-    Timer(std::string name, bool verbose) : CppTimer(name, verbose) {}
+    Timer(const char *name, bool verbose) : CppTimer(verbose) { this->name = name; }
+
+    // Print warnings:
+    void print_warnings()
+    {
+      // Warn about all timers not being started
+      for (auto const &tag : missing_tics)
+      {
+        string msg;
+        msg += "Timer \"" + tag + "\" not started yet. \n" +
+               "Use tic(\"" + tag + "\") to start the timer.";
+        Rcpp::warning(msg);
+      }
+
+      // All entries in tics which have min() assigned are fine
+      for (auto const &tic : tics)
+      {
+        if (tic.second != tic.second.min())
+        {
+          string msg;
+          msg += "Timer \"" + tic.first.first + "\" not stopped yet. \n" +
+                 "Use toc(\"" + tic.first.first + "\") to stop the timer.";
+          Rcpp::warning(msg);
+        }
+      }
+
+      // Warn about superfluous toc calls
+      for (auto const &tag : needless_tocs)
+      {
+        string msg;
+        msg += "Timer \"" + tag + "\" stopped more than once. \n" +
+               "Only the first .toc(\"" + tag + "\") was considered. \n";
+        Rcpp::warning(msg);
+      }
+      missing_tics.clear(), needless_tocs.clear();
+    }
 
     // Pass data to R / Python
-    void stop()
+    DataFrame stop()
     {
-      aggregate();
+      aggregate(), fesetround(FE_TONEAREST);
 
       // Output Objects
-      std::vector<std::string> out_tags;
-      std::vector<unsigned long int> out_counts;
-      std::vector<double> out_means, out_sd;
+      vector<string> out_tags;
+      vector<unsigned long int> out_counts;
+      vector<double> out_mean, out_sd, out_min, out_max;
 
-      for (auto const &ent1 : data)
+      for (auto const &entry : data)
       {
-        // Save tag
-        out_tags.push_back(ent1.first);
+        out_tags.push_back(entry.first);
 
-        unsigned long int count = std::get<2>(ent1.second);
-        double mean = std::get<0>(ent1.second);
-        double variance = std::get<1>(ent1.second) / count;
+        auto [mean, sst, min, max, count] = entry.second;
 
-        // Convert to milliseconds and round to 3 decimal places
-        out_means.push_back(std::round(mean) * 1e-3);
-        out_sd.push_back(std::round(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
+        // round to the nearest integer and to even in halfway cases and
+        // convert to microseconds
+        out_mean.push_back(nearbyint(mean) * 1e-3);
+        // Bessels' correction
+        double variance = sst / std::max(double(count - 1), 1.0);
+        out_sd.push_back(nearbyint(std::sqrt(variance * 1e-6) * 1e+3) * 1e-3);
+        out_min.push_back(nearbyint(min) * 1e-3);
+        out_max.push_back(nearbyint(max) * 1e-3);
         out_counts.push_back(count);
       }
 
-      DataFrame df = DataFrame::create(
-          Named("Name") = out_tags,
-          Named("Milliseconds") = out_means,
+      DataFrame results = DataFrame::create(
+          Named("Microseconds") = out_mean,
           Named("SD") = out_sd,
+          Named("Min") = out_min,
+          Named("Max") = out_max,
           Named("Count") = out_counts);
+      results.attr("class") = CharacterVector({"rcpptimer", "data.frame"});
+      results.attr("row.names") = out_tags;
+      if (autoreturn)
+      {
+        Environment env = Environment::global_env();
+        env[name] = results;
+      }
 
-      Environment env = Environment::global_env();
-      env[name] = df;
+      return results;
     }
 
     // Destructor
@@ -71,6 +114,8 @@ namespace Rcpp
     {
       if (autoreturn)
         stop();
+      if (verbose)
+        print_warnings();
     }
   };
 }

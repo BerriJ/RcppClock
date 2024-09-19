@@ -13,3 +13,7 @@ cran-comments.md
 ^CRAN-SUBMISSION$
 inst/include/cpptimer/.git
 ^cran-comments\.md$
+^.*\.gcda$
+^.*\.gcno$
+man/figures/rcpptimer_logo.png
+man/figures/rcpptimer_background.jpg

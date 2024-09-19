@@ -1,0 +1,116 @@
+---
+title: "Advanced Usage of rcpptimer"
+author: Jonathan Berrisch
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: no
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{Advanced Usage of rcpptimer}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Accessing Unprocessed Data
+
+The `stop()` method returns the aggregated data as a `DataFrame`. However, you can also access the raw data if you need to. The `timer` class stores the timings in two vectors: `durations` and `tags`, both public class members. The snippet below demonstrates how to access them: 
+
+```{r, eval = TRUE}
+Rcpp::cppFunction('
+DataFrame demo_rnorm()
+{
+  Rcpp::Timer timer;
+  double x=0;
+  for(int i = 0; i < 7; i++)
+  {
+    timer.tic("rnorm");
+    x += rnorm(1, 1)[0];
+    timer.toc("rnorm");
+  }
+  DataFrame times = DataFrame::create(
+          Named("Durations") = timer.durations,
+          Named("Tags") = timer.tags);
+  return(times);
+}',
+  depends = "rcpptimer"
+)
+
+demo_rnorm()
+```
+
+You can see that the `tags` vector contains the names of the timings, and the `durations` vector contains the actual timings (in nanoseconds).
+
+## Updating the Results
+
+Sometimes, you may want to access the results of your `Timer` instance before all timers have finished. This is possible. Due to the way the `Timer` class processes the data, it is also very efficient. The `.aggregate()` method (called by `.stop()`) will update the results if new timings have been observed. The snippet below demonstrates this:
+
+```c++
+List test_update()
+{
+  Rcpp::Timer timer;
+  timer.autoreturn = false;
+  List L = List::create();
+  {
+    Rcpp::Timer::ScopedTimer scoped_timer(timer, "t1");
+    timer.tic("t2");
+    std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+    timer.toc("t2");
+    DataFrame results1 = timer.stop();
+    timer.print_warnings();
+    L.push_back(results1);
+    timer.tic("t2");
+    std::this_thread::sleep_for(std::chrono::nanoseconds(500));
+    timer.toc("t2");
+    timer.tic("t3");
+    std::this_thread::sleep_for(std::chrono::nanoseconds(500));
+    timer.toc("t3");
+  }
+  DataFrame results2 = timer.stop();
+  L.push_back(results2);
+  return (L);
+}
+```
+
+We use the above function in rcpptimer for testing purposes:
+
+```{r, eval = TRUE}
+rcpptimer:::test_update()
+```
+
+You can see that the timer "t2" has been updated with the new timing. This example also shows that it is unnecessary to stop all timers before calling `.stop()`. In this example, timer "t1" is started before calculating the results for the first time, but it is stopped before calling `.stop()` a second time. 
+
+Also, note that we need to manually call `.print_warnings()` if we want to print warnings early. Otherwise, they will only be printed upon destruction of the `Timer` instance (e.g., when your `Timer` object goes out of scope).
+
+## Resetting the Timer
+
+You can reset the timer at any time by calling the `reset()` method. This method will clear your instance of the `Timer` class and reset the internal state. The example below demonstrates how to use it:
+
+```c++
+List test_reset()
+{
+  Rcpp::Timer timer;
+  {
+    Rcpp::Timer::ScopedTimer scoped_timer(timer, "t1");
+    timer.autoreturn = false;
+    timer.tic("t2");
+    std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+    timer.toc("t2");
+  }
+  DataFrame results1 = timer.stop();
+  timer.reset();
+  timer.tic("t3");
+  List L = List::create();
+  L.push_back(results1);
+  timer.toc("t3");
+  DataFrame results2 = timer.stop();
+  L.push_back(results2);
+  return (L);
+}
+```
+
+We use the above function in rcpptimer for testing purposes:
+
+```{r, eval = TRUE}
+rcpptimer:::test_reset()
+```

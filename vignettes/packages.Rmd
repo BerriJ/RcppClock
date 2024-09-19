@@ -1,0 +1,82 @@
+---
+title: "Adding rcpptimer to a Package"
+author: Jonathan Berrisch
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: no
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{Adding rcpptimer to a Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Adding rcpptimer to your Package
+
+Using rcpptimer in your package is simple. Just link to it in your `DESCRIPTION` file:
+
+```r
+LinkingTo: rcpptimer (>= 1.2.0)
+```
+
+And add the header into your .cpp file `#include <rcpptimer.h>`. Now, you can create and use an instance of the `Rcpp::Timer` class. Consider this `fibonacci_omp` function:
+
+```c++
+#include <rcpptimer.h>
+
+long int fib(long int n)
+{
+  return ((n <= 1) ? n : fib(n - 1) + fib(n - 2));
+}
+
+//[[Rcpp::export]]
+std::vector<long int> fibonacci_omp(std::vector<long int> n)
+{
+  Rcpp::Timer timer;
+ // This scoped timer measures the total execution time of 'fibonacci'
+  Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
+  std::vector<long int> results = n;
+  #pragma omp parallel for
+  for (unsigned int i = 0; i < n.size(); ++i)
+  {
+    timer.tic("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    timer.toc("fib_" + std::to_string(n[i]));
+  }
+  return (results);
+}
+```
+This function is available in rcpptimer so you can try it yourself, e.g., `rcpptimer::fibonacci(n = rep(20:25, 10))`. After that, you can inspect the timings by executing `print(times)`.
+
+As you can see, it writes the timings to the global environment as data.frame called `times`. Read the following section to learn why this differs from what you want in a package. 
+
+## Autoreturn
+
+When using rcpptimer in your package, consider turning off the timer's `autoreturn` feature. Users of your package may need to be made aware of this functionality. They may already have an object named `times` in their global environment or may have rigorous expectations about what objects they want to write into their environment.
+Instead, you should include the timings in your data structures or parameterize the name of the returned object, the `autoreturn` feature itself, or both.
+
+See `vignette("autoreturn")` vignette to read about this in detail.
+
+## Reexport Print Method
+
+If you use `rcpptimer` in your package, you may want to suggest `rcpptimer` in your DESCRIPTION and register the S3 method `print.rcpptimer`. This method is used to print the timings in a more readable way. It will scale the results to be more readable. I.e. if all timings are greater than 1 second, it will print the results in seconds. 
+
+Two adjustments are necessary in your package:
+
+First, add the following line to your `DESCRIPTION` file:
+
+```r
+Suggests: rcpptimer (>= 1.2.0)
+```
+
+Second, add the following code to your package:
+
+```r
+if (requireNamespace("rcpptimer", quietly = TRUE)) {
+  registerS3method("print", "rcpptimer", rcpptimer:::print.rcpptimer)
+}
+```
+
+This will register `print.rcpptimer` if `rcpptimer` is available. You can place this code in a function that uses `rcpptimer` or your package's `.onLoad` function^[https://r-pkgs.org/code.html#sec-code-onLoad-onAttach].
+

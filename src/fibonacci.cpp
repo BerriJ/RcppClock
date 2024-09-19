@@ -1,7 +1,7 @@
 #include <rcpptimer.h>
 
 // a simple timing example
-int fib(int n)
+long int fib(long int n)
 {
   return ((n <= 1) ? n : fib(n - 1) + fib(n - 2));
 }
@@ -23,19 +23,19 @@ int fib(int n)
 //' @export
 //' @examples
 //' \donttest{
-//' fibonacci(n = rep(10*(1:4), 10))
+//' fibonacci(n = rep(20:25, 10))
 //' # this function creates a global environment variable "times"
 //' times
 //' }
 //[[Rcpp::export]]
-std::vector<int> fibonacci(std::vector<int> n)
+std::vector<long int> fibonacci(std::vector<long int> n)
 {
   Rcpp::Timer timer;
 
   // This scoped timer measures the total execution time of 'fibonacci'
   Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
 
-  std::vector<int> results = n;
+  std::vector<long int> results = n;
 
   for (unsigned int i = 0; i < n.size(); ++i)
   {
@@ -64,12 +64,12 @@ std::vector<int> fibonacci(std::vector<int> n)
 //' @export
 //' @examples
 //' \donttest{
-//' fibonacci_omp(n = rep(10*(1:4), 10))
+//' fibonacci_omp(n = rep(20:25, 10))
 //' # this function creates a global environment variable "times"
 //' times
 //' }
 //[[Rcpp::export]]
-std::vector<int> fibonacci_omp(std::vector<int> n)
+std::vector<long int> fibonacci_omp(std::vector<long int> n)
 {
 
   Rcpp::Timer timer;
@@ -77,7 +77,7 @@ std::vector<int> fibonacci_omp(std::vector<int> n)
   // This scoped timer measures the total execution time of 'fibonacci'
   Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
 
-  std::vector<int> results = n;
+  std::vector<long int> results = n;
 
 #pragma omp parallel for
   for (unsigned int i = 0; i < n.size(); ++i)

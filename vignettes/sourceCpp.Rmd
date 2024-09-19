@@ -1,0 +1,52 @@
+---
+title: "Using rcpptimer with Rcpp::sourceCpp"
+author: Jonathan Berrisch
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: no
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{Using rcpptimer with Rcpp::sourceCpp}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Using `Rcpp::Timer` together with `Rcpp::sourceCpp` is similar to using it in an R package (c.f. `vignette("packages")`). However, instead of linking to rcpptimer in the `DESCRIPTION` file, we declare this dependency in the C++ file. We can do this by adding `//[[Rcpp::depends(rcpptimer)]]`. In the following, find a simple example file called 'fibonacci_omp.cpp':
+
+```c++
+// fibonacci_omp.cpp
+
+//[[Rcpp::depends(rcpptimer)]]
+#include <rcpptimer.h>
+
+long int fib(long int n)
+{
+  return ((n <= 1) ? n : fib(n - 1) + fib(n - 2));
+}
+
+//[[Rcpp::export]]
+std::vector<long int> fibonacci_omp(std::vector<long int> n)
+{
+  Rcpp::Timer timer;
+  // This scoped timer measures the total execution time of 'fibonacci'
+  Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
+  std::vector<long int> results = n;
+#pragma omp parallel for
+  for (unsigned int i = 0; i < n.size(); ++i)
+  {
+    timer.tic("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    timer.toc("fib_" + std::to_string(n[i]));
+  }
+  return (results);
+}
+```
+
+Place that file in your working directory and run:
+
+```{r, eval = FALSE}
+Rcpp::sourceCpp("fibonacci_omp.cpp")
+```
+
+This will compile the C++ code and load the function `fibonacci_omp` into your R environment. You can now call it with `fibonacci_omp(n = rep(20:25, 10))` and observe the timings by executing `print(times)`.
