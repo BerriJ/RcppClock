@@ -44,11 +44,21 @@
 <h2 class="pkg-version" data-toc-text="1.2.0" id="rcpptimer-120">rcpptimer 1.2.0<a class="anchor" aria-label="anchor" href="#rcpptimer-120"></a></h2>
 <div class="section level3">
 <h3 id="improvements-1-2-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-2-0"></a></h3>
-<ul><li>The <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> method of <code>Rcpp::Timer</code> now returns a DataFrame with the results. This is usefull if you want to set autoreturn to false and manually handle the results. It is also possible to just call <code><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate()</a></code> and access the public variable <code>data</code> of <code>Rcpp::Timer</code>. <code>data</code> is a map containing the results (Names, Mean, Standard Deviation, Count).</li>
+<ul><li>The <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> method of <code>Rcpp::Timer</code> now returns a DataFrame with the results. This is useful if you want to set auto return to false and manually handle the results. It is also possible to call <code><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate()</a></code> and access the public variable <code>data</code> of <code>Rcpp::Timer</code>. <code>data</code> is a map containing the results (Names, Mean, Standard Deviation, Count). Look into the implementation of <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> in “inst/rcpptimer.h” to see how this works.</li>
 <li>The tag arguments of <code>tic()</code>, <code>toc()</code> and <code>ScopedTimer()</code> have default values now.</li>
-<li>Existing vignettes got updated and a new vignette was added to the package.</li>
+<li>The existing vignette was updated, and we added four new vignettes to the package.</li>
 <li>rcpptimer now measures nanoseconds instead of microseconds.</li>
-<li>Adds <code>print.rcpptimer</code> method to print the results of a timer object. In some cases timings will be scaled to a more readable unit (e.g. milliseconds, seconds, minutes, hours).</li>
+<li>Adds <code>print.rcpptimer</code> method to print the results of a timer object. Timings will be scaled to a more readable unit (e.g. milliseconds, seconds, minutes, hours) when appropriate.</li>
+<li>Warn about timers for which <code>.toc()</code> was called more than once.</li>
+<li>The summary now includes the minimum and maximum times.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-changes-1-2-0">Internal Changes<a class="anchor" aria-label="anchor" href="#internal-changes-1-2-0"></a></h3>
+<ul><li>Added lots of tests to cover 100% of the code.</li>
+<li>Public member “name” was moved from <code>CppTimer</code> to <code>Timer</code> as it is R-specific.</li>
+<li>Add a hex sticker to the package.</li>
+<li>The package now has a documentation entry (<code><a href="../reference/rcpptimer-package.html">?rcpptimer</a></code>).</li>
+<li>Various improvements to the underlying <code>CppTimer</code> class</li>
 </ul></div>
 </div>
     <div class="section level2">
