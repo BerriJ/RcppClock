@@ -2,11 +2,8 @@
 
 <!-- badges: start -->
 [![CRAN/METACRAN Version](https://img.shields.io/cran/v/rcpptimer?&style=for-the-badge)](https://cran.r-project.org/web/packages/rcpptimer/index.html)
-
 [![R-CMD-check](https://img.shields.io/github/actions/workflow/status/berrij/rcpptimer/R-CMD-check-main.yaml?&style=for-the-badge&label=RCMD-Check)](https://github.com/BerriJ/rcpptimer/blob/dev/.github/workflows/R-CMD-check-main.yaml)
-
 [![Codecov](https://img.shields.io/codecov/c/github/berrij/rcpptimer?style=for-the-badge)](https://app.codecov.io/gh/berrij/rcpptimer?branch=main)
-
 <!-- badges: end -->
 
 ## Overview
