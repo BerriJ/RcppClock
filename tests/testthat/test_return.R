@@ -4,7 +4,7 @@ test_that("Check autoreturn, return etc.", {
     list = ls(envir = as.environment(".GlobalEnv")),
     envir = as.environment(".GlobalEnv")
   )
-  # Test if the stop method returns a dataframe with the results
+  # Test if the stop method returns a `data.frame`` with the results
   # And autoreturn disabled
   expect_no_warning(test_misc(autoreturn = FALSE))
   expect_no_error(test_misc(autoreturn = FALSE))

@@ -158,7 +158,7 @@ add(rnorm(1), runif(1))
 print(times)
 ```
 
-Note that you only need to initialize the ScopedTimer. Once it goes out of scope, the timer will automatically be stopped.
+Note that you only need to initialize the `ScopedTimer`. Once it goes out of scope, the timer will automatically be stopped.
 
 ## Warnings and how to Disable them
 
