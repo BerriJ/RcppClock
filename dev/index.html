@@ -61,7 +61,16 @@
 <div class="page-header"><h1 id="rcpptimer-">rcpptimer <a href="https://rcpptimer.berrisch.biz"><img src="reference/figures/rcpptimer_hex.png" align="right" height="138" style="float:right; height:138px;"></a>
 <a class="anchor" aria-label="anchor" href="#rcpptimer-"></a>
 </h1></div>
+<!-- badges: start -->
+
+
+
+<!-- badges: end -->
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a>, a simple tic-toc timer class for benchmarking C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a nanosecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.</p>
+</div>
 <div class="section level2">
 <h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
 </h2>
@@ -88,8 +97,8 @@
 <span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The timer object will automatically write its result to the R environment:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">print</span>(times)</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>       Microseconds SD Count</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>tictoc         <span class="fl">5.48</span>  <span class="dv">0</span>     <span class="dv">1</span></span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>       Microseconds SD   Min   Max Count</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>tictoc        <span class="fl">3.972</span>  <span class="dv">0</span> <span class="fl">3.972</span> <span class="fl">3.972</span>     <span class="dv">1</span></span></code></pre></div>
 <p>Check out the <a href="https://rcpptimer.berrisch.biz/articles/rcpptimer.html">Documentation</a> for:</p>
 <ul>
 <li>Setting up multiple, nested, and overlapping timers</li>
@@ -107,7 +116,7 @@
 <div class="section level2">
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>This package (and the underlying <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a> class) was inspired by <a href="https://github.com/zdebruine" class="external-link">zdebruine</a>’s <a href="https://github.com/zdebruine/RcppClock" class="external-link">RcppClock</a>. I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other small adjustments. I hope you find it useful.</p>
+<p>This package (and the underlying <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a> class) was inspired by <a href="https://github.com/zdebruine" class="external-link">zdebruine</a>’s <a href="https://github.com/zdebruine/RcppClock" class="external-link">RcppClock</a>. I used that package a lot and wanted to add OpenMP support, alter the process of calculating summary statistics, and apply a series of other adjustments. I hope you find it useful.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -143,7 +152,14 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/web/packages/rcpptimer/index.html" class="external-link"><img src="https://img.shields.io/cran/v/rcpptimer?&amp;style=for-the-badge" alt="CRAN/METACRAN Version"></a></li>
+<li><a href="https://github.com/BerriJ/rcpptimer/blob/dev/.github/workflows/R-CMD-check-main.yaml" class="external-link"><img src="https://img.shields.io/github/actions/workflow/status/berrij/rcpptimer/R-CMD-check-main.yaml?&amp;style=for-the-badge&amp;label=RCMD-Check" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/berrij/rcpptimer?branch=main" class="external-link"><img src="https://img.shields.io/codecov/c/github/berrij/rcpptimer?style=for-the-badge" alt="Codecov"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
