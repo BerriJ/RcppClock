@@ -1,10 +1,13 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  advanced: advanced.html
+  autoreturn: autoreturn.html
+  packages: packages.html
   rcpptimer: rcpptimer.html
-last_built: 2024-03-25T17:08Z
+  sourceCpp: sourceCpp.html
+last_built: 2024-09-19T08:56Z
 urls:
   reference: https://rcpptimer.berrisch.biz/reference
   article: https://rcpptimer.berrisch.biz/articles
-
