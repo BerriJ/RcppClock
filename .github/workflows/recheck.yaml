@@ -10,6 +10,15 @@ on:
 
 name: Reverse dependency check
 
+env:
+  R_LIBS_USER: ${{github.workspace}}/pkglib
+  _R_CHECK_FORCE_SUGGESTS_: 'FALSE'
+  _R_CHECK_CRAN_INCOMING_: 'FALSE'
+  _R_CHECK_VIGNETTES_SKIP_RUN_MAYBE_: 'TRUE' #remove for R-4.4
+  _R_CHECK_ELAPSED_TIMEOUT_: 3600
+  GITHUB_ACTIONS: ''
+  CI: ''
+
 jobs:
   prepare:
     name: Prepare dependencies
