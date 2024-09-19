@@ -1,6 +1,6 @@
 on: push
 
-name: pkgdown
+name: PKGDOWN
 
 jobs:
   pkgdown:

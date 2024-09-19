@@ -5,7 +5,7 @@ on:
     branches:
       - main
 
-name: R-CMD-check
+name: R-CMD-CHECK-MAIN
 
 jobs:
   R-CMD-check:
