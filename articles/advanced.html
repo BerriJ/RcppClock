@@ -66,7 +66,7 @@ Berrisch</h4>
             
             <h4 data-toc-skip class="date">2024-09-20</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/BerriJ/rcpptimer/blob/1.2.0/vignettes/advanced.Rmd" class="external-link"><code>vignettes/advanced.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/BerriJ/rcpptimer/blob/dev/vignettes/advanced.Rmd" class="external-link"><code>vignettes/advanced.Rmd</code></a></small>
       <div class="d-none name"><code>advanced.Rmd</code></div>
     </div>
 
@@ -102,12 +102,12 @@ The snippet below demonstrates how to access them:</p>
 <span></span>
 <span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Durations  Tags</span></span>
-<span><span class="co">## 1     12153 rnorm</span></span>
-<span><span class="co">## 2       340 rnorm</span></span>
-<span><span class="co">## 3      1012 rnorm</span></span>
-<span><span class="co">## 4       161 rnorm</span></span>
+<span><span class="co">## 1     13796 rnorm</span></span>
+<span><span class="co">## 2       321 rnorm</span></span>
+<span><span class="co">## 3       711 rnorm</span></span>
+<span><span class="co">## 4       160 rnorm</span></span>
 <span><span class="co">## 5       140 rnorm</span></span>
-<span><span class="co">## 6       141 rnorm</span></span>
+<span><span class="co">## 6       140 rnorm</span></span>
 <span><span class="co">## 7       260 rnorm</span></span></code></pre>
 <p>You can see that the <code>tags</code> vector contains the names of
 the timings, and the <code>durations</code> vector contains the actual
@@ -153,13 +153,13 @@ have been observed. The snippet below demonstrates this:</p>
 <span><span class="co">## Use toc("t1") to stop the timer.</span></span></code></pre>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">##    Microseconds SD    Min    Max Count</span></span>
-<span><span class="co">## t2       70.292  0 70.292 70.292     1</span></span>
+<span><span class="co">## t2       72.076  0 72.076 72.076     1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
-<span><span class="co">##    Microseconds    SD      Min      Max Count</span></span>
-<span><span class="co">## t1     1192.335 0.000 1192.335 1192.335     1</span></span>
-<span><span class="co">## t2       69.640 0.921   68.989   70.292     2</span></span>
-<span><span class="co">## t3       63.790 0.000   63.790   63.790     1</span></span></code></pre>
+<span><span class="co">##    Microseconds   SD      Min      Max Count</span></span>
+<span><span class="co">## t1     1162.386 0.00 1162.386 1162.386     1</span></span>
+<span><span class="co">## t2       70.393 2.38   68.710   72.076     2</span></span>
+<span><span class="co">## t3       62.768 0.00   62.768   62.768     1</span></span></code></pre>
 <p>You can see that the timer “t2” has been updated with the new timing.
 This example also shows that it is unnecessary to stop all timers before
 calling <code>.stop()</code>. In this example, timer “t1” is started
@@ -203,12 +203,12 @@ demonstrates how to use it:</p>
 <code class="sourceCode R"><span><span class="fu">rcpptimer</span><span class="fu">:::</span><span class="fu">test_reset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">##    Microseconds SD    Min    Max Count</span></span>
-<span><span class="co">## t1       72.636  0 72.636 72.636     1</span></span>
-<span><span class="co">## t2       70.653  0 70.653 70.653     1</span></span>
+<span><span class="co">## t1       74.570  0 74.570 74.570     1</span></span>
+<span><span class="co">## t2       72.627  0 72.627 72.627     1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
 <span><span class="co">##    Microseconds SD   Min   Max Count</span></span>
-<span><span class="co">## t3        1.062  0 1.062 1.062     1</span></span></code></pre>
+<span><span class="co">## t3        1.072  0 1.072 1.072     1</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
