@@ -41,10 +41,10 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.2.0" id="rcpptimer-120">rcpptimer 1.2.0<a class="anchor" aria-label="anchor" href="#rcpptimer-120"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.2.0" id="rcpptimer-120">rcpptimer 1.2.0<a class="anchor" aria-label="anchor" href="#rcpptimer-120"></a></h2><p class="text-muted">CRAN release: 2024-09-20</p>
 <div class="section level3">
 <h3 id="improvements-1-2-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-2-0"></a></h3>
-<ul><li>The <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> method of <code>Rcpp::Timer</code> now returns a DataFrame with the results. This is useful if you want to set auto return to false and manually handle the results. It is also possible to call <code><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate()</a></code> and access the public variable <code>data</code> of <code>Rcpp::Timer</code>. <code>data</code> is a map containing the results (Names, Mean, Standard Deviation, Count). Look into the implementation of <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> in “inst/rcpptimer.h” to see how this works.</li>
+<ul><li>The <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> method of <code>Rcpp::Timer</code> now returns a <code>data.frame</code> with the results. This is useful if you want to set auto return to false and manually handle the results. It is also possible to call <code><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate()</a></code> and access the public variable <code>data</code> of <code>Rcpp::Timer</code>. <code>data</code> is a map containing the results (Names, Mean, Standard Deviation, Count). Look into the implementation of <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> in “inst/rcpptimer.h” to see how this works.</li>
 <li>The tag arguments of <code>tic()</code>, <code>toc()</code> and <code>ScopedTimer()</code> have default values now.</li>
 <li>The existing vignette was updated, and we added four new vignettes to the package.</li>
 <li>rcpptimer now measures nanoseconds instead of microseconds.</li>
@@ -84,10 +84,10 @@
 <h2 class="pkg-version" data-toc-text="1.0.0" id="rcpptimer-100">rcpptimer 1.0.0<a class="anchor" aria-label="anchor" href="#rcpptimer-100"></a></h2><p class="text-muted">CRAN release: 2024-03-05</p>
 <p>This is the initial release of <code>rcpptimer</code>. It is based on <code>RcppClock</code> but contains a number of improvements:</p>
 <ul><li>OpenMP support</li>
-<li>Auomatically returns results to R as soon as the C++ Object goes out of scope</li>
+<li>Automatically returns results to R as soon as the C++ Object goes out of scope</li>
 <li>Fast computation of Mean and Standard Deviation of the results in C++</li>
 <li>Uses <code>tic</code> and <code>toc</code> instead of <code>tick</code> and <code>tock</code> to be consistent with R’s <code>tictoc</code> package</li>
-<li>Allways reports microseconds resolution</li>
+<li>Always reports microseconds resolution</li>
 <li>Many more performance improvements</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

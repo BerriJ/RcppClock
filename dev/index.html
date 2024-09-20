@@ -63,13 +63,10 @@
 </h1></div>
 <!-- badges: start -->
 
-
-
-<!-- badges: end -->
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a>, a simple tic-toc timer class for benchmarking C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a nanosecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a data frame.</p>
+<p>This R Package provides Rcpp bindings for <a href="https://github.com/BerriJ/cpptimer" class="external-link">cpptimer</a>, a simple tic-toc class for timing C++ code. It’s not just simple, it’s blazing fast! This sleek tic-toc timer class supports nested and overlapping timers and OpenMP parallelism. It boasts a nanosecond-level time resolution. Results (with summary statistics) are automatically passed back to R as a <code>data.frame.</code></p>
 </div>
 <div class="section level2">
 <h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
@@ -103,7 +100,8 @@
 <ul>
 <li>Setting up multiple, nested, and overlapping timers</li>
 <li>Using OpenMP parallelism</li>
-<li>Using rcpptimer with SourceCpp</li>
+<li>Using rcpptimer with <code><a href="https://rdrr.io/pkg/Rcpp/man/sourceCpp.html" class="external-link">Rcpp::sourceCpp</a></code>
+</li>
 <li>Adding rcpptimer to your package</li>
 </ul>
 </div>
@@ -155,7 +153,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/web/packages/rcpptimer/index.html" class="external-link"><img src="https://img.shields.io/cran/v/rcpptimer?&amp;style=for-the-badge" alt="CRAN/METACRAN Version"></a></li>
+<li><a href="https://cran.r-project.org/package=rcpptimer" class="external-link"><img src="https://img.shields.io/cran/v/rcpptimer?&amp;style=for-the-badge" alt="CRAN/METACRAN Version"></a></li>
 <li><a href="https://github.com/BerriJ/rcpptimer/blob/dev/.github/workflows/R-CMD-check-main.yaml" class="external-link"><img src="https://img.shields.io/github/actions/workflow/status/berrij/rcpptimer/R-CMD-check-main.yaml?&amp;style=for-the-badge&amp;label=RCMD-Check" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/berrij/rcpptimer?branch=main" class="external-link"><img src="https://img.shields.io/codecov/c/github/berrij/rcpptimer?style=for-the-badge" alt="Codecov"></a></li>
 </ul>
