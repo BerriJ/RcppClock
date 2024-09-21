@@ -1,3 +1,9 @@
+rcpptimer 1.2.1
+==============
+
+## Fixes
+* This release fixes a bug where calling `.toc()` on a timer that was already stopped would cause a signed integer overflow. This a minor change in `CppTimer` as well as `Rcpp::Timer`.
+
 rcpptimer 1.2.0
 ==============
 
