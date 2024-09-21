@@ -42,10 +42,10 @@ namespace Rcpp
         Rcpp::warning(msg);
       }
 
-      // All entries in tics which have min() assigned are fine
+      // All entries in tics which have max() assigned are fine
       for (auto const &tic : tics)
       {
-        if (tic.second != tic.second.min())
+        if (tic.second != tic.second.max())
         {
           string msg;
           msg += "Timer \"" + tic.first.first + "\" not stopped yet. \n" +
