@@ -107,24 +107,24 @@ print(times)
 `rcpptimer` will group multiple timers with the same name and calculate summary statistics for them. Consider this more advanced example, which also uses OpenMP:
 
 ```c++
-// fibonacci_omp.cpp
+// fibonacci.cpp
 std::vector<long int> fibonacci_omp(std::vector<long int> n)
 {
 
   Rcpp::Timer timer;
 
- // This scoped timer measures the total execution time of 'fibonacci'
+  // This scoped timer measures the total execution time of 'fibonacci'
   Rcpp::Timer::ScopedTimer scpdtmr(timer, "fib_body");
 
   std::vector<long int> results = n;
 
-  #pragma omp parallel for
+#pragma omp parallel for
   for (unsigned int i = 0; i < n.size(); ++i)
- {
- timer.tic("fib_" + std::to_string(n[i]));
- results[i] = fib(n[i]);
- timer.toc("fib_" + std::to_string(n[i]));
- }
+  {
+    timer.tic("fib_" + std::to_string(n[i]));
+    results[i] = fib(n[i]);
+    timer.toc("fib_" + std::to_string(n[i]));
+  }
 
   return (results);
 }
