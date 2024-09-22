@@ -64,9 +64,9 @@
                         <h4 data-toc-skip class="author">Jonathan
 Berrisch</h4>
             
-            <h4 data-toc-skip class="date">2024-09-21</h4>
+            <h4 data-toc-skip class="date">2024-09-22</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/BerriJ/rcpptimer/blob/dev/vignettes/advanced.Rmd" class="external-link"><code>vignettes/advanced.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/BerriJ/rcpptimer/blob/1.2.1/vignettes/advanced.Rmd" class="external-link"><code>vignettes/advanced.Rmd</code></a></small>
       <div class="d-none name"><code>advanced.Rmd</code></div>
     </div>
 
@@ -102,13 +102,13 @@ The snippet below demonstrates how to access them:</p>
 <span></span>
 <span><span class="fu">demo_rnorm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Durations  Tags</span></span>
-<span><span class="co">## 1     12945 rnorm</span></span>
-<span><span class="co">## 2       331 rnorm</span></span>
-<span><span class="co">## 3       761 rnorm</span></span>
-<span><span class="co">## 4       151 rnorm</span></span>
+<span><span class="co">## 1     12153 rnorm</span></span>
+<span><span class="co">## 2       341 rnorm</span></span>
+<span><span class="co">## 3       701 rnorm</span></span>
+<span><span class="co">## 4       170 rnorm</span></span>
 <span><span class="co">## 5       140 rnorm</span></span>
 <span><span class="co">## 6       141 rnorm</span></span>
-<span><span class="co">## 7       280 rnorm</span></span></code></pre>
+<span><span class="co">## 7       281 rnorm</span></span></code></pre>
 <p>You can see that the <code>tags</code> vector contains the names of
 the timings, and the <code>durations</code> vector contains the actual
 timings (in nanoseconds).</p>
@@ -152,14 +152,14 @@ have been observed. The snippet below demonstrates this:</p>
 <pre><code><span><span class="co">## Warning in rcpptimer:::test_update(): Timer "t1" not stopped yet. </span></span>
 <span><span class="co">## Use toc("t1") to stop the timer.</span></span></code></pre>
 <pre><code><span><span class="co">## [[1]]</span></span>
-<span><span class="co">##    Microseconds SD    Min    Max Count</span></span>
-<span><span class="co">## t2       66.635  0 66.635 66.635     1</span></span>
+<span><span class="co">##    Microseconds SD   Min   Max Count</span></span>
+<span><span class="co">## t2        69.84  0 69.84 69.84     1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
 <span><span class="co">##    Microseconds    SD      Min      Max Count</span></span>
-<span><span class="co">## t1     1157.487 0.000 1157.487 1157.487     1</span></span>
-<span><span class="co">## t2       67.546 1.289   66.635   68.458     2</span></span>
-<span><span class="co">## t3       60.975 0.000   60.975   60.975     1</span></span></code></pre>
+<span><span class="co">## t1     1150.541 0.000 1150.541 1150.541     1</span></span>
+<span><span class="co">## t2       68.968 1.232   68.097   69.840     2</span></span>
+<span><span class="co">## t3       63.519 0.000   63.519   63.519     1</span></span></code></pre>
 <p>You can see that the timer “t2” has been updated with the new timing.
 This example also shows that it is unnecessary to stop all timers before
 calling <code>.stop()</code>. In this example, timer “t1” is started
@@ -203,12 +203,12 @@ demonstrates how to use it:</p>
 <code class="sourceCode R"><span><span class="fu">rcpptimer</span><span class="fu">:::</span><span class="fu">test_reset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">##    Microseconds SD    Min    Max Count</span></span>
-<span><span class="co">## t1       73.117  0 73.117 73.117     1</span></span>
-<span><span class="co">## t2       70.782  0 70.782 70.782     1</span></span>
+<span><span class="co">## t1       71.995  0 71.995 71.995     1</span></span>
+<span><span class="co">## t2       69.871  0 69.871 69.871     1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
-<span><span class="co">##    Microseconds SD  Min  Max Count</span></span>
-<span><span class="co">## t3         5.76  0 5.76 5.76     1</span></span></code></pre>
+<span><span class="co">##    Microseconds SD   Min   Max Count</span></span>
+<span><span class="co">## t3        1.012  0 1.012 1.012     1</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
